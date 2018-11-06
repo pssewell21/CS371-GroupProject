@@ -36,14 +36,15 @@ function scene:create( event )
 			{ x = 550, y = 0, width = 260, height = 200 },  -- 3 - House 1
 			{ x = 368, y = 8, width = 41, height = 41 },  -- 4 - Good Pick Icon
 			{ x = 413, y = 10, width = 35, height = 35 },  -- 5 - Bad Pick Icon
-			{ x = 413, y = 10, width = 35, height = 35 }  -- 5 - Bird 1
+			{ x = 148, y = 23, width = 39, height = 36 },  -- 6 - Bird 1
+			{ x = 189, y = 23, width = 43, height = 34 }  -- 7 - Bird 2
 		}
 	}
 	
 	-- initialize the image sheet
 	local sheet = graphics.newImageSheet("marioware.png", options)
 
-	local image = display.newImage(sheet, 5, 200, 100)
+	local image = display.newImage(sheet, 7, 200, 100)
 	image.xScale = 3
 	image.yScale = 3
 
