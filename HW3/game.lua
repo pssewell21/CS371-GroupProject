@@ -112,7 +112,11 @@ function scene:create( event )
 			{ x = 510, y = 158, width = 22, height = 32 },  -- 28 - Pot 3 Reverse
 		}
 	}
+	
+	-- initialize the image sheet
+	sheet = graphics.newImageSheet("marioware.png", options)
 
+	-- set up tranformation values so items appear consistently where we want them to in the house
 	verticalTransformations[8] = -10
 	verticalTransformations[9] = -10
 	verticalTransformations[10] = 0
@@ -134,9 +138,6 @@ function scene:create( event )
 	verticalTransformations[26] = -6
 	verticalTransformations[27] = -6
 	verticalTransformations[28] = -6
-	
-	-- initialize the image sheet
-	sheet = graphics.newImageSheet("marioware.png", options)
 
 	-- setup the scene background images and text blocks
 	-- TODO: Possibly investigate scaling based on screen size
