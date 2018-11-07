@@ -20,11 +20,14 @@ local function getRandomNumber(min, max)
 	return number
 end
 
-local function getUniqueRandomNumber(min, max, items)
+local function getRandomNumberWithExclusions(min, max, exclusions)
 	local number = getRandomNumber(min, max)
-	for _, listItem in pairs(items) do
+
+	for _, listItem in pairs(exclusions) do
       	if listItem == number then
-        	return getUniqueRandomNumber(min, max, items)
+      		-- Recursively call this function until a random number 
+      		-- is generated that is not contained in the items list
+        	return getRandomNumberWithExclusions(min, max, exclusions)
       	end
     end
 	return number
@@ -59,6 +62,7 @@ function scene:create( event )
 		end
 	end
 
+	-- TODO: Add mirrored images
 	-- set up the image sheet coordinates for animations 
 	local options =
 	{
@@ -122,19 +126,21 @@ function scene:show( event )
 
 		-- display the image in the top section
 		itemToFind = display.newImage(sheet, itemToFindIndex, display.contentCenterX, 90)
+		sceneGroup:insert(itemToFind)
 
 		-- initialize the list of items in the house to find the item from
 		itemsInHouse = {}
 
+		-- TODO: Make the item to select appear in a random position in the list instead of always first
 		-- include the randomly selected item to find in the list
 		itemsInHouse[1] = itemToFindIndex
 
 		-- TODO: Get the number of items in the house depending on the current stage
 		local numberOfItemsInHouse = 3
 
-		-- Get a index for an image that will be in the house
+		-- Get a random index for an image that will be placed in the house
 		for i = 2, numberOfItemsInHouse do
-			itemsInHouse[i] = getUniqueRandomNumber(8, 18, itemsInHouse)
+			itemsInHouse[i] = getRandomNumberWithExclusions(8, 18, itemsInHouse)
 		end
 
 		-- DEBUG: Print the contents of the list of items in the house
@@ -142,7 +148,30 @@ function scene:show( event )
       		print("Item In House Index: "..v)
       	end
 
-      	-- TODO: Place the itmes in the house
+      	-- TODO: Make sprites sizes a bit more consistent in size to make vertical placement in the house more consistent
+      	--       Could also add corections to y position depending on index of the item on the image sheet and type of image it is
+      	-- TODO: Add touch event listeners to the items
+      	-- TODO: Create other stages
+      	-- TODO: Update to not use scene 0 after proper stage logic is implemented
+      	if (stageNumber == 0) then
+      		local item1 = display.newImage(sheet, itemsInHouse[1], 240, 275)
+			sceneGroup:insert(item1)
+			local item2 = display.newImage(sheet, itemsInHouse[2], 240, 345)
+			sceneGroup:insert(item1)
+			local item3 = display.newImage(sheet, itemsInHouse[3], 130, 290)
+			sceneGroup:insert(item1)
+		elseif (stageNumber == 1) then
+		elseif (stageNumber == 2) then
+		elseif (stageNumber == 3) then
+		elseif (stageNumber == 4) then
+		elseif (stageNumber == 5) then
+		elseif (stageNumber == 6) then
+		elseif (stageNumber == 7) then
+		elseif (stageNumber == 8) then
+		elseif (stageNumber == 9) then
+		elseif (stageNumber == 10) then
+      	end
+
 	elseif ( phase == "did" ) then
 	end
 end
