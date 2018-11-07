@@ -167,7 +167,7 @@ function scene:show( event )
 	local phase = event.phase
 
 	if ( phase == "will" ) then
-		-- Rendomly get an index for an item that use player needs to find
+		-- Randomly get an index for an item that use player needs to find
 		itemToFindIndex = getRandomNumber(8, 28)
 
 		-- display the image in the top section
@@ -181,7 +181,6 @@ function scene:show( event )
 		-- include the randomly selected item to find in the list
 		itemsInHouse[1] = itemToFindIndex
 
-		-- TODO: Get the number of items in the house depending on the current stage
 		local numberOfItemsInHouse = stageItemNumbers[stageNumber]
 
 		-- Get a random index for an image that will be placed in the house
