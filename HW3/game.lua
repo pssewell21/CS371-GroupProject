@@ -26,7 +26,7 @@ local function getRandomNumberWithExclusions(min, max, exclusions)
 	for _, listItem in pairs(exclusions) do
       	if listItem == number then
       		-- Recursively call this function until a random number 
-      		-- is generated that is not contained in the items list
+      		-- is generated that is not contained in the exclusions list
         	return getRandomNumberWithExclusions(min, max, exclusions)
       	end
     end
