@@ -10,9 +10,13 @@ local composer = require("composer")
 
 local scene = composer.newScene()
 
-local stageNumber = 0
+local stageNumber = 1
 local numberOfStages = 10
 local itemToFindIndex = 0
+
+local stageItemNumbers = {}
+local verticalTransformations = {}
+local stageItems = {}
 
 local function getRandomNumber(min, max)
 	local number = math.random(min, max)
@@ -46,12 +50,20 @@ function buttonPressHandler(event)
 	composer.gotoScene("game", sceneTransitionOptions)
 end
 
+function getImage(sheet, index, x, y)
+	local item = display.newImage(sheet, index, x, y + verticalTransformations[index])
+
+	if index >= 19 then
+		item.xScale = -1
+	end
+
+	return item
+end
+
 function scene:create( event )
 	local sceneGroup = self.view
 
 	-- set up the table containing the number of items in the house for each level
-	local stageItemNumbers = {}
-
 	for stage = 1, numberOfStages do
 		if (stage <= 3) then			
 			stageItemNumbers[stage] = getRandomNumber(3, 5)
@@ -62,8 +74,7 @@ function scene:create( event )
 		end
 	end
 
-	-- TODO: Add mirrored images
-	-- set up the image sheet coordinates for animations 
+	-- set up the image sheet coordinates 
 	local options =
 	{
 		frames =
@@ -80,14 +91,49 @@ function scene:create( event )
 			{ x = 429, y = 115, width = 36, height = 21 },  -- 10 - Hat 1
 			{ x = 429, y = 137, width = 36, height = 21 },  -- 11 - Hat 2
 			{ x = 429, y = 159, width = 36, height = 21 },  -- 12 - Hat 3
-			{ x = 473, y = 111, width = 24, height = 25 },  -- 13 - Cup 1
+			{ x = 473, y = 111, width = 24, height = 24 },  -- 13 - Cup 1
 			{ x = 473, y = 136, width = 24, height = 23 },  -- 14 - Cup 2
 			{ x = 473, y = 160, width = 24, height = 23 },  -- 15 - Cup 3
 			{ x = 511, y = 93, width = 22, height = 31 },  -- 16 - Pot 1
 			{ x = 512, y = 125, width = 22, height = 32 },  -- 17 - Pot 2
 			{ x = 510, y = 158, width = 22, height = 32 },  -- 18 - Pot 3
+			-- Note that the reversed frames are not actually reversed, logic in the getImage function
+			-- will reverse them when creating the image.
+			-- Bottle 1 reverse would be the same thing
+			{ x = 403, y = 122, width = 17, height = 41 },  -- 19 - Bottle 2 Reverse
+			{ x = 429, y = 115, width = 36, height = 21 },  -- 20 - Hat 1 Reverse
+			{ x = 429, y = 137, width = 36, height = 21 },  -- 21 - Hat 2 Reverse
+			{ x = 429, y = 159, width = 36, height = 21 },  -- 22 - Hat 3 Reverse
+			{ x = 473, y = 111, width = 24, height = 24 },  -- 23 - Cup 1 Reverse
+			{ x = 473, y = 136, width = 24, height = 23 },  -- 24 - Cup 2 Reverse
+			{ x = 473, y = 160, width = 24, height = 23 },  -- 25 - Cup 3 Reverse
+			{ x = 511, y = 93, width = 22, height = 31 },  -- 26 - Pot 1 Reverse
+			{ x = 512, y = 125, width = 22, height = 32 },  -- 27 - Pot 2 Reverse
+			{ x = 510, y = 158, width = 22, height = 32 },  -- 28 - Pot 3 Reverse
 		}
 	}
+
+	verticalTransformations[8] = -10
+	verticalTransformations[9] = -10
+	verticalTransformations[10] = 0
+	verticalTransformations[11] = 0
+	verticalTransformations[12] = 0
+	verticalTransformations[13] = -2
+	verticalTransformations[14] = -2
+	verticalTransformations[15] = -2
+	verticalTransformations[16] = -6
+	verticalTransformations[17] = -6
+	verticalTransformations[18] = -6
+	verticalTransformations[19] = 10
+	verticalTransformations[20] = 0
+	verticalTransformations[21] = 0
+	verticalTransformations[22] = 0
+	verticalTransformations[23] = -2
+	verticalTransformations[24] = -2
+	verticalTransformations[25] = -2
+	verticalTransformations[26] = -6
+	verticalTransformations[27] = -6
+	verticalTransformations[28] = -6
 	
 	-- initialize the image sheet
 	sheet = graphics.newImageSheet("marioware.png", options)
@@ -122,45 +168,61 @@ function scene:show( event )
 
 	if ( phase == "will" ) then
 		-- Rendomly get an index for an item that use player needs to find
-		itemToFindIndex = getRandomNumber(8, 18)
+		itemToFindIndex = getRandomNumber(8, 28)
 
 		-- display the image in the top section
-		itemToFind = display.newImage(sheet, itemToFindIndex, display.contentCenterX, 90)
+		itemToFind = getImage(sheet, itemToFindIndex, display.contentCenterX, 100)
+
 		sceneGroup:insert(itemToFind)
 
 		-- initialize the list of items in the house to find the item from
 		itemsInHouse = {}
 
-		-- TODO: Make the item to select appear in a random position in the list instead of always first
 		-- include the randomly selected item to find in the list
 		itemsInHouse[1] = itemToFindIndex
 
 		-- TODO: Get the number of items in the house depending on the current stage
-		local numberOfItemsInHouse = 3
+		local numberOfItemsInHouse = stageItemNumbers[stageNumber]
 
 		-- Get a random index for an image that will be placed in the house
 		for i = 2, numberOfItemsInHouse do
 			itemsInHouse[i] = getRandomNumberWithExclusions(8, 18, itemsInHouse)
 		end
 
+		-- Swap the first item in the list with a randomly selected item in the list
+		-- This prevents to item to select from always appearing in the same position
+		local swapIndex = getRandomNumber(1, numberOfItemsInHouse)
+		local tempItem = itemsInHouse[swapIndex]
+		itemsInHouse[swapIndex] = itemsInHouse[1]
+		itemsInHouse[1] = tempItem
+
 		-- DEBUG: Print the contents of the list of items in the house
 		for _, v in pairs(itemsInHouse) do
       		print("Item In House Index: "..v)
       	end
 
-      	-- TODO: Make sprites sizes a bit more consistent in size to make vertical placement in the house more consistent
-      	--       Could also add corections to y position depending on index of the item on the image sheet and type of image it is
       	-- TODO: Add touch event listeners to the items
       	-- TODO: Create other stages
-      	-- TODO: Update to not use scene 0 after proper stage logic is implemented
-      	if (stageNumber == 0) then
-      		local item1 = display.newImage(sheet, itemsInHouse[1], 240, 275)
+		if (stageNumber == 1) then	
+      		local item1 = getImage(sheet, itemsInHouse[1], 240, 283)
 			sceneGroup:insert(item1)
-			local item2 = display.newImage(sheet, itemsInHouse[2], 240, 345)
-			sceneGroup:insert(item1)
-			local item3 = display.newImage(sheet, itemsInHouse[3], 130, 290)
-			sceneGroup:insert(item1)
-		elseif (stageNumber == 1) then
+
+			local item2 = getImage(sheet, itemsInHouse[2], 240, 348)
+			sceneGroup:insert(item2)
+
+			local item3 = getImage(sheet, itemsInHouse[3], 130, 290)
+			sceneGroup:insert(item3)
+
+			-- Check for nil value before attempting to add the item to the view
+			if itemsInHouse[4] ~= nil then
+				local item4 = getImage(sheet, itemsInHouse[4], 100, 290)
+				sceneGroup:insert(item4)
+			end
+
+			if itemsInHouse[5] ~= nil then
+				local item5 = getImage(sheet, itemsInHouse[5], 240, 219)
+				sceneGroup:insert(item5)
+			end
 		elseif (stageNumber == 2) then
 		elseif (stageNumber == 3) then
 		elseif (stageNumber == 4) then
