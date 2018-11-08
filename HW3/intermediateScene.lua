@@ -1,4 +1,3 @@
-
 local composer = require( "composer" )
  
 local scene = composer.newScene()
@@ -8,7 +7,6 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
  
-
 local livesRemaining = 4
 local stage = 1
 
@@ -27,6 +25,7 @@ local function gotoMenu()
 
     composer.gotoScene( "menu", sceneTransitionOptions )
 end
+
 -- ----------------------------------------------------
 -- This function will take the player to the GAME -- AA
 -- -----------------------------------------------------
@@ -43,50 +42,28 @@ local function gotoGame()
     composer.gotoScene( "game", sceneTransitionOptions )
 end
  
-
- 
---[[
-function buttonPressHandler(event)
-    local sceneTransitionOptions = {
-        effect = "slideUp",
-        time = 500
-        --,
-        --params = {
-        --  speed = ballSpeed
-        --}
-    }
-
-    composer.gotoScene("game", sceneTransitionOptions)
-end
---]]
-
- 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
  
--- create()
 function scene:create( event )
  
     -- Code here runs when the scene is first created but has not yet appeared on screen
-
-
     local sceneGroup = self.view
 
--- --------------------------------------
--- This is the background for this scene -- AA
--- --------------------------------------
+    -- --------------------------------------
+    -- This is the background for this scene -- AA
+    -- --------------------------------------
 
     local background = display.newImageRect( sceneGroup, "chair.png", 450, 750 )
     background.x = display.contentCenterX 
     background.y = display.contentCenterY 
 
--- ---------------------------------
--- These represent the player's life -- AA
--- --------------------------------
+    -- ---------------------------------
+    -- These represent the player's life -- AA
+    -- --------------------------------
 
     local lifeGroup = display.newGroup()
-
 
     local life1 = display.newImageRect( sceneGroup, "life.png", 70, 70 )
     life1.x = display.contentCenterX - 125
@@ -108,21 +85,21 @@ function scene:create( event )
     life4.y = display.contentCenterY - 230
     lifeGroup:insert(life4)
 
--- ---------------------------------------------------------------------------------
--- GAME button widget
--- I only chanhged this to a widget just so it can match the start button in the menu - AA
--- ---------------------------------------------------------------------------------    
+    -- ---------------------------------------------------------------------------------
+    -- GAME button widget
+    -- I only chanhged this to a widget just so it can match the start button in the menu - AA
+    -- ---------------------------------------------------------------------------------    
 
-     local widget = require( "widget" )
+    local widget = require( "widget" )
  
     -- Function to handle button events
-        local function handleButtonEvent( event )
-            if ( "ended" == event.phase ) then
+    local function handleButtonEvent( event )
+        if ( "ended" == event.phase ) then
             print( "Button was pressed and released" )
-            end
+        end
     end
  
--- Create the widget
+    -- Create the widget
     local gameButton = widget.newButton(
     {
         label = "gameButton",
@@ -136,33 +113,31 @@ function scene:create( event )
         fillColor = { default={255,255,0}, over={255,255,0} },
         strokeColor = { default={0,0,0}, over={0,0,0} },
         strokeWidth = 5
-    }
-)
+    })
 
--- Center the button
-gameButton.x = display.contentCenterX + 100
-gameButton.y = display.contentCenterY + 220
- 
--- Change the button's label text
-gameButton:setLabel( "GAME" )
-gameButton:addEventListener("tap", gotoGame)
+    -- Center the button
+    gameButton.x = display.contentCenterX + 100
+    gameButton.y = display.contentCenterY + 220
+     
+    -- Change the button's label text
+    gameButton:setLabel( "GAME" )
+    gameButton:addEventListener("tap", gotoGame)
+    
+        -- ---------------------------------------------------------------------------------
+    -- MENU button widget
+    -- I only chanhged this to a widget just so it can match the start button in the menu -AA
+    -- ---------------------------------------------------------------------------------    
 
-
--- ---------------------------------------------------------------------------------
--- MENU button widget
--- I only chanhged this to a widget just so it can match the start button in the menu -AA
--- ---------------------------------------------------------------------------------    
-
-     local widget = require( "widget" )
+    local widget = require( "widget" )
  
     -- Function to handle button events
-        local function handleButtonEvent( event )
-            if ( "ended" == event.phase ) then
+    local function handleButtonEvent( event )
+        if ( "ended" == event.phase ) then
             print( "Button was pressed and released" )
-            end
+        end
     end
  
--- Create the widget
+    -- Create the widget
     local menuButton = widget.newButton(
     {
         label = "menuButton",
@@ -176,58 +151,34 @@ gameButton:addEventListener("tap", gotoGame)
         fillColor = { default={255,255,0}, over={255,255,0} },
         strokeColor = { default={0,0,0}, over={0,0,0} },
         strokeWidth = 5
-    }
-)
+    })
+    
+    -- Center the button
+    menuButton.x = display.contentCenterX - 100
+    menuButton.y = display.contentCenterY + 220
+     
+    -- Change the button's label text
+    menuButton:setLabel( "MENU" )
+    menuButton:addEventListener("tap", gotoMenu)
 
--- Center the button
-menuButton.x = display.contentCenterX - 100
-menuButton.y = display.contentCenterY + 220
- 
--- Change the button's label text
-menuButton:setLabel( "MENU" )
-menuButton:addEventListener("tap", gotoMenu)
-
-
-  --  labelText = display.newText("Intermediate", display.contentCenterX, 200, native.systemFont, 36)
-
-
-
-
-
-
-
-
-
-
-   -- livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
-  --  livesText:setFillColor(0,0,0)
+    --livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
+    --livesText:setFillColor(0,0,0)
     stageText = display.newText("Stage: "..stage, display.contentCenterX, 350, native.systemFont, 24)
     stageText:setFillColor(0,0,0)
     messageText = display.newText("Game messages: ", display.contentCenterX, 400, native.systemFont, 24)
     messageText:setFillColor(0,0,0)
 
-
-
-
-    
--- --------------------------------------------------------------------
---This is just putting all of the objects that is the scene in a group
--- --------------------------------------------------------------------
+    -- --------------------------------------------------------------------
+    --This is just putting all of the objects that is the scene in a group
+    -- --------------------------------------------------------------------
     sceneGroup:insert(gameButton)
     sceneGroup:insert(menuButton)
     sceneGroup:insert(lifeGroup)
    -- sceneGroup:insert(livesText)
     sceneGroup:insert(stageText)
     sceneGroup:insert(messageText)
-
-
-
-
-
 end
- 
- 
--- show()
+
 function scene:show( event )
  
     local sceneGroup = self.view
@@ -242,8 +193,6 @@ function scene:show( event )
     end
 end
  
- 
--- hide()
 function scene:hide( event )
  
     local sceneGroup = self.view
@@ -258,16 +207,13 @@ function scene:hide( event )
     end
 end
  
- 
--- destroy()
 function scene:destroy( event )
  
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
  
 end
- 
- 
+  
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
 -- -----------------------------------------------------------------------------------

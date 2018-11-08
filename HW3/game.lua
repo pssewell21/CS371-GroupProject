@@ -76,7 +76,7 @@ function itemTouchHandler(event)
 			winImage.y = event.target.y
 			winImage.isVisible = true
 
-			local soundEffect= audio.loadSound("win.wav") 
+			local soundEffect = audio.loadSound("win.wav") 
 			audio.play(soundEffect)
 
 			touchEnabled = false
@@ -87,7 +87,7 @@ function itemTouchHandler(event)
 			loseImage.y = event.target.y
 			loseImage.isVisible = true
 
-			local soundEffect= audio.loadSound("lose.wav") 
+			local soundEffect = audio.loadSound("lose.wav") 
 			audio.play(soundEffect)
 
 			touchEnabled = false
@@ -222,7 +222,7 @@ function scene:create( event )
         strokeWidth = 5
     })
 	
-	    -- Center the button
+	-- Center the button
 	continueButton.x = display.contentCenterX
 	continueButton.y = display.contentCenterY - 70
 			 

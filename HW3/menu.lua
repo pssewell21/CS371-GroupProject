@@ -24,7 +24,6 @@ end
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
  
--- create()
 function scene:create( event )
  
     local sceneGroup = self.view
@@ -49,7 +48,6 @@ function scene:create( event )
     local studentName4 = display.newText( sceneGroup, "Patrick Sewell", display.contentCenterX + 120, 85, native.systemFont, 10 )
     studentName4:setFillColor( 0, 0, 0 )
 
-
     local widget = require( "widget" )
  
     -- Function to handle button events
@@ -59,7 +57,7 @@ function scene:create( event )
             end
     end
  
--- Create the widget
+	-- Create the widget
     local startButton = widget.newButton(
     {
         label = "startButton",
@@ -73,77 +71,59 @@ function scene:create( event )
         fillColor = { default={255,255,0}, over={255,255,0} },
         strokeColor = { default={0,0,0}, over={0,0,0} },
         strokeWidth = 5
-    }
-)
+    })
  
--- Center the button
-startButton.x = display.contentCenterX - 10
-startButton.y = display.contentCenterY + 175
- 
--- Change the button's label text
-startButton:setLabel( "START" )
-startButton:addEventListener("tap", gotoGame)
-
--- --------------------------------------------------------------------
---This is just putting all of the objects that is the scene in a group
--- --------------------------------------------------------------------
-sceneGroup:insert(background)
-sceneGroup:insert(title)
-sceneGroup:insert(studentName1)
-sceneGroup:insert(studentName2)
-sceneGroup:insert(studentName3)
-sceneGroup:insert(studentName4)
-sceneGroup:insert(startButton)
-
-
-
-
-
+	-- Center the button
+	startButton.x = display.contentCenterX - 10
+	startButton.y = display.contentCenterY + 175
+	 
+	-- Change the button's label text
+	startButton:setLabel( "START" )
+	startButton:addEventListener("tap", gotoGame)
+	
+	-- --------------------------------------------------------------------
+	--This is just putting all of the objects that is the scene in a group
+	-- --------------------------------------------------------------------
+	sceneGroup:insert(background)
+	sceneGroup:insert(title)
+	sceneGroup:insert(studentName1)
+	sceneGroup:insert(studentName2)
+	sceneGroup:insert(studentName3)
+	sceneGroup:insert(studentName4)
+	sceneGroup:insert(startButton)
 end
  
- 
-
--- show()
 function scene:show( event )
  
     local sceneGroup = self.view
     local phase = event.phase
  
     if ( phase == "will" ) then
-        -- Code here runs when the scene is still off screen (but is about to come on screen)
- 
+        -- Code here runs when the scene is still off screen (but is about to come on screen) 
     elseif ( phase == "did" ) then
-        -- Code here runs when the scene is entirely on screen
- 
+        -- Code here runs when the scene is entirely on screen 
     end
 end
  
- 
--- hide()
 function scene:hide( event )
  
     local sceneGroup = self.view
     local phase = event.phase
  
     if ( phase == "will" ) then
-        -- Code here runs when the scene is on screen (but is about to go off screen)
- 
+        -- Code here runs when the scene is on screen (but is about to go off screen) 
     elseif ( phase == "did" ) then
-        -- Code here runs immediately after the scene goes entirely off screen
- 
+        -- Code here runs immediately after the scene goes entirely off screen 
     end
 end
  
- 
--- destroy()
 function scene:destroy( event )
  
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
  
 end
- 
- 
+  
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
 -- -----------------------------------------------------------------------------------
