@@ -15,14 +15,32 @@ local stage = 1
 -- ----------------------------------------------------
 -- This function will take the player back to the MENU -- AA
 -- -----------------------------------------------------
- local function gotoMenu()
-    composer.gotoScene( "menu" )
+local function gotoMenu()
+    local sceneTransitionOptions = {
+        effect = "slideDown",
+        time = 500
+        --,
+        --params = {
+        --  speed = ballSpeed
+        --}
+    }
+
+    composer.gotoScene( "menu", sceneTransitionOptions )
 end
 -- ----------------------------------------------------
 -- This function will take the player to the GAME -- AA
 -- -----------------------------------------------------
 local function gotoGame()
-    composer.gotoScene( "game" )
+    local sceneTransitionOptions = {
+        effect = "slideUp",
+        time = 500
+        --,
+        --params = {
+        --  speed = ballSpeed
+        --}
+    }
+
+    composer.gotoScene( "game", sceneTransitionOptions )
 end
  
 

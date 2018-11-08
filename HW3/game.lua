@@ -7,16 +7,26 @@
 -- Your code here
 
 local composer = require("composer")
+local widget = require( "widget" )
 
 local scene = composer.newScene()
 
 local stageNumber = 1
 local numberOfStages = 10
+
 local itemToFindIndex = 0
 
 local stageItemNumbers = {}
 local verticalTransformations = {}
-local stageItems = {}
+local itemsToRemove = {}
+
+local imageSheet
+
+local touchEnabled = true
+
+local winImage
+local loseImage
+local continueButton
 
 local function getRandomNumber(min, max)
 	local number = math.random(min, max)
@@ -34,12 +44,19 @@ local function getRandomNumberWithExclusions(min, max, exclusions)
         	return getRandomNumberWithExclusions(min, max, exclusions)
       	end
     end
+
 	return number
+end
+-- Function to handle button events
+local function handleButtonEvent( event )
+    if ( "ended" == event.phase ) then
+    print( "Button was pressed and released" )
+    end
 end
 
 function buttonPressHandler(event)
 	local sceneTransitionOptions = {
-		effect = "slideUp",
+		effect = "slideDown",
 		time = 500
 		--,
 		--params = {
@@ -47,11 +64,45 @@ function buttonPressHandler(event)
 		--}
 	}
 
-	composer.gotoScene("game", sceneTransitionOptions)
+	composer.gotoScene("intermediateScene", sceneTransitionOptions)
 end
 
-function getImage(sheet, index, x, y)
-	local item = display.newImage(sheet, index, x, y + verticalTransformations[index])
+function itemTouchHandler(event)
+	if touchEnabled == true then
+		if itemToFindIndex == event.target.index then
+			print("Found the correct item")
+
+			winImage.x = event.target.x
+			winImage.y = event.target.y
+			winImage.isVisible = true
+
+			local soundEffect= audio.loadSound("win.wav") 
+			audio.play(soundEffect)
+
+			touchEnabled = false
+		else
+			print("Did not find the correct item")
+
+			loseImage.x = event.target.x
+			loseImage.y = event.target.y
+			loseImage.isVisible = true
+
+			local soundEffect= audio.loadSound("lose.wav") 
+			audio.play(soundEffect)
+
+			touchEnabled = false
+		end
+
+		continueButton.isVisible = true
+	end
+end
+
+function getImage(index, x, y, touchEnabled)
+	local item = display.newImage(imageSheet, index, x, y + verticalTransformations[index])
+	item.index = index
+	if touchEnabled == true then
+		item:addEventListener("tap", itemTouchHandler)
+	end
 
 	if index >= 19 then
 		item.xScale = -1
@@ -114,7 +165,7 @@ function scene:create( event )
 	}
 	
 	-- initialize the image sheet
-	sheet = graphics.newImageSheet("marioware.png", options)
+	imageSheet = graphics.newImageSheet("marioware.png", options)
 
 	-- set up tranformation values so items appear consistently where we want them to in the house
 	verticalTransformations[8] = -10
@@ -141,12 +192,12 @@ function scene:create( event )
 
 	-- setup the scene background images and text blocks
 	-- TODO: Possibly investigate scaling based on screen size
-	local topBackground = display.newImage(sheet, 3, display.contentCenterX, 100)
+	local topBackground = display.newImage(imageSheet, 3, display.contentCenterX, 100)
 
 	stageText = display.newText("Stage "..stageNumber, display.contentCenterX, 30, native.systemFont, 24)
 	stageText:setFillColor(0, 0, 0)
 
-	houseBackground = display.newImage(sheet, 1, display.contentCenterX, 290)
+	houseBackground = display.newImage(imageSheet, 1, display.contentCenterX, 290)
 
 	local findText = display.newText("Find!", display.contentCenterX, 130, native.systemFont, 18)
 	findText:setFillColor(0, 0, 0)
@@ -156,11 +207,36 @@ function scene:create( event )
 	progressBarRect:setStrokeColor(1, 1, 0)
 	progressBarRect:setFillColor(0, 0, 0)
 
+	continueButton = widget.newButton(
+    {
+        label = "continueButton",
+        onEvent = handleButtonEvent,
+        emboss = false,
+        -- Properties for a rounded rectangle button
+        shape = "roundedRect",
+        width = 100,
+        height = 40,
+        cornerRadius = 2,
+        fillColor = { default={255,255,0}, over={255,255,0} },
+        strokeColor = { default={0,0,0}, over={0,0,0} },
+        strokeWidth = 5
+    })
+	
+	    -- Center the button
+	continueButton.x = display.contentCenterX
+	continueButton.y = display.contentCenterY - 70
+			 
+	-- Change the button's label text
+	continueButton:setLabel("CONTINUE")
+	continueButton:addEventListener("tap", buttonPressHandler)
+	continueButton.isVisible = false
+
 	sceneGroup:insert(topBackground)
 	sceneGroup:insert(stageText)
 	sceneGroup:insert(houseBackground)
 	sceneGroup:insert(findText)
 	sceneGroup:insert(progressBarRect)
+	sceneGroup:insert(continueButton)
 end
 
 function scene:show( event )
@@ -168,12 +244,12 @@ function scene:show( event )
 	local phase = event.phase
 
 	if ( phase == "will" ) then
-		-- Rendomly get an index for an item that use player needs to find
+		-- Randomly get an index for an item that use player needs to find
 		itemToFindIndex = getRandomNumber(8, 28)
 
 		-- display the image in the top section
-		itemToFind = getImage(sheet, itemToFindIndex, display.contentCenterX, 100)
-
+		itemToFind = getImage(itemToFindIndex, display.contentCenterX, 100, false)
+		itemsToRemove[0] = itemToFind
 		sceneGroup:insert(itemToFind)
 
 		-- initialize the list of items in the house to find the item from
@@ -205,23 +281,28 @@ function scene:show( event )
       	-- TODO: Add touch event listeners to the items
       	-- TODO: Create other stages
 		if (stageNumber == 1) then	
-      		local item1 = getImage(sheet, itemsInHouse[1], 240, 283)
+      		local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(sheet, itemsInHouse[2], 240, 348)
+			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(sheet, itemsInHouse[3], 130, 290)
+			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[4] ~= nil then
-				local item4 = getImage(sheet, itemsInHouse[4], 100, 290)
+				local item4 = getImage(itemsInHouse[4], 100, 290, true)
+				itemsToRemove[4] = item4
 				sceneGroup:insert(item4)
 			end
 
 			if itemsInHouse[5] ~= nil then
-				local item5 = getImage(sheet, itemsInHouse[5], 240, 219)
+				local item5 = getImage(itemsInHouse[5], 240, 219, true)
+				itemsToRemove[5] = item5
 				sceneGroup:insert(item5)
 			end
 		elseif (stageNumber == 2) then
@@ -235,6 +316,14 @@ function scene:show( event )
 		elseif (stageNumber == 10) then
       	end
 
+		winImage = display.newImage(imageSheet, 4)
+		winImage.isVisible = false
+
+		loseImage = display.newImage(imageSheet, 5)
+		loseImage.isVisible = false
+
+		sceneGroup:insert(winImage)
+		sceneGroup:insert(loseImage)
 	elseif ( phase == "did" ) then
 	end
 end
@@ -244,6 +333,15 @@ function scene:hide( event )
 	local phase = event.phase
 
 	if ( phase == "will" ) then
+		continueButton.isVisible = false
+		winImage.isVisible = false
+		loseImage.isVisible = false
+
+		for i = 0, stageItemNumbers[stageNumber] do
+			itemsToRemove[i]:removeSelf()
+		end	
+
+		touchEnabled = true
 	elseif ( phase == "did" ) then
 	end
 end
@@ -259,3 +357,4 @@ scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
 
 return scene
+
