@@ -28,6 +28,9 @@ local winImage
 local loseImage
 local continueButton
 
+local decrementLife = false
+local gameMessage
+
 local function getRandomNumber(min, max)
 	local number = math.random(min, max)
 	--print("Random number: "..number)
@@ -57,11 +60,11 @@ end
 function buttonPressHandler(event)
 	local sceneTransitionOptions = {
 		effect = "slideDown",
-		time = 500
-		--,
-		--params = {
-		--	speed = ballSpeed
-		--}
+		time = 500,
+		params = {
+			decrementLife = decrementLife,
+			gameMessage = gameMessage
+		}
 	}
 
 	composer.gotoScene("intermediateScene", sceneTransitionOptions)
@@ -79,6 +82,8 @@ function itemTouchHandler(event)
 			local soundEffect = audio.loadSound("win.wav") 
 			audio.play(soundEffect)
 
+			decrementLife = flase			
+			gameMessage = "Correct item selected!"
 			touchEnabled = false
 		else
 			print("Did not find the correct item")
@@ -90,6 +95,8 @@ function itemTouchHandler(event)
 			local soundEffect = audio.loadSound("lose.wav") 
 			audio.play(soundEffect)
 
+			decrementLife = true
+			gameMessage = "Incorrect item selected"
 			touchEnabled = false
 		end
 
@@ -179,7 +186,7 @@ function scene:create( event )
 	verticalTransformations[16] = -6
 	verticalTransformations[17] = -6
 	verticalTransformations[18] = -6
-	verticalTransformations[19] = 10
+	verticalTransformations[19] = -10
 	verticalTransformations[20] = 0
 	verticalTransformations[21] = 0
 	verticalTransformations[22] = 0
@@ -244,6 +251,14 @@ function scene:show( event )
 	local phase = event.phase
 
 	if ( phase == "will" ) then
+
+		local params = event.params
+
+		if (params.stage ~= nil) then
+			stageNumber = params.stage
+			stageText.text = "Stage "..stageNumber
+		end
+
 		-- Randomly get an index for an item that use player needs to find
 		itemToFindIndex = getRandomNumber(8, 28)
 
@@ -306,6 +321,30 @@ function scene:show( event )
 				sceneGroup:insert(item5)
 			end
 		elseif (stageNumber == 2) then
+      		local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			itemsToRemove[1] = item1
+			sceneGroup:insert(item1)
+
+			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			itemsToRemove[2] = item2
+			sceneGroup:insert(item2)
+
+			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			itemsToRemove[3] = item3
+			sceneGroup:insert(item3)
+
+			-- Check for nil value before attempting to add the item to the view
+			if itemsInHouse[4] ~= nil then
+				local item4 = getImage(itemsInHouse[4], 100, 290, true)
+				itemsToRemove[4] = item4
+				sceneGroup:insert(item4)
+			end
+
+			if itemsInHouse[5] ~= nil then
+				local item5 = getImage(itemsInHouse[5], 240, 219, true)
+				itemsToRemove[5] = item5
+				sceneGroup:insert(item5)
+			end
 		elseif (stageNumber == 3) then
 		elseif (stageNumber == 4) then
 		elseif (stageNumber == 5) then

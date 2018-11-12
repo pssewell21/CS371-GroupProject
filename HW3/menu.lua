@@ -10,11 +10,10 @@ local scene = composer.newScene()
 local function gotoGame()
 	local sceneTransitionOptions = {
 		effect = "slideUp",
-		time = 500
-		--,
-		--params = {
-		--	speed = ballSpeed
-		--}
+		time = 500,
+		params = {
+            cameFromMenu = true
+        }
 	}
 
     composer.gotoScene( "intermediateScene", sceneTransitionOptions )

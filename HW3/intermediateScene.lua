@@ -10,6 +10,8 @@ local scene = composer.newScene()
 local livesRemaining = 4
 local stage = 1
 
+local stageText
+
 -- ----------------------------------------------------
 -- This function will take the player back to the MENU -- AA
 -- -----------------------------------------------------
@@ -32,11 +34,10 @@ end
 local function gotoGame()
     local sceneTransitionOptions = {
         effect = "slideUp",
-        time = 500
-        --,
-        --params = {
-        --  speed = ballSpeed
-        --}
+        time = 500,
+        params = {
+            stage = stage
+        }
     }
 
     composer.gotoScene( "game", sceneTransitionOptions )
@@ -161,8 +162,8 @@ function scene:create( event )
     menuButton:setLabel( "MENU" )
     menuButton:addEventListener("tap", gotoMenu)
 
-    --livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
-    --livesText:setFillColor(0,0,0)
+    livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
+    livesText:setFillColor(0,0,0)
     stageText = display.newText("Stage: "..stage, display.contentCenterX, 350, native.systemFont, 24)
     stageText:setFillColor(0,0,0)
     messageText = display.newText("Game messages: ", display.contentCenterX, 400, native.systemFont, 24)
@@ -174,7 +175,7 @@ function scene:create( event )
     sceneGroup:insert(gameButton)
     sceneGroup:insert(menuButton)
     sceneGroup:insert(lifeGroup)
-   -- sceneGroup:insert(livesText)
+    sceneGroup:insert(livesText)
     sceneGroup:insert(stageText)
     sceneGroup:insert(messageText)
 end
@@ -185,8 +186,30 @@ function scene:show( event )
     local phase = event.phase
  
     if ( phase == "will" ) then
-        -- Code here runs when the scene is still off screen (but is about to come on screen)
- 
+        local params = event.params
+
+        print("Before null check")
+
+        if (params.cameFromMenu ~= nil and params.cameFromMenu == true) then
+            print("Came from menu")
+            stage = 1
+            livesRemaining = 4
+        else
+            print("Came from game")
+            stage = stage + 1
+            print("Stage = "..stage)
+        end
+
+        if (params.decrementLife ~= nil) then
+            livesRemaining = livesRemaining - 1
+        end
+        
+        if (params.gameMessage ~= nil) then
+            messageText.text = "Game messages: "..params.gameMessage
+        end
+        
+        stageText.text = "Stage: "..stage
+        livesText.text = "Lives Remaining: "..livesRemaining
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
  
