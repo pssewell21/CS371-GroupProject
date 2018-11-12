@@ -82,7 +82,7 @@ function itemTouchHandler(event)
 			local soundEffect = audio.loadSound("win.wav") 
 			audio.play(soundEffect)
 
-			decrementLife = flase			
+			decrementLife = false			
 			gameMessage = "Correct item selected!"
 			touchEnabled = false
 		else
