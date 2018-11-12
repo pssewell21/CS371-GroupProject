@@ -194,6 +194,7 @@ function scene:show( event )
             print("Came from menu")
             stage = 1
             livesRemaining = 4
+            messageText.text = "Game messages: "
         else
             print("Came from game")
             stage = stage + 1
@@ -207,7 +208,7 @@ function scene:show( event )
         if (params.gameMessage ~= nil) then
             messageText.text = "Game messages: "..params.gameMessage
         end
-        
+
         stageText.text = "Stage: "..stage
         livesText.text = "Lives Remaining: "..livesRemaining
     elseif ( phase == "did" ) then
