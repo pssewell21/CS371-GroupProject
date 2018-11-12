@@ -9,6 +9,10 @@ local scene = composer.newScene()
  
 local livesRemaining = 4
 local stage = 1
+local life1
+local life2
+local life3
+local life4
 
 local stageText
 
@@ -66,22 +70,22 @@ function scene:create( event )
 
     local lifeGroup = display.newGroup()
 
-    local life1 = display.newImageRect( sceneGroup, "life.png", 70, 70 )
+    life1 = display.newImageRect( sceneGroup, "life.png", 70, 70 )
     life1.x = display.contentCenterX - 125
     life1.y = display.contentCenterY - 230
     lifeGroup:insert(life1)
 
-    local life2 = display.newImageRect( sceneGroup, "life.png", 70, 70 )
+    life2 = display.newImageRect( sceneGroup, "life.png", 70, 70 )
     life2.x = display.contentCenterX - 45
     life2.y = display.contentCenterY - 230
     lifeGroup:insert(life2)
 
-    local life3 = display.newImageRect( sceneGroup, "life.png", 70, 70 )
+    life3 = display.newImageRect( sceneGroup, "life.png", 70, 70 )
     life3.x = display.contentCenterX + 45
     life3.y = display.contentCenterY - 230
     lifeGroup:insert(life3)
 
-    local life4 = display.newImageRect( sceneGroup, "life.png", 70, 70 )
+    life4 = display.newImageRect( sceneGroup, "life.png", 70, 70 )
     life4.x = display.contentCenterX + 125
     life4.y = display.contentCenterY - 230
     lifeGroup:insert(life4)
@@ -201,7 +205,7 @@ function scene:show( event )
             print("Stage = "..stage)
         end
 
-        if (params.decrementLife ~= nil) then
+        if (params.decrementLife == true) then
             livesRemaining = livesRemaining - 1
         end
         
@@ -211,6 +215,29 @@ function scene:show( event )
 
         stageText.text = "Stage: "..stage
         livesText.text = "Lives Remaining: "..livesRemaining
+
+        if(event.params.loseFlag == true) then
+        livesRemaining = livesRemaining - 1
+    end
+
+     ------------------------------------------------------------------------------------
+    -- Logic for hiding life counters -- AM
+    ------------------------------------------------------------------------------------
+
+    if(livesRemaining == 3) then
+        life4.isVisible = false
+    end
+    if(livesRemaining == 2) then
+        life3.isVisible = false
+    end
+    if(livesRemaining == 1) then
+        life2.isVisible = false
+    end 
+    if(livesRemaining == 0) then
+        life1.isVisible = false
+        --GAME OVER
+    end
+
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
  
