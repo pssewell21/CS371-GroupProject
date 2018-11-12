@@ -254,7 +254,7 @@ function scene:show( event )
 
 		local params = event.params
 
-		if (params.stage ~= nil) then
+		if (params ~= nil and params.stage ~= nil) then
 			stageNumber = params.stage
 			stageText.text = "Stage "..stageNumber
 		end
