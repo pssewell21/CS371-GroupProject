@@ -73,7 +73,7 @@ function scene:create( event )
     })
  
 	-- Center the button
-	startButton.x = display.contentCenterX - 10
+	startButton.x = display.contentCenterX
 	startButton.y = display.contentCenterY + 175
 	 
 	-- Change the button's label text

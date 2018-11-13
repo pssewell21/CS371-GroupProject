@@ -44,6 +44,7 @@ local function gotoGame()
         }
     }
 
+    print("Navigating to Game view")
     composer.gotoScene( "game", sceneTransitionOptions )
 end
  
@@ -125,7 +126,7 @@ function scene:create( event )
     gameButton.y = display.contentCenterY + 220
      
     -- Change the button's label text
-    gameButton:setLabel( "GAME" )
+    gameButton:setLabel("GAME")
     gameButton:addEventListener("tap", gotoGame)
     
         -- ---------------------------------------------------------------------------------
@@ -166,22 +167,31 @@ function scene:create( event )
     menuButton:setLabel( "MENU" )
     menuButton:addEventListener("tap", gotoMenu)
 
-    livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
-    livesText:setFillColor(0,0,0)
-    stageText = display.newText("Stage: "..stage, display.contentCenterX, 350, native.systemFont, 24)
+    --livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
+    --livesText:setFillColor(0,0,0)
+    stageText = display.newText("Stage: "..stage, display.contentCenterX, 230, native.systemFont, 75)
     stageText:setFillColor(0,0,0)
-    messageText = display.newText("Game messages: ", display.contentCenterX, 400, native.systemFont, 24)
+    messageText = display.newText("", display.contentCenterX, 400, native.systemFont, 25)
     messageText:setFillColor(0,0,0)
+    
+    win = display.newImageRect(sceneGroup, "won.png", 200, 200 )
+    win.x = display.contentCenterX 
+    win.y = display.contentCenterY 
 
+
+    gameOver = display.newImageRect(sceneGroup, "gameover.png", 200, 200 )
+    gameOver.x = display.contentCenterX 
+    gameOver.y = display.contentCenterY 
     -- --------------------------------------------------------------------
     --This is just putting all of the objects that is the scene in a group
     -- --------------------------------------------------------------------
     sceneGroup:insert(gameButton)
     sceneGroup:insert(menuButton)
     sceneGroup:insert(lifeGroup)
-    sceneGroup:insert(livesText)
     sceneGroup:insert(stageText)
     sceneGroup:insert(messageText)
+    sceneGroup:insert(win)
+    sceneGroup:insert(gameOver)
 end
 
 function scene:show( event )
@@ -198,11 +208,11 @@ function scene:show( event )
             print("Came from menu")
             stage = 1
             livesRemaining = 4
-            messageText.text = "Game messages: "
-            life1.isVisible = true;
-            life2.isVisible = true;
-            life3.isVisible = true;
-            life4.isVisible = true;
+            messageText.text = ""
+            life1.isVisible = true
+            life2.isVisible = true
+            life3.isVisible = true
+            life4.isVisible = true
         else
             print("Came from game")
             stage = stage + 1
@@ -214,37 +224,54 @@ function scene:show( event )
         end
         
         if (params.gameMessage ~= nil) then
-            messageText.text = "Game messages: "..params.gameMessage
+            messageText.text = params.gameMessage
         end
 
         stageText.text = "Stage: "..stage
-        livesText.text = "Lives Remaining: "..livesRemaining
+        --livesText.text = "Lives Remaining: "..livesRemaining
 
         if(event.params.loseFlag == true) then
         livesRemaining = livesRemaining - 1
     end
 
-     ------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------
     -- Logic for hiding life counters -- AM
     ------------------------------------------------------------------------------------
 
     if(livesRemaining == 3) then
         life4.isVisible = false
+        gameOver.isVisible = false
+        win.isVisible = false
+       
     end
     if(livesRemaining == 2) then
+        life4.isVisible = false
         life3.isVisible = false
+        gameOver.isVisible = false
+        win.isVisible = false
+      
     end
     if(livesRemaining == 1) then
+        life4.isVisible = false
+        life3.isVisible = false
         life2.isVisible = false
+         gameOver.isVisible = false
+         win.isVisible = false
+
     end 
     if(livesRemaining == 0) then
+        life4.isVisible = false
+        life3.isVisible = false
+        life2.isVisible = false
         life1.isVisible = false
+        wins.isVisible = false
+        gameOver.isVisible = true
         --GAME OVER
     end
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
- 
+        win.isVisible = true
     end
 end
  
