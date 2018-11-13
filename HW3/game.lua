@@ -30,6 +30,8 @@ local loseImage
 local decrementLife = false
 local sceneMovedAwayFrom = false;
 
+local progressTimer
+
 local function getRandomNumber(min, max)
 	local number = math.random(min, max)
 	--print("Random number: "..number)
@@ -37,6 +39,8 @@ local function getRandomNumber(min, max)
 end
 
 local function gotoIntermediate()
+	timer.cancel(progressTimer)
+
     local sceneTransitionOptions = {
         effect = "slideDown",
         time = 500,
@@ -890,8 +894,7 @@ function scene:show( event )
 		sceneGroup:insert(winImage)
 		sceneGroup:insert(loseImage)
 	elseif ( phase == "did" ) then
-		print("Creating timer")
-		progress_timer = timer.performWithDelay(1000, moveProgressBar, 8)
+		progressTimer = timer.performWithDelay(1000, moveProgressBar, 8)
 	end
 end
 
