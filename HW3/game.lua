@@ -30,6 +30,8 @@ local loseImage
 local decrementLife = false
 local sceneMovedAwayFrom = false;
 
+local progressTimer
+
 local function getRandomNumber(min, max)
 	local number = math.random(min, max)
 	--print("Random number: "..number)
@@ -37,6 +39,8 @@ local function getRandomNumber(min, max)
 end
 
 local function gotoIntermediate()
+	timer.cancel(progressTimer)
+
     local sceneTransitionOptions = {
         effect = "slideDown",
         time = 500,
@@ -189,8 +193,8 @@ function scene:create( event )
 			{ x = 510, y = 158, width = 22, height = 32 },  -- 18 - Pot 3
 			-- Note that the reversed frames are not actually reversed, logic in the getImage function
 			-- will reverse them when creating the image.
-			-- Bottle 1 reverse would be the same thing
-			{ x = 403, y = 122, width = 17, height = 41 },  -- 19 - Bottle 2 Reverse
+			{ x = 379, y = 122, width = 17, height = 41 },  -- 19 - Bottle 1 Reverse
+			-- Bottle 2 reverse would be the same thing
 			{ x = 429, y = 115, width = 36, height = 21 },  -- 20 - Hat 1 Reverse
 			{ x = 429, y = 137, width = 36, height = 21 },  -- 21 - Hat 2 Reverse
 			{ x = 429, y = 159, width = 36, height = 21 },  -- 22 - Hat 3 Reverse
@@ -843,7 +847,6 @@ function scene:show( event )
 		right.myName = "right"
 		left.myName = "left"
 
-
 		sceneGroup:insert(bottom)
 		sceneGroup:insert(top)
 		sceneGroup:insert(right)
@@ -890,8 +893,7 @@ function scene:show( event )
 		sceneGroup:insert(winImage)
 		sceneGroup:insert(loseImage)
 	elseif ( phase == "did" ) then
-		print("Creating timer")
-		progress_timer = timer.performWithDelay(1000, moveProgressBar, 8)
+		progressTimer = timer.performWithDelay(1000, moveProgressBar, 8)
 	end
 end
 
