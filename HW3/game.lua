@@ -329,6 +329,7 @@ function scene:show( event )
       		print("Item In House Index: "..v)
       	end
 
+
 		if (stageNumber == 1) then	
       		local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
