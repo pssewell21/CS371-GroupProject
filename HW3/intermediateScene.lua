@@ -205,10 +205,7 @@ function scene:show( event )
     if ( phase == "will" ) then
         local params = event.params
 
-        print("Before null check")
-
         if (params.cameFromMenu ~= nil and params.cameFromMenu == true) then
-            print("Came from menu")
             stage = 1
             livesRemaining = 4
             messageText.text = ""
@@ -218,7 +215,6 @@ function scene:show( event )
             life4.isVisible = true
         
         else
-            print("Came from game")
             stage = stage + 1
             print("Stage = "..stage)
         end
