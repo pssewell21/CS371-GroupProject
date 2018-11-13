@@ -216,7 +216,6 @@ function scene:show( event )
             life2.isVisible = true
             life3.isVisible = true
             life4.isVisible = true
-             win.isVisible = true
         
         else
             print("Came from game")
