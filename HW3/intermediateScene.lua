@@ -106,7 +106,7 @@ function scene:create( event )
     end
  
     -- Create the widget
-    local gameButton = widget.newButton(
+    gameButton = widget.newButton(
     {
         label = "gameButton",
         onEvent = handleButtonEvent,
@@ -129,7 +129,7 @@ function scene:create( event )
     gameButton:setLabel("GAME")
     gameButton:addEventListener("tap", gotoGame)
     
-        -- ---------------------------------------------------------------------------------
+    -- ---------------------------------------------------------------------------------
     -- MENU button widget
     -- I only chanhged this to a widget just so it can match the start button in the menu -AA
     -- ---------------------------------------------------------------------------------    
@@ -167,8 +167,8 @@ function scene:create( event )
     menuButton:setLabel( "MENU" )
     menuButton:addEventListener("tap", gotoMenu)
 
-    --livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
-    --livesText:setFillColor(0,0,0)
+    livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
+    livesText:setFillColor(0,0,0)
     stageText = display.newText("Stage: "..stage, display.contentCenterX, 230, native.systemFont, 75)
     stageText:setFillColor(0,0,0)
     messageText = display.newText("", display.contentCenterX, 400, native.systemFont, 25)
@@ -189,7 +189,7 @@ function scene:create( event )
     sceneGroup:insert(menuButton)
     sceneGroup:insert(lifeGroup)
     sceneGroup:insert(stageText)
-    --sceneGroup:insert(livesText)
+    sceneGroup:insert(livesText)
     sceneGroup:insert(messageText)
     sceneGroup:insert(win)
     sceneGroup:insert(gameOver)
@@ -216,6 +216,7 @@ function scene:show( event )
             life2.isVisible = true
             life3.isVisible = true
             life4.isVisible = true
+             --win.isVisible = true
         
         else
             print("Came from game")
@@ -232,7 +233,7 @@ function scene:show( event )
         end
 
         stageText.text = "Stage: "..stage
-        --livesText.text = "Lives Remaining: "..livesRemaining
+        livesText.text = "Lives Remaining: "..livesRemaining
 
         if(event.params.loseFlag == true) then
         livesRemaining = livesRemaining - 1
@@ -241,7 +242,8 @@ function scene:show( event )
     ------------------------------------------------------------------------------------
     -- Logic for hiding life counters -- AM
     ------------------------------------------------------------------------------------
-        gameOver.isVisible = false
+
+
 
     if(livesRemaining == 3) then
         life4.isVisible = false
@@ -258,9 +260,14 @@ function scene:show( event )
     end 
     if(livesRemaining == 0) then
         life1.isVisible = false
-
-        gameOver.isVisible = true
+        stageText.isVisible = false
+        livesText.isVisible = false
         --GAME OVER
+    
+        gameButton.isVisible = false
+        --gotoMenu()
+        --nextScene = "menu"
+    
     end
 
     elseif ( phase == "did" ) then
@@ -273,23 +280,27 @@ function scene:hide( event )
  
     local sceneGroup = self.view
     local phase = event.phase
- 
-    if ( phase == "will" ) then
-        -- Code here runs when the scene is on screen (but is about to go off screen)
- 
-    elseif ( phase == "did" ) then
-        -- Code here runs immediately after the scene goes entirely off screen
- 
+
+    if(livesRemaining == 0 )then
+        livesRemaining = 4 
+        stage = 1
     end
+    if(stage == 11 )then
+        stage = 1
+        livesRemaining = 4
+    end
+
+    
 end
  
 function scene:destroy( event )
  
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
+    sceneGroup.remove()  
  
 end
-  
+ 
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
 -- -----------------------------------------------------------------------------------
@@ -297,6 +308,8 @@ scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
+
+--sceneGroup.
 -- -----------------------------------------------------------------------------------
  
 return scene
