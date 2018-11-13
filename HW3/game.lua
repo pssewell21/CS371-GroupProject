@@ -83,7 +83,6 @@ function itemTouchHandler(event)
 			audio.play(soundEffect)
 
 			decrementLife = false			
-			gameMessage = "Correct item selected!"
 			touchEnabled = false
 		else
 			print("Did not find the correct item")
@@ -96,7 +95,6 @@ function itemTouchHandler(event)
 			audio.play(soundEffect)
 
 			decrementLife = true
-			gameMessage = "Incorrect item selected"
 			touchEnabled = false
 		end
 

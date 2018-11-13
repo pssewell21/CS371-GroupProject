@@ -166,8 +166,8 @@ function scene:create( event )
     menuButton:setLabel( "MENU" )
     menuButton:addEventListener("tap", gotoMenu)
 
-    livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
-    livesText:setFillColor(0,0,0)
+    --livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
+    --livesText:setFillColor(0,0,0)
     stageText = display.newText("Stage: "..stage, display.contentCenterX, 350, native.systemFont, 24)
     stageText:setFillColor(0,0,0)
     messageText = display.newText("Game messages: ", display.contentCenterX, 400, native.systemFont, 24)
@@ -179,7 +179,7 @@ function scene:create( event )
     sceneGroup:insert(gameButton)
     sceneGroup:insert(menuButton)
     sceneGroup:insert(lifeGroup)
-    sceneGroup:insert(livesText)
+    --sceneGroup:insert(livesText)
     sceneGroup:insert(stageText)
     sceneGroup:insert(messageText)
 end
@@ -218,7 +218,7 @@ function scene:show( event )
         end
 
         stageText.text = "Stage: "..stage
-        livesText.text = "Lives Remaining: "..livesRemaining
+        --livesText.text = "Lives Remaining: "..livesRemaining
 
         if(event.params.loseFlag == true) then
         livesRemaining = livesRemaining - 1
