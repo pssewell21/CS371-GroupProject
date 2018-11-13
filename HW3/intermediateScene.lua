@@ -171,7 +171,7 @@ function scene:create( event )
     --livesText:setFillColor(0,0,0)
     stageText = display.newText("Stage: "..stage, display.contentCenterX, 350, native.systemFont, 24)
     stageText:setFillColor(0,0,0)
-    messageText = display.newText("Game messages: ", display.contentCenterX, 400, native.systemFont, 24)
+    messageText = display.newText("", display.contentCenterX, 400, native.systemFont, 24)
     messageText:setFillColor(0,0,0)
 
     -- --------------------------------------------------------------------
@@ -197,9 +197,9 @@ function scene:show( event )
 
         if (params.cameFromMenu ~= nil and params.cameFromMenu == true) then
             print("Came from menu")
-            stage = 8
+            stage = 1
             livesRemaining = 4
-            messageText.text = "Game messages: "
+            messageText.text = ""
             life1.isVisible = true
             life2.isVisible = true
             life3.isVisible = true
@@ -215,7 +215,7 @@ function scene:show( event )
         end
         
         if (params.gameMessage ~= nil) then
-            messageText.text = "Game messages: "..params.gameMessage
+            messageText.text = params.gameMessage
         end
 
         stageText.text = "Stage: "..stage
