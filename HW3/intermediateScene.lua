@@ -125,7 +125,7 @@ function scene:create( event )
     gameButton.y = display.contentCenterY + 220
      
     -- Change the button's label text
-    gameButton:setLabel( "GAME" )
+    gameButton:setLabel("GAME")
     gameButton:addEventListener("tap", gotoGame)
     
         -- ---------------------------------------------------------------------------------
@@ -199,10 +199,10 @@ function scene:show( event )
             stage = 1
             livesRemaining = 4
             messageText.text = "Game messages: "
-            life1.isVisible = true;
-            life2.isVisible = true;
-            life3.isVisible = true;
-            life4.isVisible = true;
+            life1.isVisible = true
+            life2.isVisible = true
+            life3.isVisible = true
+            life4.isVisible = true
         else
             print("Came from game")
             stage = stage + 1
