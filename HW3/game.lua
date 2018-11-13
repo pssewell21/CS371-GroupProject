@@ -11,7 +11,7 @@ local widget = require( "widget" )
 local physics = require ("physics") -- AA
 local scene = composer.newScene()
 
-local stageNumber = 1
+local stageNumber = 2
 local numberOfStages = 10
 
 local itemToFindIndex = 0
@@ -173,11 +173,14 @@ function scene:create( event )
 	-- set up the table containing the number of items in the house for each level
 	for stage = 1, numberOfStages do
 		if (stage <= 3) then			
-			stageItemNumbers[stage] = getRandomNumber(3, 5)
+			--stageItemNumbers[stage] = getRandomNumber(3, 5)
+			stageItemNumbers[stage] = getRandomNumber(5, 5)
 		elseif (stage <= 6) then
-			stageItemNumbers[stage] = getRandomNumber(6, 8)
+			--stageItemNumbers[stage] = getRandomNumber(6, 8)
+			stageItemNumbers[stage] = getRandomNumber(8, 8)
 		elseif (stage <= 10) then
-			stageItemNumbers[stage] = getRandomNumber(9, 15)
+			--stageItemNumbers[stage] = getRandomNumber(9, 15)
+			stageItemNumbers[stage] = getRandomNumber(15, 15)
 		end
 	end
 
@@ -253,14 +256,14 @@ function scene:create( event )
 
 	-- setup the scene background images and text blocks
 	-- TODO: Possibly investigate scaling based on screen size
-	local topBackground = display.newImage(imageSheet, 3, display.contentCenterX, 75)
+	local topBackground = display.newImage(imageSheet, 3, display.contentCenterX, 115)
 	topBackground.xScale = 1.25
 	topBackground.yScale = 1.25
 
 	stageText = display.newText("Stage "..stageNumber, display.contentCenterX, 30, native.systemFont, 24)
 	stageText:setFillColor(0, 0, 0)
 
-	houseBackground = display.newImage(imageSheet, 1, display.contentCenterX, 310)
+	houseBackground = display.newImage(imageSheet, 1, display.contentCenterX, 355)
 	houseBackground.xScale = 1.25
 	houseBackground.yScale = 1.25
 
@@ -273,7 +276,7 @@ function scene:create( event )
     progressBarRect = widget.newProgressView(
         {
             left = display.contentCenterX - 160, 
-            top = display.contentCenterY + 192, 
+            top = display.contentCenterY + 238, 
             width = 320
             --isAnimated = true
         }
@@ -358,52 +361,52 @@ function scene:show( event )
       	end
 
 		if (stageNumber == 1) then	
-      		local item1 = getImage(itemsInHouse[1], 240, 283, true)
+      		local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 130, 356, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[4] ~= nil then
-				local item4 = getImage(itemsInHouse[4], 100, 290, true)
+				local item4 = getImage(itemsInHouse[4], 100, 356, true)
 				itemsToRemove[4] = item4
 				sceneGroup:insert(item4)
 			end
 
 			if itemsInHouse[5] ~= nil then
-				local item5 = getImage(itemsInHouse[5], 240, 219, true)
+				local item5 = getImage(itemsInHouse[5], 260, 308, true)
 				itemsToRemove[5] = item5
 				sceneGroup:insert(item5)
 			end
 		elseif (stageNumber == 2) then
-			local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 125, 358, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[4] ~= nil then
-				local item4 = getImage(itemsInHouse[4], 100, 290, true)
+				local item4 = getImage(itemsInHouse[4], 90, 358, true)
 				itemsToRemove[4] = item4
 				sceneGroup:insert(item4)
 			end
 
 			if itemsInHouse[5] ~= nil then
-				local item5 = getImage(itemsInHouse[5], 240, 219, true)
+				local item5 = getImage(itemsInHouse[5], 260, 308, true)
 				itemsToRemove[5] = item5
 				sceneGroup:insert(item5)
 			end
@@ -891,7 +894,6 @@ function scene:show( event )
 		physics.addBody(right, "static", {friction=0, bounce=1.0})
 		physics.addBody(left, "static", {friction=0, bounce=1.0})
 
-
         birds = display.newGroup()
 
         if(stageNumber >= 4)then
@@ -915,9 +917,7 @@ function scene:show( event )
                 bird:addEventListener("tap", stopBird);
 
                 birds:insert(bird);
-
             end
-
         end
 
         progressBarRect:setProgress(0);
