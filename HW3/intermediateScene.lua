@@ -197,7 +197,7 @@ function scene:show( event )
 
         if (params.cameFromMenu ~= nil and params.cameFromMenu == true) then
             print("Came from menu")
-            stage = 8
+            stage = 1
             livesRemaining = 4
             messageText.text = ""
             life1.isVisible = true
