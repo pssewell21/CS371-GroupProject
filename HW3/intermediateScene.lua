@@ -199,6 +199,10 @@ function scene:show( event )
             stage = 1
             livesRemaining = 4
             messageText.text = "Game messages: "
+            life1.isVisible = true;
+            life2.isVisible = true;
+            life3.isVisible = true;
+            life4.isVisible = true;
         else
             print("Came from game")
             stage = stage + 1
