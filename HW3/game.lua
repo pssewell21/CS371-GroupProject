@@ -8,7 +8,7 @@
 
 local composer = require("composer")
 local widget = require( "widget" )
-
+local physics = require ("physics") -- AA
 local scene = composer.newScene()
 
 local stageNumber = 1
@@ -35,6 +35,16 @@ local function getRandomNumber(min, max)
 	local number = math.random(min, max)
 	--print("Random number: "..number)
 	return number
+end
+
+local function gotoIntermediate()
+     local sceneTransitionOptions = {
+        effect = "slideDown",
+        time = 500,
+        params = { heart = lives, s = stage }
+    }
+
+    composer.gotoScene( "intermediateScene", sceneTransitionOptions )
 end
 
 local function getRandomNumberWithExclusions(min, max, exclusions)
@@ -83,7 +93,10 @@ function itemTouchHandler(event)
 			audio.play(soundEffect)
 
 			decrementLife = false			
+			gameMessage = "Correct item selected!"
+			timer.performWithDelay(800, function()gotoIntermediate() end, 1)
 			touchEnabled = false
+
 		else
 			print("Did not find the correct item")
 
@@ -95,6 +108,8 @@ function itemTouchHandler(event)
 			audio.play(soundEffect)
 
 			decrementLife = true
+			gameMessage = "Incorrect item selected"
+			timer.performWithDelay(800, function()gotoIntermediate() end, 1)
 			touchEnabled = false
 		end
 
@@ -114,6 +129,42 @@ function getImage(index, x, y, touchEnabled)
 	end
 
 	return item
+end
+-- ---------------------------------------------------------
+-- This function stops the bird once it has been tapped on  -- AA
+-- ---------------------------------------------------------
+local function stopBird(event)
+    event.target:pause()
+    physics.pause()
+    timer.performWithDelay(800, function() physics.start() end, 1)
+    event.target:play()
+end
+-- ---------------------------------------------------------
+-- This function will turn the bird around when it hits a wall -- AA
+-- ---------------------------------------------------------
+local function onLocalCollision( self, event )
+    if ( event.phase == "began" ) then
+    elseif ( event.phase == "ended" ) then
+        if (event.other.myName == "left")then
+            self.xScale = 1;
+        elseif (event.other.myName == "right")then
+            self.xScale = -1;
+        end
+    end
+end
+-- ---------------------------------------------------------
+-- This will control the movement of the progress bar -- AA
+-- ---------------------------------------------------------
+local function mov_progressBar(event)
+    p = progressBarRect.getProgress();
+    p = p + 1 / 8
+    if (p == 1)then
+        lives = lives - 1
+        stage = stage + 1
+        gotoIntermediate()
+    else
+        progressBarRect:setProgress(p)
+    end
 end
 
 function scene:create( event )
@@ -172,6 +223,11 @@ function scene:create( event )
 	-- initialize the image sheet
 	imageSheet = graphics.newImageSheet("marioware.png", options)
 
+	seqData = 
+    {
+        {name = "flying", start = 6, count = 7, time = 200}
+    }
+
 	-- set up tranformation values so items appear consistently where we want them to in the house
 	verticalTransformations[8] = -10
 	verticalTransformations[9] = -10
@@ -207,10 +263,27 @@ function scene:create( event )
 	local findText = display.newText("Find!", display.contentCenterX, 130, native.systemFont, 18)
 	findText:setFillColor(0, 0, 0)
 
-	local progressBarRect = display.newRect(display.contentCenterX, 400, 255, 20)
+	--[[local progressBarRect = display.newRect(display.contentCenterX, 400, 255, 20)
 	progressBarRect.strokeWidth = 2
 	progressBarRect:setStrokeColor(1, 1, 0)
 	progressBarRect:setFillColor(0, 0, 0)
+--]]
+
+   -- -----------------------------------
+   -- This is makinging the progress bar -- AA
+   -- -----------------------------------
+    progressBarRect = widget.newProgressView(
+        {
+            left = display.contentCenterX - 128, 
+            top = display.contentCenterY + 145 , 
+            width = 256
+            --isAnimated = true
+        }
+    )
+   -- progressBarRect:setStrokeColor(255,255,0)
+    --progressBarRect:setFillColor(255,255,0)
+    --progressBarRect:scale(3,3)
+
 
 	continueButton = widget.newButton(
     {
@@ -271,12 +344,12 @@ function scene:show( event )
 		-- include the randomly selected item to find in the list
 		itemsInHouse[1] = itemToFindIndex
 
+		-- TODO: Get the number of items in the house depending on the current stage
 		local numberOfItemsInHouse = stageItemNumbers[stageNumber]
-		print("number of items in house: "..numberOfItemsInHouse)
 
 		-- Get a random index for an image that will be placed in the house
 		for i = 2, numberOfItemsInHouse do
-			itemsInHouse[i] = getRandomNumberWithExclusions(8, 28, itemsInHouse)
+			itemsInHouse[i] = getRandomNumberWithExclusions(8, 18, itemsInHouse)
 		end
 
 		-- Swap the first item in the list with a randomly selected item in the list
@@ -291,6 +364,7 @@ function scene:show( event )
       		print("Item In House Index: "..v)
       	end
 
+      	-- TODO: Create other stages --375
 		if (stageNumber == 1) then	
       		local item1 = getImage(itemsInHouse[1], 240, 283, true)
 			itemsToRemove[1] = item1
@@ -796,16 +870,50 @@ function scene:show( event )
 			end
       	end
 
-      	-- TODO: Move to the intermediate scene
 		winImage = display.newImage(imageSheet, 4)
 		winImage.isVisible = false
 
 		loseImage = display.newImage(imageSheet, 5)
 		loseImage.isVisible = false
 
+-- -----------------------------------
+-- BIRD
+-- -----------------------------------
+        birds = display.newGroup()
+
+        if(stageNumber >= 4)then
+            local num = 1;
+            if (stageNumber >= 7) then num = 2; end
+
+            for i=1, num do
+                local bird = display.newSprite (sheet, seqData);   --initialize
+                physics.addBody(bird, "dynamic", {bounce=1.0, filter = birdCollision})
+                bird:setSequence("flying");                           --set the Y anchor
+                bird.x = display.contentCenterX;                                   --set the X and Y coordinates
+                bird.y = 350;
+                bird.isFixedRotation = true;
+
+                sceneGroup:insert(bird);
+                bird:play();
+                bird:toFront();
+                bird:setLinearVelocity(75 * i, 75 * i * math.pow(-1, i%2))
+                bird.collision = onLocalCollision
+                bird:addEventListener( "collision" )
+                bird:addEventListener("tap", stopBird);
+
+                birds:insert(bird);
+
+            end
+
+        end
+
+        progressBarRect:setProgress(0);
+
 		sceneGroup:insert(winImage)
 		sceneGroup:insert(loseImage)
 	elseif ( phase == "did" ) then
+
+		progress_timer = timer.performWithDelay(1000,upProgress,0)
 	end
 end
 
