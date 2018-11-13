@@ -193,8 +193,8 @@ function scene:create( event )
 			{ x = 510, y = 158, width = 22, height = 32 },  -- 18 - Pot 3
 			-- Note that the reversed frames are not actually reversed, logic in the getImage function
 			-- will reverse them when creating the image.
-			-- Bottle 1 reverse would be the same thing
-			{ x = 403, y = 122, width = 17, height = 41 },  -- 19 - Bottle 2 Reverse
+			{ x = 379, y = 122, width = 17, height = 41 },  -- 19 - Bottle 1 Reverse
+			-- Bottle 2 reverse would be the same thing
 			{ x = 429, y = 115, width = 36, height = 21 },  -- 20 - Hat 1 Reverse
 			{ x = 429, y = 137, width = 36, height = 21 },  -- 21 - Hat 2 Reverse
 			{ x = 429, y = 159, width = 36, height = 21 },  -- 22 - Hat 3 Reverse
