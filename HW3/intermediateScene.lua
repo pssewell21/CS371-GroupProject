@@ -44,6 +44,7 @@ local function gotoGame()
         }
     }
 
+    print("Navigating to Game view")
     composer.gotoScene( "game", sceneTransitionOptions )
 end
  
@@ -196,7 +197,7 @@ function scene:show( event )
 
         if (params.cameFromMenu ~= nil and params.cameFromMenu == true) then
             print("Came from menu")
-            stage = 1
+            stage = 8
             livesRemaining = 4
             messageText.text = "Game messages: "
             life1.isVisible = true
