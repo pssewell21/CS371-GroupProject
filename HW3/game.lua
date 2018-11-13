@@ -253,24 +253,28 @@ function scene:create( event )
 
 	-- setup the scene background images and text blocks
 	-- TODO: Possibly investigate scaling based on screen size
-	local topBackground = display.newImage(imageSheet, 3, display.contentCenterX, 100)
+	local topBackground = display.newImage(imageSheet, 3, display.contentCenterX, 75)
+	topBackground.xScale = 1.25
+	topBackground.yScale = 1.25
 
 	stageText = display.newText("Stage "..stageNumber, display.contentCenterX, 30, native.systemFont, 24)
 	stageText:setFillColor(0, 0, 0)
 
-	houseBackground = display.newImage(imageSheet, 1, display.contentCenterX, 290)
+	houseBackground = display.newImage(imageSheet, 1, display.contentCenterX, 310)
+	houseBackground.xScale = 1.25
+	houseBackground.yScale = 1.25
 
 	local findText = display.newText("Find!", display.contentCenterX, 130, native.systemFont, 18)
 	findText:setFillColor(0, 0, 0)
 
    -- -----------------------------------
-   -- This is makinging the progress bar -- AA
+   -- This is making the progress bar -- AA
    -- -----------------------------------
     progressBarRect = widget.newProgressView(
         {
-            left = display.contentCenterX - 128, 
-            top = display.contentCenterY + 145 , 
-            width = 256
+            left = display.contentCenterX - 160, 
+            top = display.contentCenterY + 192, 
+            width = 320
             --isAnimated = true
         }
     )
