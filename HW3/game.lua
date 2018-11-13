@@ -895,7 +895,7 @@ function scene:show( event )
 		physics.addBody(right, "static", {friction=0, bounce=1.0})
 		physics.addBody(left, "static", {friction=0, bounce=1.0})
 
-        birds = display.newGroup()
+        bird2 = display.newGroup()
 
         if(stageNumber >= 4)then
             local num = 1;
@@ -917,8 +917,10 @@ function scene:show( event )
                 bird:addEventListener( "collision" )
                 bird:addEventListener("tap", stopBird);
 
-                birds:insert(bird);
+                bird2:insert(bird);
             end
+			sceneGroup:insert(bird2)
+
         end
 
         progressBarRect:setProgress(0);
@@ -946,11 +948,14 @@ function scene:hide( event )
 
 		touchEnabled = true
 	elseif ( phase == "did" ) then
+		bird2:removeSelf();
+		physics.stop();
 	end
 end
 
 function scene:destroy( event )
 	local sceneGroup = self.view
+	sceneGroup.remove()
 end
 
 -- Listener setup
