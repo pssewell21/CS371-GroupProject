@@ -854,6 +854,12 @@ function scene:show( event )
 		right.myName = "right"
 		left.myName = "left"
 
+
+		sceneGroup:insert(bottom)
+		sceneGroup:insert(top)
+		sceneGroup:insert(right)
+		sceneGroup:insert(left)
+
 		physics.start()
         physics.setGravity(0,0)
 
