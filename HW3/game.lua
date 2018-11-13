@@ -11,7 +11,7 @@ local widget = require( "widget" )
 local physics = require ("physics") -- AA
 local scene = composer.newScene()
 
-local stageNumber = 3
+local stageNumber = 1
 local numberOfStages = 10
 
 local itemToFindIndex = 0
@@ -177,10 +177,10 @@ function scene:create( event )
 			stageItemNumbers[stage] = getRandomNumber(5, 5)
 		elseif (stage <= 6) then
 			--stageItemNumbers[stage] = getRandomNumber(6, 8)
-			stageItemNumbers[stage] = getRandomNumber(8, 8)
+			stageItemNumbers[stage] = getRandomNumber(8, 8)			
 		elseif (stage <= 10) then
 			--stageItemNumbers[stage] = getRandomNumber(9, 15)
-			stageItemNumbers[stage] = getRandomNumber(15, 15)
+			stageItemNumbers[stage] = getRandomNumber(15, 15)		
 		end
 	end
 
@@ -231,6 +231,8 @@ function scene:create( event )
         {name = "flying", start = 6, count = 2, time = 200}
     }
 
+	birdCollision = { categoryBits = 2, maskBits = 1}
+
 	-- set up tranformation values so items appear consistently where we want them to in the house
 	verticalTransformations[8] = -10
 	verticalTransformations[9] = -10
@@ -267,7 +269,7 @@ function scene:create( event )
 	houseBackground.xScale = 1.25
 	houseBackground.yScale = 1.25
 
-	local findText = display.newText("Find!", display.contentCenterX, 130, native.systemFont, 18)
+	local findText = display.newText("Find!", display.contentCenterX, 150, native.systemFont, 18)
 	findText:setFillColor(0, 0, 0)
 
    -- -----------------------------------
@@ -299,7 +301,7 @@ function scene:create( event )
 	
 	-- Center the button
 	continueButton.x = display.contentCenterX
-	continueButton.y = display.contentCenterY - 70
+	continueButton.y = display.contentCenterY - 40
 			 
 	-- Change the button's label text
 	continueButton:setLabel("CONTINUE")
@@ -331,7 +333,7 @@ function scene:show( event )
 		itemToFindIndex = getRandomNumber(8, 28)
 
 		-- display the image in the top section
-		itemToFind = getImage(itemToFindIndex, display.contentCenterX, 100, false)
+		itemToFind = getImage(itemToFindIndex, display.contentCenterX, 110, false)
 		itemsToRemove[0] = itemToFind
 		sceneGroup:insert(itemToFind)
 
@@ -411,11 +413,11 @@ function scene:show( event )
 				sceneGroup:insert(item5)
 			end
 		elseif (stageNumber == 3) then
-			local item1 = getImage(itemsInHouse[1], 240, 348, true)
+			local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 430, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
@@ -431,435 +433,435 @@ function scene:show( event )
 			end
 
 			if itemsInHouse[5] ~= nil then
-				local item5 = getImage(itemsInHouse[5], 240, 308, true)
+				local item5 = getImage(itemsInHouse[5], 280, 308, true)
 				itemsToRemove[5] = item5
 				sceneGroup:insert(item5)
 			end
 		elseif (stageNumber == 4) then
-			local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 130, 358, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
 			
-			local item4 = getImage(itemsInHouse[4], 100, 290, true)
+			local item4 = getImage(itemsInHouse[4], 100, 358, true)
 			itemsToRemove[4] = item4
 			sceneGroup:insert(item4)
 			
 
 			
-			local item5 = getImage(itemsInHouse[5], 230, 219, true) --240, 219
+			local item5 = getImage(itemsInHouse[5], 250, 308, true) --240, 219
 			itemsToRemove[5] = item5
 			sceneGroup:insert(item5)
 			
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[6] ~= nil then
-				local item6 = getImage(itemsInHouse[6], 270, 348, true)
+				local item6 = getImage(itemsInHouse[6], 290, 430, true)
 				itemsToRemove[6] = item6
 				sceneGroup:insert(item6)
 			end
 
 			if itemsInHouse[7] ~= nil then
-				local item7 = getImage(itemsInHouse[7], 70, 290, true)
+				local item7 = getImage(itemsInHouse[7], 65, 358, true)
 				itemsToRemove[7] = item7
 				sceneGroup:insert(item7)
 			end
 
 			if itemsInHouse[8] ~= nil then
-				local item8 = getImage(itemsInHouse[8], 260, 219, true)
+				local item8 = getImage(itemsInHouse[8], 280, 308, true)
 				itemsToRemove[8] = item8
 				sceneGroup:insert(item8)
 			end
 
 		elseif (stageNumber == 5) then
-			local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 130, 358, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
 			
-			local item4 = getImage(itemsInHouse[4], 100, 290, true)
+			local item4 = getImage(itemsInHouse[4], 100, 358, true)
 			itemsToRemove[4] = item4
 			sceneGroup:insert(item4)
 			
 
 			
-			local item5 = getImage(itemsInHouse[5], 230, 219, true) --240, 219
+			local item5 = getImage(itemsInHouse[5], 250, 308, true) --240, 219
 			itemsToRemove[5] = item5
 			sceneGroup:insert(item5)
 			
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[6] ~= nil then
-				local item6 = getImage(itemsInHouse[6], 270, 348, true)
+				local item6 = getImage(itemsInHouse[6], 290, 430, true)
 				itemsToRemove[6] = item6
 				sceneGroup:insert(item6)
 			end
 
 			if itemsInHouse[7] ~= nil then
-				local item7 = getImage(itemsInHouse[7], 70, 290, true)
+				local item7 = getImage(itemsInHouse[7], 60, 358, true)
 				itemsToRemove[7] = item7
 				sceneGroup:insert(item7)
 			end
 
 			if itemsInHouse[8] ~= nil then
-				local item8 = getImage(itemsInHouse[8], 260, 219, true)
+				local item8 = getImage(itemsInHouse[8], 285, 308, true)
 				itemsToRemove[8] = item8
 				sceneGroup:insert(item8)
 			end
 		elseif (stageNumber == 6) then
-			local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			local item1 = getImage(itemsInHouse[1], 255, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 130, 358, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
 			
-			local item4 = getImage(itemsInHouse[4], 100, 290, true)
+			local item4 = getImage(itemsInHouse[4], 100, 358, true)
 			itemsToRemove[4] = item4
 			sceneGroup:insert(item4)
 			
 
 			
-			local item5 = getImage(itemsInHouse[5], 230, 219, true) --240, 219
+			local item5 = getImage(itemsInHouse[5], 250, 308, true) --240, 219
 			itemsToRemove[5] = item5
 			sceneGroup:insert(item5)
 			
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[6] ~= nil then
-				local item6 = getImage(itemsInHouse[6], 270, 348, true)
+				local item6 = getImage(itemsInHouse[6], 290, 430, true)
 				itemsToRemove[6] = item6
 				sceneGroup:insert(item6)
 			end
 
 			if itemsInHouse[7] ~= nil then
-				local item7 = getImage(itemsInHouse[7], 70, 290, true)
+				local item7 = getImage(itemsInHouse[7], 70, 358, true)
 				itemsToRemove[7] = item7
 				sceneGroup:insert(item7)
 			end
 
 			if itemsInHouse[8] ~= nil then
-				local item8 = getImage(itemsInHouse[8], 260, 219, true)
+				local item8 = getImage(itemsInHouse[8], 280, 308, true)
 				itemsToRemove[8] = item8
 				sceneGroup:insert(item8)
 			end
 		elseif (stageNumber == 7) then
-			local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 130, 358, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
-			local item4 = getImage(itemsInHouse[4], 100, 290, true)
+			local item4 = getImage(itemsInHouse[4], 95, 358, true)
 			itemsToRemove[4] = item4
 			sceneGroup:insert(item4)
 			
-			local item5 = getImage(itemsInHouse[5], 230, 219, true) 
+			local item5 = getImage(itemsInHouse[5], 250, 308, true) 
 			itemsToRemove[5] = item5
 			sceneGroup:insert(item5)
 			
-			local item6 = getImage(itemsInHouse[6], 270, 348, true)
+			local item6 = getImage(itemsInHouse[6], 290, 430, true)
 			itemsToRemove[6] = item6
 			sceneGroup:insert(item6)
 
-			local item7 = getImage(itemsInHouse[7], 70, 290, true)
+			local item7 = getImage(itemsInHouse[7], 65, 358, true)
 			itemsToRemove[7] = item7
 			sceneGroup:insert(item7)
 			
-			local item8 = getImage(itemsInHouse[8], 260, 219, true)
+			local item8 = getImage(itemsInHouse[8], 280, 308, true)
 			itemsToRemove[8] = item8
 			sceneGroup:insert(item8)
 			
 
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[9] ~= nil then
-				local item9 = getImage(itemsInHouse[9], 210, 375, true)
+				local item9 = getImage(itemsInHouse[9], 210, 460, true)
 				itemsToRemove[9] = item9
 				sceneGroup:insert(item9)
 			end
 
 			if itemsInHouse[10] ~= nil then
-				local item10 = getImage(itemsInHouse[10], 30, 375, true)
+				local item10 = getImage(itemsInHouse[10], 30, 460, true)
 				itemsToRemove[10] = item10
 				sceneGroup:insert(item10)
 			end
 
 			if itemsInHouse[11] ~= nil then
-				local item11 = getImage(itemsInHouse[11], 180, 375, true)
+				local item11 = getImage(itemsInHouse[11], 180, 460, true)
 				itemsToRemove[11] = item11
 				sceneGroup:insert(item11)
 			end
 			if itemsInHouse[12] ~= nil then
-				local item12 = getImage(itemsInHouse[12], 60, 375, true)
+				local item12 = getImage(itemsInHouse[12], 60, 460, true)
 				itemsToRemove[12] = item12
 				sceneGroup:insert(item12)
 			end
 
 			if itemsInHouse[13] ~= nil then
-				local item13 = getImage(itemsInHouse[13], 150, 375, true)
+				local item13 = getImage(itemsInHouse[13], 150, 460, true)
 				itemsToRemove[13] = item13
 				sceneGroup:insert(item13)
 			end
 
 			if itemsInHouse[14] ~= nil then
-				local item14 = getImage(itemsInHouse[14], 90, 375, true)
+				local item14 = getImage(itemsInHouse[14], 90, 460, true)
 				itemsToRemove[14] = item14
 				sceneGroup:insert(item14)
 			end
 
 			if itemsInHouse[15] ~= nil then
-				local item15 = getImage(itemsInHouse[15], 120, 375, true)
+				local item15 = getImage(itemsInHouse[15], 120, 460, true)
 				itemsToRemove[15] = item15
 				sceneGroup:insert(item15)
 			end
 
 		elseif (stageNumber == 8) then
-			local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 130, 358, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
-			local item4 = getImage(itemsInHouse[4], 100, 290, true)
+			local item4 = getImage(itemsInHouse[4], 100, 358, true)
 			itemsToRemove[4] = item4
 			sceneGroup:insert(item4)
 			
-			local item5 = getImage(itemsInHouse[5], 230, 219, true) 
+			local item5 = getImage(itemsInHouse[5], 250, 308, true) 
 			itemsToRemove[5] = item5
 			sceneGroup:insert(item5)
 			
-			local item6 = getImage(itemsInHouse[6], 270, 348, true)
+			local item6 = getImage(itemsInHouse[6], 295, 430, true)
 			itemsToRemove[6] = item6
 			sceneGroup:insert(item6)
 
-			local item7 = getImage(itemsInHouse[7], 70, 290, true)
+			local item7 = getImage(itemsInHouse[7], 70, 358, true)
 			itemsToRemove[7] = item7
 			sceneGroup:insert(item7)
 			
-			local item8 = getImage(itemsInHouse[8], 260, 219, true)
+			local item8 = getImage(itemsInHouse[8], 280, 308, true)
 			itemsToRemove[8] = item8
 			sceneGroup:insert(item8)
 			
 
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[9] ~= nil then
-				local item9 = getImage(itemsInHouse[9], 210, 375, true)
+				local item9 = getImage(itemsInHouse[9], 210, 460, true)
 				itemsToRemove[9] = item9
 				sceneGroup:insert(item9)
 			end
 
 			if itemsInHouse[10] ~= nil then
-				local item10 = getImage(itemsInHouse[10], 60, 257, true)
+				local item10 = getImage(itemsInHouse[10], 55, 316, true)
 				itemsToRemove[10] = item10
 				sceneGroup:insert(item10)
 			end
 
 			if itemsInHouse[11] ~= nil then
-				local item11 = getImage(itemsInHouse[11], 180, 375, true)
+				local item11 = getImage(itemsInHouse[11], 180, 460, true)
 				itemsToRemove[11] = item11
 				sceneGroup:insert(item11)
 			end
 			if itemsInHouse[12] ~= nil then
-				local item12 = getImage(itemsInHouse[12], 60, 375, true)
+				local item12 = getImage(itemsInHouse[12], 60, 460, true)
 				itemsToRemove[12] = item12
 				sceneGroup:insert(item12)
 			end
 
 			if itemsInHouse[13] ~= nil then
-				local item13 = getImage(itemsInHouse[13], 150, 375, true)
+				local item13 = getImage(itemsInHouse[13], 150, 460, true)
 				itemsToRemove[13] = item13
 				sceneGroup:insert(item13)
 			end
 
 			if itemsInHouse[14] ~= nil then
-				local item14 = getImage(itemsInHouse[14], 90, 375, true)
+				local item14 = getImage(itemsInHouse[14], 90, 460, true)
 				itemsToRemove[14] = item14
 				sceneGroup:insert(item14)
 			end
 
 			if itemsInHouse[15] ~= nil then
-				local item15 = getImage(itemsInHouse[15], 120, 375, true)
+				local item15 = getImage(itemsInHouse[15], 120, 460, true)
 				itemsToRemove[15] = item15
 				sceneGroup:insert(item15)
 			end
 		elseif (stageNumber == 9) then
-			local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 240, 460, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 130, 358, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
-			local item4 = getImage(itemsInHouse[4], 100, 290, true)
+			local item4 = getImage(itemsInHouse[4], 100, 358, true)
 			itemsToRemove[4] = item4
 			sceneGroup:insert(item4)
 			
-			local item5 = getImage(itemsInHouse[5], 230, 219, true) 
+			local item5 = getImage(itemsInHouse[5], 250, 308, true) 
 			itemsToRemove[5] = item5
 			sceneGroup:insert(item5)
 			
-			local item6 = getImage(itemsInHouse[6], 270, 348, true)
+			local item6 = getImage(itemsInHouse[6], 270, 460, true)
 			itemsToRemove[6] = item6
 			sceneGroup:insert(item6)
 
-			local item7 = getImage(itemsInHouse[7], 70, 290, true)
+			local item7 = getImage(itemsInHouse[7], 70, 358, true)
 			itemsToRemove[7] = item7
 			sceneGroup:insert(item7)
 			
-			local item8 = getImage(itemsInHouse[8], 260, 219, true)
+			local item8 = getImage(itemsInHouse[8], 280, 308, true)
 			itemsToRemove[8] = item8
 			sceneGroup:insert(item8)
 			
 
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[9] ~= nil then
-				local item9 = getImage(itemsInHouse[9], 210, 375, true)
+				local item9 = getImage(itemsInHouse[9], 210, 460, true)
 				itemsToRemove[9] = item9
 				sceneGroup:insert(item9)
 			end
 
 			if itemsInHouse[10] ~= nil then
-				local item10 = getImage(itemsInHouse[10], 60, 257, true)
+				local item10 = getImage(itemsInHouse[10], 55, 318, true)
 				itemsToRemove[10] = item10
 				sceneGroup:insert(item10)
 			end
 
 			if itemsInHouse[11] ~= nil then
-				local item11 = getImage(itemsInHouse[11], 180, 375, true)
+				local item11 = getImage(itemsInHouse[11], 180, 460, true)
 				itemsToRemove[11] = item11
 				sceneGroup:insert(item11)
 			end
 			if itemsInHouse[12] ~= nil then
-				local item12 = getImage(itemsInHouse[12], 60, 375, true)
+				local item12 = getImage(itemsInHouse[12], 60, 460, true)
 				itemsToRemove[12] = item12
 				sceneGroup:insert(item12)
 			end
 
 			if itemsInHouse[13] ~= nil then
-				local item13 = getImage(itemsInHouse[13], 150, 375, true)
+				local item13 = getImage(itemsInHouse[13], 150, 460, true)
 				itemsToRemove[13] = item13
 				sceneGroup:insert(item13)
 			end
 
 			if itemsInHouse[14] ~= nil then
-				local item14 = getImage(itemsInHouse[14], 90, 375, true)
+				local item14 = getImage(itemsInHouse[14], 90, 460, true)
 				itemsToRemove[14] = item14
 				sceneGroup:insert(item14)
 			end
 
 			if itemsInHouse[15] ~= nil then
-				local item15 = getImage(itemsInHouse[15], 120, 375, true)
+				local item15 = getImage(itemsInHouse[15], 120, 460, true)
 				itemsToRemove[15] = item15
 				sceneGroup:insert(item15)
 			end
 		elseif (stageNumber == 10) then
-			local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 130, 358, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
-			local item4 = getImage(itemsInHouse[4], 100, 290, true)
+			local item4 = getImage(itemsInHouse[4], 100, 358, true)
 			itemsToRemove[4] = item4
 			sceneGroup:insert(item4)
 			
-			local item5 = getImage(itemsInHouse[5], 230, 219, true) 
+			local item5 = getImage(itemsInHouse[5], 250, 308, true) 
 			itemsToRemove[5] = item5
 			sceneGroup:insert(item5)
 			
-			local item6 = getImage(itemsInHouse[6], 270, 348, true)
+			local item6 = getImage(itemsInHouse[6], 290, 430, true)
 			itemsToRemove[6] = item6
 			sceneGroup:insert(item6)
 
-			local item7 = getImage(itemsInHouse[7], 70, 290, true)
+			local item7 = getImage(itemsInHouse[7], 70, 358, true)
 			itemsToRemove[7] = item7
 			sceneGroup:insert(item7)
 			
-			local item8 = getImage(itemsInHouse[8], 260, 219, true)
+			local item8 = getImage(itemsInHouse[8], 280, 308, true)
 			itemsToRemove[8] = item8
 			sceneGroup:insert(item8)
 			
 
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[9] ~= nil then
-				local item9 = getImage(itemsInHouse[9], 210, 375, true)
+				local item9 = getImage(itemsInHouse[9], 210, 460, true)
 				itemsToRemove[9] = item9
 				sceneGroup:insert(item9)
 			end
 
 			if itemsInHouse[10] ~= nil then
-				local item10 = getImage(itemsInHouse[10], 60, 257, true)
+				local item10 = getImage(itemsInHouse[10], 60, 318, true)
 				itemsToRemove[10] = item10
 				sceneGroup:insert(item10)
 			end
 
 			if itemsInHouse[11] ~= nil then
-				local item11 = getImage(itemsInHouse[11], 180, 375, true)
+				local item11 = getImage(itemsInHouse[11], 180, 460, true)
 				itemsToRemove[11] = item11
 				sceneGroup:insert(item11)
 			end
 			if itemsInHouse[12] ~= nil then
-				local item12 = getImage(itemsInHouse[12], 60, 375, true)
+				local item12 = getImage(itemsInHouse[12], 60, 460, true)
 				itemsToRemove[12] = item12
 				sceneGroup:insert(item12)
 			end
 
 			if itemsInHouse[13] ~= nil then
-				local item13 = getImage(itemsInHouse[13], 150, 375, true)
+				local item13 = getImage(itemsInHouse[13], 150, 460, true)
 				itemsToRemove[13] = item13
 				sceneGroup:insert(item13)
 			end
 
 			if itemsInHouse[14] ~= nil then
-				local item14 = getImage(itemsInHouse[14], 90, 375, true)
+				local item14 = getImage(itemsInHouse[14], 90, 460, true)
 				itemsToRemove[14] = item14
 				sceneGroup:insert(item14)
 			end
 
 			if itemsInHouse[15] ~= nil then
-				local item15 = getImage(itemsInHouse[15], 120, 375, true)
+				local item15 = getImage(itemsInHouse[15], 120, 460, true)
 				itemsToRemove[15] = item15
 				sceneGroup:insert(item15)
 			end
@@ -874,7 +876,6 @@ function scene:show( event )
 -- -----------------------------------
 -- BIRD
 -- -----------------------------------
-
 		local bottom = display.newRect(display.contentCenterX,486,display.actualContentWidth,1)
 		local top = display.newRect(display.contentCenterX,236,display.actualContentWidth,1)
 		local right = display.newRect(319,display.contentCenterY+125,1,240)

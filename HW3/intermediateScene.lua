@@ -169,20 +169,33 @@ function scene:create( event )
 
     --livesText = display.newText("Lives Remaining: "..livesRemaining, display.contentCenterX, 200, native.systemFont, 24)
     --livesText:setFillColor(0,0,0)
-    stageText = display.newText("Stage: "..stage, display.contentCenterX, 350, native.systemFont, 24)
+    stageText = display.newText("Stage: "..stage, display.contentCenterX, 230, native.systemFont, 75)
     stageText:setFillColor(0,0,0)
-    messageText = display.newText("", display.contentCenterX, 400, native.systemFont, 24)
+    messageText = display.newText("", display.contentCenterX, 400, native.systemFont, 25)
     messageText:setFillColor(0,0,0)
+    
+    win = display.newImageRect(sceneGroup, "won.png", 200, 200 )
+    win.x = display.contentCenterX 
+    win.y = display.contentCenterY 
 
+    lost = display.newImageRect(sceneGroup, "lost.png", 200, 200 )
+    lost.x = display.contentCenterX 
+    lost.y = display.contentCenterY 
+
+    gameOver = display.newImageRect(sceneGroup, "gameover.png", 200, 200 )
+    gameOver.x = display.contentCenterX 
+    gameOver.y = display.contentCenterY 
     -- --------------------------------------------------------------------
     --This is just putting all of the objects that is the scene in a group
     -- --------------------------------------------------------------------
     sceneGroup:insert(gameButton)
     sceneGroup:insert(menuButton)
     sceneGroup:insert(lifeGroup)
-    --sceneGroup:insert(livesText)
     sceneGroup:insert(stageText)
     sceneGroup:insert(messageText)
+    sceneGroup:insert(win)
+    sceneGroup:insert(lost)
+    sceneGroup:insert(gameOver)
 end
 
 function scene:show( event )
@@ -225,7 +238,7 @@ function scene:show( event )
         livesRemaining = livesRemaining - 1
     end
 
-     ------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------
     -- Logic for hiding life counters -- AM
     ------------------------------------------------------------------------------------
 
@@ -240,6 +253,7 @@ function scene:show( event )
     end 
     if(livesRemaining == 0) then
         life1.isVisible = false
+        gameOver.isVisible = true
         --GAME OVER
     end
 
