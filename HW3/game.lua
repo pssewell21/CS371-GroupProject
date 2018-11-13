@@ -874,21 +874,6 @@ function scene:show( event )
 -- -----------------------------------
 -- BIRD
 -- -----------------------------------
-<<<<<<< HEAD
-        local bottom = display.newRect(display.contentCenterX,486,display.actualContentWidth,1)
-		local top = display.newRect(display.contentCenterX,236,display.actualContentWidth,1)
-		local right = display.newRect(319,display.contentCenterY+125,1,240)
-		right:setFillColor(0,0,0)
-		local left = display.newRect(1,display.contentCenterY+125,1,240)
-		left:setFillColor(0,0,0)
-		bottom.myName = "bottom"
-		top.myName = "top"
-		right.myName = "right"
-	left.myName = "left"
-
-        birds = display.newGroup()
-=======
->>>>>>> fa190c04805c7d17ca74f5fc2c41526595f6d00b
 
 		local bottom = display.newRect(display.contentCenterX,486,display.actualContentWidth,1)
 		local top = display.newRect(display.contentCenterX,236,display.actualContentWidth,1)

@@ -178,9 +178,6 @@ function scene:create( event )
     win.x = display.contentCenterX 
     win.y = display.contentCenterY 
 
-    lost = display.newImageRect(sceneGroup, "lost.png", 200, 200 )
-    lost.x = display.contentCenterX 
-    lost.y = display.contentCenterY 
 
     gameOver = display.newImageRect(sceneGroup, "gameover.png", 200, 200 )
     gameOver.x = display.contentCenterX 
@@ -194,7 +191,6 @@ function scene:create( event )
     sceneGroup:insert(stageText)
     sceneGroup:insert(messageText)
     sceneGroup:insert(win)
-    sceneGroup:insert(lost)
     sceneGroup:insert(gameOver)
 end
 
@@ -244,22 +240,38 @@ function scene:show( event )
 
     if(livesRemaining == 3) then
         life4.isVisible = false
+        gameOver.isVisible = false
+        win.isVisible = false
+       
     end
     if(livesRemaining == 2) then
+        life4.isVisible = false
         life3.isVisible = false
+        gameOver.isVisible = false
+        win.isVisible = false
+      
     end
     if(livesRemaining == 1) then
+        life4.isVisible = false
+        life3.isVisible = false
         life2.isVisible = false
+         gameOver.isVisible = false
+         win.isVisible = false
+
     end 
     if(livesRemaining == 0) then
+        life4.isVisible = false
+        life3.isVisible = false
+        life2.isVisible = false
         life1.isVisible = false
+        wins.isVisible = false
         gameOver.isVisible = true
         --GAME OVER
     end
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
- 
+        win.isVisible = true
     end
 end
  
