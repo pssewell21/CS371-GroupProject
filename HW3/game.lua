@@ -881,12 +881,14 @@ function scene:show( event )
 -- -----------------------------------
         birds = display.newGroup()
 
+        physics.start()
+        physics.setGravity(0,0)
         if(stageNumber >= 4)then
             local num = 1;
             if (stageNumber >= 7) then num = 2; end
 
             for i=1, num do
-                local bird = display.newSprite (sheet, seqData);   --initialize
+                local bird = display.newSprite (imageSheet, seqData);   --initialize
                 physics.addBody(bird, "dynamic", {bounce=1.0, filter = birdCollision})
                 bird:setSequence("flying");                           --set the Y anchor
                 bird.x = display.contentCenterX;                                   --set the X and Y coordinates
