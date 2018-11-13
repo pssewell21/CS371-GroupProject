@@ -170,14 +170,11 @@ function scene:create( event )
 	-- set up the table containing the number of items in the house for each level
 	for stage = 1, numberOfStages do
 		if (stage <= 3) then			
-			--stageItemNumbers[stage] = getRandomNumber(3, 5)
-			stageItemNumbers[stage] = getRandomNumber(5, 5)
+			stageItemNumbers[stage] = getRandomNumber(3, 5)
 		elseif (stage <= 6) then
-			--stageItemNumbers[stage] = getRandomNumber(6, 8)
-			stageItemNumbers[stage] = getRandomNumber(8, 8)			
+			stageItemNumbers[stage] = getRandomNumber(6, 8)			
 		elseif (stage <= 10) then
-			--stageItemNumbers[stage] = getRandomNumber(9, 15)
-			stageItemNumbers[stage] = getRandomNumber(15, 15)		
+			stageItemNumbers[stage] = getRandomNumber(9, 15)		
 		end
 	end
 
@@ -254,7 +251,6 @@ function scene:create( event )
 	verticalTransformations[28] = -6
 
 	-- setup the scene background images and text blocks
-	-- TODO: Possibly investigate scaling based on screen size
 	local topBackground = display.newImage(imageSheet, 3, display.contentCenterX, 115)
 	topBackground.xScale = 1.25
 	topBackground.yScale = 1.25
@@ -277,7 +273,6 @@ function scene:create( event )
             left = display.contentCenterX - 160, 
             top = display.contentCenterY + 238, 
             width = 320
-            --isAnimated = true
         }
     )
 
