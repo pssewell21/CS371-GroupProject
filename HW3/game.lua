@@ -867,10 +867,29 @@ function scene:show( event )
 -- -----------------------------------
 -- BIRD
 -- -----------------------------------
+
+		local bottom = display.newRect(display.contentCenterX,486,display.actualContentWidth,1)
+		local top = display.newRect(display.contentCenterX,236,display.actualContentWidth,1)
+		local right = display.newRect(319,display.contentCenterY+125,1,240)
+		right:setFillColor(0,0,0)
+		local left = display.newRect(1,display.contentCenterY+125,1,240)
+		left:setFillColor(0,0,0)
+		bottom.myName = "bottom"
+		top.myName = "top"
+		right.myName = "right"
+		left.myName = "left"
+
+		physics.start()
+        physics.setGravity(0,0)
+
+        physics.addBody(bottom, "static", {friction=0, bounce=1.0})
+		physics.addBody(top, "static", {friction=0, bounce=1.0})
+		physics.addBody(right, "static", {friction=0, bounce=1.0})
+		physics.addBody(left, "static", {friction=0, bounce=1.0})
+
+
         birds = display.newGroup()
 
-        physics.start()
-        physics.setGravity(0,0)
         if(stageNumber >= 4)then
             local num = 1;
             if (stageNumber >= 7) then num = 2; end
