@@ -29,6 +29,7 @@ local loseImage
 
 local decrementLife = false
 local gameMessage
+local sceneMovedAwayFrom = false;
 
 local function getRandomNumber(min, max)
 	local number = math.random(min, max)
@@ -37,7 +38,7 @@ local function getRandomNumber(min, max)
 end
 
 local function gotoIntermediate()
-     local sceneTransitionOptions = {
+    local sceneTransitionOptions = {
         effect = "slideDown",
         time = 500,
         params = { heart = lives, s = stage }
@@ -93,6 +94,7 @@ function itemTouchHandler(event)
 
 			decrementLife = false			
 			gameMessage = "Correct item selected!"
+			sceneMovedAwayFrom = true
 			timer.performWithDelay(800, function()gotoIntermediate() end, 1)
 			touchEnabled = false
 
@@ -108,6 +110,7 @@ function itemTouchHandler(event)
 
 			decrementLife = true
 			gameMessage = "Incorrect item selected"
+			sceneMovedAwayFrom = true
 			timer.performWithDelay(800, function()gotoIntermediate() end, 1)
 			touchEnabled = false
 		end
@@ -152,12 +155,10 @@ end
 -- ---------------------------------------------------------
 -- This will control the movement of the progress bar -- AA
 -- ---------------------------------------------------------
-local function mov_progressBar(event)
-    p = progressBarRect.getProgress();
+local function moveProgressBar(event)
+    p = progressBarRect:getProgress();
     p = p + 1 / 8
-    if (p == 1)then
-        lives = lives - 1
-        stage = stage + 1
+    if (p == 1 and sceneMovedAwayFrom == false) then
         gotoIntermediate()
     else
         progressBarRect:setProgress(p)
@@ -290,6 +291,8 @@ function scene:show( event )
 	if ( phase == "will" ) then
 
 		local params = event.params
+
+		sceneMovedAwayFrom = false
 
 		if (params ~= nil and params.stage ~= nil) then
 			stageNumber = params.stage
@@ -900,8 +903,8 @@ function scene:show( event )
 		sceneGroup:insert(winImage)
 		sceneGroup:insert(loseImage)
 	elseif ( phase == "did" ) then
-
-		progress_timer = timer.performWithDelay(1000,upProgress,0)
+		print("Creating timer")
+		progress_timer = timer.performWithDelay(1000, moveProgressBar, 8)
 	end
 end
 
