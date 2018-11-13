@@ -26,7 +26,6 @@ local touchEnabled = true
 
 local winImage
 local loseImage
-local continueButton
 
 local decrementLife = false
 local gameMessage
@@ -112,8 +111,6 @@ function itemTouchHandler(event)
 			timer.performWithDelay(800, function()gotoIntermediate() end, 1)
 			touchEnabled = false
 		end
-
-		continueButton.isVisible = true
 	end
 end
 
@@ -173,14 +170,11 @@ function scene:create( event )
 	-- set up the table containing the number of items in the house for each level
 	for stage = 1, numberOfStages do
 		if (stage <= 3) then			
-			--stageItemNumbers[stage] = getRandomNumber(3, 5)
-			stageItemNumbers[stage] = getRandomNumber(5, 5)
+			stageItemNumbers[stage] = getRandomNumber(3, 5)
 		elseif (stage <= 6) then
-			--stageItemNumbers[stage] = getRandomNumber(6, 8)
-			stageItemNumbers[stage] = getRandomNumber(8, 8)			
+			stageItemNumbers[stage] = getRandomNumber(6, 8)			
 		elseif (stage <= 10) then
-			--stageItemNumbers[stage] = getRandomNumber(9, 15)
-			stageItemNumbers[stage] = getRandomNumber(15, 15)		
+			stageItemNumbers[stage] = getRandomNumber(9, 15)		
 		end
 	end
 
@@ -257,7 +251,6 @@ function scene:create( event )
 	verticalTransformations[28] = -6
 
 	-- setup the scene background images and text blocks
-	-- TODO: Possibly investigate scaling based on screen size
 	local topBackground = display.newImage(imageSheet, 3, display.contentCenterX, 115)
 	topBackground.xScale = 1.25
 	topBackground.yScale = 1.25
@@ -280,40 +273,14 @@ function scene:create( event )
             left = display.contentCenterX - 160, 
             top = display.contentCenterY + 238, 
             width = 320
-            --isAnimated = true
         }
     )
-
-	continueButton = widget.newButton(
-    {
-        label = "continueButton",
-        onEvent = handleButtonEvent,
-        emboss = false,
-        -- Properties for a rounded rectangle button
-        shape = "roundedRect",
-        width = 100,
-        height = 40,
-        cornerRadius = 2,
-        fillColor = { default={255,255,0}, over={255,255,0} },
-        strokeColor = { default={0,0,0}, over={0,0,0} },
-        strokeWidth = 5
-    })
-	
-	-- Center the button
-	continueButton.x = display.contentCenterX
-	continueButton.y = display.contentCenterY - 40
-			 
-	-- Change the button's label text
-	continueButton:setLabel("CONTINUE")
-	continueButton:addEventListener("tap", buttonPressHandler)
-	continueButton.isVisible = false
 
 	sceneGroup:insert(topBackground)
 	sceneGroup:insert(stageText)
 	sceneGroup:insert(houseBackground)
 	sceneGroup:insert(findText)
 	sceneGroup:insert(progressBarRect)
-	sceneGroup:insert(continueButton)
 end
 
 function scene:show( event )
@@ -361,6 +328,7 @@ function scene:show( event )
 		for _, v in pairs(itemsInHouse) do
       		print("Item In House Index: "..v)
       	end
+
 
 		if (stageNumber == 1) then	
       		local item1 = getImage(itemsInHouse[1], 260, 348, true)
@@ -887,6 +855,12 @@ function scene:show( event )
 		right.myName = "right"
 		left.myName = "left"
 
+
+		sceneGroup:insert(bottom)
+		sceneGroup:insert(top)
+		sceneGroup:insert(right)
+		sceneGroup:insert(left)
+
 		physics.start()
         physics.setGravity(0,0)
 
@@ -938,7 +912,6 @@ function scene:hide( event )
 	local phase = event.phase
 
 	if ( phase == "will" ) then
-		continueButton.isVisible = false
 		winImage.isVisible = false
 		loseImage.isVisible = false
 
