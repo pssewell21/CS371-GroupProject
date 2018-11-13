@@ -198,7 +198,9 @@ function scene:show( event )
  
     local sceneGroup = self.view
     local phase = event.phase
- 
+    gameOver.isVisible = false
+    win.isVisible = false
+    
     if ( phase == "will" ) then
         local params = event.params
 
@@ -213,6 +215,8 @@ function scene:show( event )
             life2.isVisible = true
             life3.isVisible = true
             life4.isVisible = true
+             win.isVisible = true
+        
         else
             print("Came from game")
             stage = stage + 1
@@ -237,41 +241,30 @@ function scene:show( event )
     ------------------------------------------------------------------------------------
     -- Logic for hiding life counters -- AM
     ------------------------------------------------------------------------------------
+        gameOver.isVisible = false
 
     if(livesRemaining == 3) then
         life4.isVisible = false
-        gameOver.isVisible = false
-        win.isVisible = false
        
     end
     if(livesRemaining == 2) then
-        life4.isVisible = false
         life3.isVisible = false
-        gameOver.isVisible = false
-        win.isVisible = false
       
     end
     if(livesRemaining == 1) then
-        life4.isVisible = false
-        life3.isVisible = false
         life2.isVisible = false
-         gameOver.isVisible = false
-         win.isVisible = false
 
     end 
     if(livesRemaining == 0) then
-        life4.isVisible = false
-        life3.isVisible = false
-        life2.isVisible = false
         life1.isVisible = false
-        wins.isVisible = false
+
         gameOver.isVisible = true
         --GAME OVER
     end
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        win.isVisible = true
+        
     end
 end
  
