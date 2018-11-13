@@ -225,7 +225,7 @@ function scene:create( event )
 
 	seqData = 
     {
-        {name = "flying", start = 6, count = 7, time = 200}
+        {name = "flying", start = 6, count = 2, time = 200}
     }
 
 	-- set up tranformation values so items appear consistently where we want them to in the house
