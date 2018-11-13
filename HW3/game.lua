@@ -28,7 +28,6 @@ local winImage
 local loseImage
 
 local decrementLife = false
-local gameMessage
 local sceneMovedAwayFrom = false;
 
 local function getRandomNumber(min, max)
@@ -41,7 +40,7 @@ local function gotoIntermediate()
     local sceneTransitionOptions = {
         effect = "slideDown",
         time = 500,
-        params = { heart = lives, s = stage }
+        params = { decrementLife = decrementLife }
     }
 
     composer.gotoScene( "intermediateScene", sceneTransitionOptions )
@@ -67,19 +66,6 @@ local function handleButtonEvent( event )
     end
 end
 
-function buttonPressHandler(event)
-	local sceneTransitionOptions = {
-		effect = "slideDown",
-		time = 500,
-		params = {
-			decrementLife = decrementLife,
-			gameMessage = gameMessage
-		}
-	}
-
-	composer.gotoScene("intermediateScene", sceneTransitionOptions)
-end
-
 function itemTouchHandler(event)
 	if touchEnabled == true then
 		if itemToFindIndex == event.target.index then
@@ -93,7 +79,6 @@ function itemTouchHandler(event)
 			audio.play(soundEffect)
 
 			decrementLife = false			
-			gameMessage = "Correct item selected!"
 			sceneMovedAwayFrom = true
 			timer.performWithDelay(800, function()gotoIntermediate() end, 1)
 			touchEnabled = false
@@ -109,7 +94,6 @@ function itemTouchHandler(event)
 			audio.play(soundEffect)
 
 			decrementLife = true
-			gameMessage = "Incorrect item selected"
 			sceneMovedAwayFrom = true
 			timer.performWithDelay(800, function()gotoIntermediate() end, 1)
 			touchEnabled = false
@@ -159,6 +143,7 @@ local function moveProgressBar(event)
     p = progressBarRect:getProgress();
     p = p + 1 / 8
     if (p == 1 and sceneMovedAwayFrom == false) then
+    	decrementLife = true
         gotoIntermediate()
     else
         progressBarRect:setProgress(p)
