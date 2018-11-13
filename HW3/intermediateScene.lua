@@ -254,12 +254,8 @@ function scene:show( event )
     end
     if(livesRemaining == 1) then
         life2.isVisible = false
-<<<<<<< HEAD
-=======
         gameOver.isVisible = false
         win.isVisible = false
->>>>>>> 029434c4f57cfcb1f2e847a160bb83c4af4a1df6
-
     end 
     if(livesRemaining == 0) then
         life1.isVisible = false
