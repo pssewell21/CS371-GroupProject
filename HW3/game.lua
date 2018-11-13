@@ -26,7 +26,6 @@ local touchEnabled = true
 
 local winImage
 local loseImage
-local continueButton
 
 local decrementLife = false
 local gameMessage
@@ -112,8 +111,6 @@ function itemTouchHandler(event)
 			timer.performWithDelay(800, function()gotoIntermediate() end, 1)
 			touchEnabled = false
 		end
-
-		continueButton.isVisible = true
 	end
 end
 
@@ -284,36 +281,11 @@ function scene:create( event )
         }
     )
 
-	continueButton = widget.newButton(
-    {
-        label = "continueButton",
-        onEvent = handleButtonEvent,
-        emboss = false,
-        -- Properties for a rounded rectangle button
-        shape = "roundedRect",
-        width = 100,
-        height = 40,
-        cornerRadius = 2,
-        fillColor = { default={255,255,0}, over={255,255,0} },
-        strokeColor = { default={0,0,0}, over={0,0,0} },
-        strokeWidth = 5
-    })
-	
-	-- Center the button
-	continueButton.x = display.contentCenterX
-	continueButton.y = display.contentCenterY - 40
-			 
-	-- Change the button's label text
-	continueButton:setLabel("CONTINUE")
-	continueButton:addEventListener("tap", buttonPressHandler)
-	continueButton.isVisible = false
-
 	sceneGroup:insert(topBackground)
 	sceneGroup:insert(stageText)
 	sceneGroup:insert(houseBackground)
 	sceneGroup:insert(findText)
 	sceneGroup:insert(progressBarRect)
-	sceneGroup:insert(continueButton)
 end
 
 function scene:show( event )
@@ -936,7 +908,6 @@ function scene:hide( event )
 	local phase = event.phase
 
 	if ( phase == "will" ) then
-		continueButton.isVisible = false
 		winImage.isVisible = false
 		loseImage.isVisible = false
 
