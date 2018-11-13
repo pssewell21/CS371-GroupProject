@@ -225,7 +225,7 @@ function scene:create( event )
 
 	seqData = 
     {
-        {name = "flying", start = 6, count = 7, time = 200}
+        {name = "flying", start = 6, count = 2, time = 200}
     }
 
 	-- set up tranformation values so items appear consistently where we want them to in the house
@@ -867,6 +867,17 @@ function scene:show( event )
 -- -----------------------------------
 -- BIRD
 -- -----------------------------------
+        local bottom = display.newRect(display.contentCenterX,486,display.actualContentWidth,1)
+		local top = display.newRect(display.contentCenterX,236,display.actualContentWidth,1)
+		local right = display.newRect(319,display.contentCenterY+125,1,240)
+		right:setFillColor(0,0,0)
+		local left = display.newRect(1,display.contentCenterY+125,1,240)
+		left:setFillColor(0,0,0)
+		bottom.myName = "bottom"
+		top.myName = "top"
+		right.myName = "right"
+	left.myName = "left"
+
         birds = display.newGroup()
 
         physics.start()
