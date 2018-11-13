@@ -174,10 +174,13 @@ function scene:create( event )
 	for stage = 1, numberOfStages do
 		if (stage <= 3) then			
 			stageItemNumbers[stage] = getRandomNumber(3, 5)
+
 		elseif (stage <= 6) then
 			stageItemNumbers[stage] = getRandomNumber(6, 8)
+			
 		elseif (stage <= 10) then
 			stageItemNumbers[stage] = getRandomNumber(9, 15)
+		
 		end
 	end
 
@@ -253,24 +256,28 @@ function scene:create( event )
 
 	-- setup the scene background images and text blocks
 	-- TODO: Possibly investigate scaling based on screen size
-	local topBackground = display.newImage(imageSheet, 3, display.contentCenterX, 100)
+	local topBackground = display.newImage(imageSheet, 3, display.contentCenterX, 115)
+	topBackground.xScale = 1.25
+	topBackground.yScale = 1.25
 
 	stageText = display.newText("Stage "..stageNumber, display.contentCenterX, 30, native.systemFont, 24)
 	stageText:setFillColor(0, 0, 0)
 
-	houseBackground = display.newImage(imageSheet, 1, display.contentCenterX, 290)
+	houseBackground = display.newImage(imageSheet, 1, display.contentCenterX, 355)
+	houseBackground.xScale = 1.25
+	houseBackground.yScale = 1.25
 
 	local findText = display.newText("Find!", display.contentCenterX, 130, native.systemFont, 18)
 	findText:setFillColor(0, 0, 0)
 
    -- -----------------------------------
-   -- This is makinging the progress bar -- AA
+   -- This is making the progress bar -- AA
    -- -----------------------------------
     progressBarRect = widget.newProgressView(
         {
-            left = display.contentCenterX - 128, 
-            top = display.contentCenterY + 145 , 
-            width = 256
+            left = display.contentCenterX - 160, 
+            top = display.contentCenterY + 238, 
+            width = 320
             --isAnimated = true
         }
     )
@@ -354,52 +361,52 @@ function scene:show( event )
       	end
 
 		if (stageNumber == 1) then	
-      		local item1 = getImage(itemsInHouse[1], 240, 283, true)
+      		local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 130, 356, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[4] ~= nil then
-				local item4 = getImage(itemsInHouse[4], 100, 290, true)
+				local item4 = getImage(itemsInHouse[4], 100, 356, true)
 				itemsToRemove[4] = item4
 				sceneGroup:insert(item4)
 			end
 
 			if itemsInHouse[5] ~= nil then
-				local item5 = getImage(itemsInHouse[5], 240, 219, true)
+				local item5 = getImage(itemsInHouse[5], 260, 308, true)
 				itemsToRemove[5] = item5
 				sceneGroup:insert(item5)
 			end
 		elseif (stageNumber == 2) then
-			local item1 = getImage(itemsInHouse[1], 240, 283, true)
+			local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
 			sceneGroup:insert(item1)
 
-			local item2 = getImage(itemsInHouse[2], 240, 348, true)
+			local item2 = getImage(itemsInHouse[2], 260, 430, true)
 			itemsToRemove[2] = item2
 			sceneGroup:insert(item2)
 
-			local item3 = getImage(itemsInHouse[3], 130, 290, true)
+			local item3 = getImage(itemsInHouse[3], 125, 358, true)
 			itemsToRemove[3] = item3
 			sceneGroup:insert(item3)
 
 			-- Check for nil value before attempting to add the item to the view
 			if itemsInHouse[4] ~= nil then
-				local item4 = getImage(itemsInHouse[4], 100, 290, true)
+				local item4 = getImage(itemsInHouse[4], 90, 358, true)
 				itemsToRemove[4] = item4
 				sceneGroup:insert(item4)
 			end
 
 			if itemsInHouse[5] ~= nil then
-				local item5 = getImage(itemsInHouse[5], 240, 219, true)
+				local item5 = getImage(itemsInHouse[5], 260, 308, true)
 				itemsToRemove[5] = item5
 				sceneGroup:insert(item5)
 			end
@@ -867,6 +874,7 @@ function scene:show( event )
 -- -----------------------------------
 -- BIRD
 -- -----------------------------------
+<<<<<<< HEAD
         local bottom = display.newRect(display.contentCenterX,486,display.actualContentWidth,1)
 		local top = display.newRect(display.contentCenterX,236,display.actualContentWidth,1)
 		local right = display.newRect(319,display.contentCenterY+125,1,240)
@@ -879,9 +887,30 @@ function scene:show( event )
 	left.myName = "left"
 
         birds = display.newGroup()
+=======
+>>>>>>> fa190c04805c7d17ca74f5fc2c41526595f6d00b
 
-        physics.start()
+		local bottom = display.newRect(display.contentCenterX,486,display.actualContentWidth,1)
+		local top = display.newRect(display.contentCenterX,236,display.actualContentWidth,1)
+		local right = display.newRect(319,display.contentCenterY+125,1,240)
+		right:setFillColor(0,0,0)
+		local left = display.newRect(1,display.contentCenterY+125,1,240)
+		left:setFillColor(0,0,0)
+		bottom.myName = "bottom"
+		top.myName = "top"
+		right.myName = "right"
+		left.myName = "left"
+
+		physics.start()
         physics.setGravity(0,0)
+
+        physics.addBody(bottom, "static", {friction=0, bounce=1.0})
+		physics.addBody(top, "static", {friction=0, bounce=1.0})
+		physics.addBody(right, "static", {friction=0, bounce=1.0})
+		physics.addBody(left, "static", {friction=0, bounce=1.0})
+
+        birds = display.newGroup()
+
         if(stageNumber >= 4)then
             local num = 1;
             if (stageNumber >= 7) then num = 2; end
@@ -903,9 +932,7 @@ function scene:show( event )
                 bird:addEventListener("tap", stopBird);
 
                 birds:insert(bird);
-
             end
-
         end
 
         progressBarRect:setProgress(0);
