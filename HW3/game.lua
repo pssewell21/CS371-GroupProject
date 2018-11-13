@@ -263,12 +263,6 @@ function scene:create( event )
 	local findText = display.newText("Find!", display.contentCenterX, 130, native.systemFont, 18)
 	findText:setFillColor(0, 0, 0)
 
-	--[[local progressBarRect = display.newRect(display.contentCenterX, 400, 255, 20)
-	progressBarRect.strokeWidth = 2
-	progressBarRect:setStrokeColor(1, 1, 0)
-	progressBarRect:setFillColor(0, 0, 0)
---]]
-
    -- -----------------------------------
    -- This is makinging the progress bar -- AA
    -- -----------------------------------
@@ -280,10 +274,6 @@ function scene:create( event )
             --isAnimated = true
         }
     )
-   -- progressBarRect:setStrokeColor(255,255,0)
-    --progressBarRect:setFillColor(255,255,0)
-    --progressBarRect:scale(3,3)
-
 
 	continueButton = widget.newButton(
     {
@@ -344,12 +334,11 @@ function scene:show( event )
 		-- include the randomly selected item to find in the list
 		itemsInHouse[1] = itemToFindIndex
 
-		-- TODO: Get the number of items in the house depending on the current stage
 		local numberOfItemsInHouse = stageItemNumbers[stageNumber]
 
 		-- Get a random index for an image that will be placed in the house
 		for i = 2, numberOfItemsInHouse do
-			itemsInHouse[i] = getRandomNumberWithExclusions(8, 18, itemsInHouse)
+			itemsInHouse[i] = getRandomNumberWithExclusions(8, 28, itemsInHouse)
 		end
 
 		-- Swap the first item in the list with a randomly selected item in the list
@@ -364,7 +353,6 @@ function scene:show( event )
       		print("Item In House Index: "..v)
       	end
 
-      	-- TODO: Create other stages --375
 		if (stageNumber == 1) then	
       		local item1 = getImage(itemsInHouse[1], 240, 283, true)
 			itemsToRemove[1] = item1
