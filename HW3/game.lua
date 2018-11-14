@@ -71,7 +71,9 @@ local function handleButtonEvent( event )
 end
 
 function itemTouchHandler(event)
+	-- if the scene is enabled
 	if touchEnabled == true then
+		-- if the correct item was found, show the win image and move to the next scene
 		if itemToFindIndex == event.target.index then
 			print("Found the correct item")
 
@@ -86,7 +88,7 @@ function itemTouchHandler(event)
 			sceneMovedAwayFrom = true
 			timer.performWithDelay(800, function()gotoIntermediate() end, 1)
 			touchEnabled = false
-
+			-- if the incorrect item was found, show the lose image and move to the next scene
 		else
 			print("Did not find the correct item")
 
@@ -105,19 +107,24 @@ function itemTouchHandler(event)
 	end
 end
 
+-- Gets the image at the specified index from the imageSheet and places it at the coordinates passed in
 function getImage(index, x, y, touchEnabled)
 	local item = display.newImage(imageSheet, index, x, y + verticalTransformations[index])
 	item.index = index
+
+	-- if the touchEnabled flag is true, add an event listener
 	if touchEnabled == true then
 		item:addEventListener("tap", itemTouchHandler)
 	end
 
+	-- reverse the image if the index is for one of the reversed images
 	if index >= 19 then
 		item.xScale = -1
 	end
 
 	return item
 end
+
 -- ---------------------------------------------------------
 -- This function stops the bird once it has been tapped on  -- AA
 -- ---------------------------------------------------------
@@ -127,6 +134,7 @@ local function stopBird(event)
     timer.performWithDelay(800, function() physics.start() end, 1)
     event.target:play()
 end
+
 -- ---------------------------------------------------------
 -- This function will turn the bird around when it hits a wall -- AA
 -- ---------------------------------------------------------
@@ -140,6 +148,7 @@ local function onLocalCollision( self, event )
         end
     end
 end
+
 -- ---------------------------------------------------------
 -- This will control the movement of the progress bar -- AA
 -- ---------------------------------------------------------
@@ -281,6 +290,7 @@ function scene:show( event )
 
 		local params = event.params
 
+		-- set up scene items
 		sceneMovedAwayFrom = false
 
 		if (params ~= nil and params.stage ~= nil) then
@@ -316,12 +326,7 @@ function scene:show( event )
 		itemsInHouse[swapIndex] = itemsInHouse[1]
 		itemsInHouse[1] = tempItem
 
-		-- DEBUG: Print the contents of the list of items in the house
-		for _, v in pairs(itemsInHouse) do
-      		print("Item In House Index: "..v)
-      	end
-
-
+		-- Place items in the house for the user to find
 		if (stageNumber == 1) then	
       		local item1 = getImage(itemsInHouse[1], 260, 348, true)
 			itemsToRemove[1] = item1
@@ -827,15 +832,21 @@ function scene:show( event )
 			end
       	end
 
+      	-- creat the win and lose images and hide them until needed
 		winImage = display.newImage(imageSheet, 4)
 		winImage.isVisible = false
 
 		loseImage = display.newImage(imageSheet, 5)
 		loseImage.isVisible = false
 
+		sceneGroup:insert(winImage)
+		sceneGroup:insert(loseImage)
+
 -- -----------------------------------
 -- BIRD
 -- -----------------------------------
+		
+		-- setup the bounding box
 		local bottom = display.newRect(display.contentCenterX,486,display.actualContentWidth,1)
 		local top = display.newRect(display.contentCenterX,236,display.actualContentWidth,1)
 		local right = display.newRect(319,display.contentCenterY+125,1,240)
@@ -862,9 +873,14 @@ function scene:show( event )
 
         bird2 = display.newGroup()
 
+        -- if past stage 4, add one bird
         if(stageNumber >= 4)then
             local num = 1;
-            if (stageNumber >= 7) then num = 2; end
+
+            -- if past stage 7, add a second bird
+            if (stageNumber >= 7) then 
+            	num = 2; 
+            end
 
             for i=1, num do
                 local bird = display.newSprite (imageSheet, seqData);   --initialize
@@ -884,14 +900,12 @@ function scene:show( event )
 
                 bird2:insert(bird);
             end
-			sceneGroup:insert(bird2)
 
+			sceneGroup:insert(bird2)
         end
 
-        progressBarRect:setProgress(0);
-
-		sceneGroup:insert(winImage)
-		sceneGroup:insert(loseImage)
+        -- reset the progress bar
+        progressBarRect:setProgress(0);        
 	elseif ( phase == "did" ) then
 		progressTimer = timer.performWithDelay(1000, moveProgressBar, 8)
 	end
