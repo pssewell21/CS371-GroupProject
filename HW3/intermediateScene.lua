@@ -255,15 +255,9 @@ function scene:show( event )
     end
 end
  
-function scene:hide( event )
- 
+function scene:hide( event ) 
     local sceneGroup = self.view
     local phase = event.phase
-
-    --if (livesRemaining == 0 or stage == 11) then
-    --    livesRemaining = 4 
-    --    stage = 1
-    --end    
 end
  
 function scene:destroy( event )
