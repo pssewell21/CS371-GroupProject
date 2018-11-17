@@ -8,37 +8,33 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------------
  
 local function gotoNextScene()
-    local sceneTransitionsOpitions = {
-            effects = "fade",
-            time = 500,
-           -- params= {}
-       }
+    local sceneTransitionsOptions = 
+    {
+        effects = "fade",
+        time = 500,
+    }
 
-       composer.gotoScene("game2", sceneTransitionsOpitions)
-   end
+    composer.gotoScene("game2", sceneTransitionsOptions)
+end
 
-
- -- Function to handle button events
-        local function handleButtonEvent( event )
-            if ( "ended" == event.phase ) then
-            print( "Button was pressed and released" )
-            end
+-- Function to handle button events
+local function handleButtonEvent( event )
+    if ( "ended" == event.phase ) then
+        print( "Button was pressed and released" )
     end
- 
+end 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
  
 -- create()
-function scene:create( event )
- 
+function scene:create( event ) 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
     local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
     background.x = display.contentCenterX 
     background.y = display.contentCenterY
-
 
    	-- -----------------
     -- Create the widget
@@ -69,56 +65,41 @@ function scene:create( event )
     -- Change the button's label text
     -- ------------------------------
     nextSceneButton:setLabel( "NEXT" )
-    nextSceneButton:addEventListener("tap", gotoNextScene)
-    
-
+    nextSceneButton:addEventListener("tap", gotoNextScene)   
 
     sceneGroup:insert(background)
     sceneGroup:insert(nextSceneButton)
-
-end
- 
+end 
  
 -- show()
-function scene:show( event )
- 
+function scene:show( event ) 
     local sceneGroup = self.view
     local phase = event.phase
  
     if ( phase == "will" ) then
-        -- Code here runs when the scene is still off screen (but is about to come on screen)
- 
+        -- Code here runs when the scene is still off screen (but is about to come on screen) 
     elseif ( phase == "did" ) then
-        -- Code here runs when the scene is entirely on screen
- 
+        -- Code here runs when the scene is entirely on screen 
     end
-end
- 
+end 
  
 -- hide()
-function scene:hide( event )
- 
+function scene:hide( event ) 
     local sceneGroup = self.view
     local phase = event.phase
  
     if ( phase == "will" ) then
-        -- Code here runs when the scene is on screen (but is about to go off screen)
- 
+        -- Code here runs when the scene is on screen (but is about to go off screen) 
     elseif ( phase == "did" ) then
-        -- Code here runs immediately after the scene goes entirely off screen
- 
+        -- Code here runs immediately after the scene goes entirely off screen 
     end
-end
- 
+end 
  
 -- destroy()
-function scene:destroy( event )
- 
+function scene:destroy( event ) 
     local sceneGroup = self.view
-    -- Code here runs prior to the removal of scene's view
- 
-end
- 
+    -- Code here runs prior to the removal of scene's view 
+end 
  
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
