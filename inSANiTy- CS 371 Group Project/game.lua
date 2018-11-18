@@ -1,6 +1,8 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
 local scene = composer.newScene()
+
+local roboBlock
  
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -18,11 +20,25 @@ local function gotoNextScene()
 end
 
 -- Function to handle button events
-local function handleButtonEvent( event )
+local function handleButtonEvent(event)
     if ( "ended" == event.phase ) then
         print( "Button was pressed and released" )
     end
 end 
+
+local function jumpUp()
+    transition.to(roboBlock, {time=150, y = roboBlock.y - 75})
+end
+
+local function jumpDown()
+
+    transition.to(roboBlock, {time=150, y = roboBlock.y + 75})
+end
+
+local function screenTouched(event)
+    jumpUp()
+    timer.performWithDelay(150, jumpDown)
+end
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -78,6 +94,15 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
+        roboBlock = display.newRect(0, 200, 30, 30)
+        roboBlock.strokeWidth = 3
+        roboBlock:setStrokeColor(1, 1, 1)
+        roboBlock:setFillColor(0, 0, 0, 0.75)
+
+        sceneGroup:insert(roboBlock)
+
+        Runtime:addEventListener("tap", screenTouched)
+
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen 
     end
