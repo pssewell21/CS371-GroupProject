@@ -6,7 +6,7 @@ local roboBlock
 local level
 local backgroundMusic
 
-local levelMovementSpeed = 50
+local levelMovementSpeed = 80
  
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
