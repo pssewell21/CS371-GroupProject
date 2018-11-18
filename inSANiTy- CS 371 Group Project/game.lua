@@ -4,8 +4,9 @@ local scene = composer.newScene()
 
 local roboBlock
 local level
+local backgroundMusic
 
-local levelMovementSpeed = 50
+local levelMovementSpeed = 80
  
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -147,6 +148,8 @@ function scene:create( event )
     local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
     background.x = display.contentCenterX 
     background.y = display.contentCenterY
+    
+    backgroundMusic = audio.loadStream("level1Music.mp3")
 
    	-- -----------------
     -- Create the widget
@@ -206,8 +209,9 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen 
-        timer.performWithDelay()
-        moveLevel()
+        local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
+        audio.play(backgroundMusic, {channel = 1, loops = -1})
+
         moveLevel()
     end
 end 
@@ -221,6 +225,10 @@ function scene:hide( event )
         -- Code here runs when the scene is on screen (but is about to go off screen) 
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen 
+
+        -- Stop the music!
+        audio.stop(1)
+        audio.dispose(backgroundMusic)
     end
 end 
  
