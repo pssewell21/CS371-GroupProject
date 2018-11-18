@@ -5,7 +5,7 @@ local scene = composer.newScene()
 local roboBlock
 local level
 
-local levelMovementSpeed = 25
+local levelMovementSpeed = 50
  
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -33,7 +33,7 @@ local function jumpUp()
     transition.to(roboBlock, {time=150, y = roboBlock.y - 75})
 end
 
-local function jumpDown()
+local function jumpDown() 
 
     transition.to(roboBlock, {time=150, y = roboBlock.y + 75})
 end
@@ -80,7 +80,7 @@ local function buildLevel()
     item2.strokeWidth = 3
     item2:setStrokeColor(1, 1, 1)
     item2:setFillColor(0, 0, 0, 0.75)
-    item2.anchorX = 0
+    item2.anchorX = 0 
     item2.anchorY = 0
     group:insert(item2)
 
@@ -93,6 +93,38 @@ local function buildLevel()
     group:insert(item3)
 
     local item4 = display.newPolygon(1200, 180 - 3, vertices)
+    item4.strokeWidth = 3
+    item4:setStrokeColor(1, 1, 1)
+    item4:setFillColor(0, 0, 0, 0.75)
+    item4.anchorX = 0
+    item4.anchorY = 0
+    group:insert(item4)
+
+    local item4 = display.newPolygon(1600, 180 - 3, vertices)
+    item4.strokeWidth = 3
+    item4:setStrokeColor(1, 1, 1)
+    item4:setFillColor(0, 0, 0, 0.75)
+    item4.anchorX = 0
+    item4.anchorY = 0
+    group:insert(item4)
+
+    local item4 = display.newPolygon(2000, 180 - 3, vertices)
+    item4.strokeWidth = 3
+    item4:setStrokeColor(1, 1, 1)
+    item4:setFillColor(0, 0, 0, 0.75)
+    item4.anchorX = 0
+    item4.anchorY = 0
+    group:insert(item4)
+
+    local item4 = display.newPolygon(2350, 180 - 3, vertices)
+    item4.strokeWidth = 3
+    item4:setStrokeColor(1, 1, 1)
+    item4:setFillColor(0, 0, 0, 0.75)
+    item4.anchorX = 0
+    item4.anchorY = 0
+    group:insert(item4)
+
+    local item4 = display.newPolygon(2380, 180 - 3, vertices)
     item4.strokeWidth = 3
     item4:setStrokeColor(1, 1, 1)
     item4:setFillColor(0, 0, 0, 0.75)
