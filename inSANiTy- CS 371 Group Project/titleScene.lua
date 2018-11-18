@@ -1,8 +1,9 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
---local backgroundMusic
  
 local scene = composer.newScene()
+
+local backgroundMusic
  
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -42,9 +43,9 @@ function scene:create( event )
     local title = display.newImageRect( sceneGroup, "title3.png", 500, 200 )
     title.x = display.contentCenterX  
     title.y = display.contentCenterY - 25
-    -- Function to handle button events
+    -- Function to handle button events    
     
-    -- backgroundMusic = audioloadStream("titleMusic.mp3")
+    backgroundMusic = audio.loadStream("titleMusic.mp3")
 
     -- -----------------
     -- Create the widget
@@ -91,8 +92,10 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
-    elseif ( phase == "did" ) then
+    elseif ( phase == "did" ) then        
         -- Code here runs when the scene is entirely on screen 
+        local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
+        audio.play(backgroundMusic, {channel = 1, loops = -1})
     end
 end 
  
@@ -105,8 +108,6 @@ function scene:hide( event )
         -- Code here runs when the scene is on screen (but is about to go off screen) 
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
-       -- local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops -1, fadein = 5000})
-       -- audio.play(backgroundMusic, {channel = 1, loops = -1})
     end
 end 
  
