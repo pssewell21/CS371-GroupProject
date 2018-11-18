@@ -108,6 +108,12 @@ function scene:hide( event )
         -- Code here runs when the scene is on screen (but is about to go off screen) 
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
+    
+    Runtime:removeEventListener( "collision", onCollision )
+    physics.pause()
+     -- Stop the music!
+    audio.stop( 1 )
+    composer.removeScene( "titleScene" )
     end
 end 
  
