@@ -7,6 +7,15 @@ local level
 local backgroundMusic
 
 local levelMovementSpeed = 80
+local levelWidth = 50000
+local jumpHeight = 75
+local floorHeight = 210
+local objectWidth = 30
+local objectStrokeWidth = 3
+
+local whiteColorTable = {1, 1, 1}
+local redColorTable = {1, 0, 0}
+local semiTransparentColorTable = {0, 0, 0, 0.75}
  
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -31,12 +40,11 @@ local function handleButtonEvent(event)
 end 
 
 local function jumpUp()
-    transition.to(roboBlock, {time=150, y = roboBlock.y - 75})
+    transition.to(roboBlock, {time = 150, y = roboBlock.y - jumpHeight})
 end
 
 local function jumpDown() 
-
-    transition.to(roboBlock, {time=150, y = roboBlock.y + 75})
+    transition.to(roboBlock, {time = 150, y = roboBlock.y + jumpHeight})
 end
 
 local function screenTouched(event)
@@ -56,84 +64,37 @@ local function moveLevel()
     })
 end
 
-local function buildLevel()
-    local group = display.newGroup()
+local function addTriangleObject(x, y)    
+    local vertices = {0,0, objectWidth,0, 15,-objectWidth}
 
-    local floor = display.newRect(-50, 210 + 3, 50000, 110)
-    floor.strokeWidth = 3
-    floor:setStrokeColor(1, 0, 0)
-    floor:setFillColor(0, 0, 0, 0.75)
+    local item = display.newPolygon(x, y, vertices)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.anchorX = 0
+    item.anchorY = 0
+    level:insert(item)
+end
+
+local function buildLevel()
+    level = display.newGroup()
+
+    local floor = display.newRect(-50, floorHeight + objectStrokeWidth, levelWidth, 110)
+    floor.strokeWidth = objectStrokeWidth
+    floor:setStrokeColor(unpack(redColorTable))
+    floor:setFillColor(unpack(semiTransparentColorTable))
     floor.anchorX = 0
     floor.anchorY = 0
-    group:insert(floor)
+    level:insert(floor)
 
-    local vertices = {0,0, 30,0, 15,-30}
-
-    local item1 = display.newPolygon(250, 180 - 3, vertices)
-    item1.strokeWidth = 3
-    item1:setStrokeColor(1, 1, 1)
-    item1:setFillColor(0, 0, 0, 0.75)
-    item1.anchorX = 0
-    item1.anchorY = 0
-    group:insert(item1)
-
-    local item2 = display.newPolygon(400, 180 - 3, vertices)
-    item2.strokeWidth = 3
-    item2:setStrokeColor(1, 1, 1)
-    item2:setFillColor(0, 0, 0, 0.75)
-    item2.anchorX = 0 
-    item2.anchorY = 0
-    group:insert(item2)
-
-    local item3 = display.newPolygon(800, 180 - 3, vertices)
-    item3.strokeWidth = 3
-    item3:setStrokeColor(1, 1, 1)
-    item3:setFillColor(0, 0, 0, 0.75)
-    item3.anchorX = 0
-    item3.anchorY = 0
-    group:insert(item3)
-
-    local item4 = display.newPolygon(1200, 180 - 3, vertices)
-    item4.strokeWidth = 3
-    item4:setStrokeColor(1, 1, 1)
-    item4:setFillColor(0, 0, 0, 0.75)
-    item4.anchorX = 0
-    item4.anchorY = 0
-    group:insert(item4)
-
-    local item4 = display.newPolygon(1600, 180 - 3, vertices)
-    item4.strokeWidth = 3
-    item4:setStrokeColor(1, 1, 1)
-    item4:setFillColor(0, 0, 0, 0.75)
-    item4.anchorX = 0
-    item4.anchorY = 0
-    group:insert(item4)
-
-    local item4 = display.newPolygon(2000, 180 - 3, vertices)
-    item4.strokeWidth = 3
-    item4:setStrokeColor(1, 1, 1)
-    item4:setFillColor(0, 0, 0, 0.75)
-    item4.anchorX = 0
-    item4.anchorY = 0
-    group:insert(item4)
-
-    local item4 = display.newPolygon(2350, 180 - 3, vertices)
-    item4.strokeWidth = 3
-    item4:setStrokeColor(1, 1, 1)
-    item4:setFillColor(0, 0, 0, 0.75)
-    item4.anchorX = 0
-    item4.anchorY = 0
-    group:insert(item4)
-
-    local item4 = display.newPolygon(2380, 180 - 3, vertices)
-    item4.strokeWidth = 3
-    item4:setStrokeColor(1, 1, 1)
-    item4:setFillColor(0, 0, 0, 0.75)
-    item4.anchorX = 0
-    item4.anchorY = 0
-    group:insert(item4)
-
-    return group
+    addTriangleObject(500, floorHeight - objectWidth - objectStrokeWidth)
+    addTriangleObject(1000, floorHeight - objectWidth - objectStrokeWidth)
+    addTriangleObject(1150, floorHeight - objectWidth - objectStrokeWidth)
+    addTriangleObject(1200, floorHeight - objectWidth - objectStrokeWidth)
+    addTriangleObject(1600, floorHeight - objectWidth - objectStrokeWidth)
+    addTriangleObject(2000, floorHeight - objectWidth - objectStrokeWidth)
+    addTriangleObject(2350, floorHeight - objectWidth - objectStrokeWidth)
+    addTriangleObject(2380, floorHeight - objectWidth - objectStrokeWidth)
 end
 
 -- -----------------------------------------------------------------------------------
@@ -182,7 +143,7 @@ function scene:create( event )
     nextSceneButton:setLabel( "NEXT" )
     nextSceneButton:addEventListener("tap", gotoNextScene)  
 
-    level = buildLevel() 
+    buildLevel() 
 
     sceneGroup:insert(background)
     sceneGroup:insert(nextSceneButton)
@@ -196,21 +157,21 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
-        roboBlock = display.newRect(0, 180, 30, 30)
-        roboBlock.strokeWidth = 3
-        roboBlock:setStrokeColor(1, 1, 1)
-        roboBlock:setFillColor(0, 0, 0, 0.75)
+        roboBlock = display.newRect(0, floorHeight - objectWidth, objectWidth, objectWidth)
+        roboBlock.strokeWidth = objectStrokeWidth
+        roboBlock:setStrokeColor(unpack(whiteColorTable))
+        roboBlock:setFillColor(unpack(semiTransparentColorTable))
         roboBlock.anchorX = 0
         roboBlock.anchorY = 0
 
         sceneGroup:insert(roboBlock)
 
-        Runtime:addEventListener("tap", screenTouched)
-
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen 
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
         audio.play(backgroundMusic, {channel = 1, loops = -1})
+
+        Runtime:addEventListener("tap", screenTouched)
 
         moveLevel()
     end
