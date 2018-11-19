@@ -1,5 +1,6 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
+local physics = require("physics")
 local scene = composer.newScene()
 
 local roboBlock
@@ -16,6 +17,8 @@ local objectStrokeWidth = 3
 local whiteColorTable = {1, 1, 1}
 local redColorTable = {1, 0, 0}
 local semiTransparentColorTable = {0, 0, 0, 0.75}
+
+local roboBlockVerticalPosition
  
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -39,17 +42,8 @@ local function handleButtonEvent(event)
     end
 end 
 
-local function jumpUp()
-    transition.to(roboBlock, {time = 150, y = roboBlock.y - jumpHeight})
-end
-
-local function jumpDown() 
-    transition.to(roboBlock, {time = 150, y = roboBlock.y + jumpHeight})
-end
-
 local function screenTouched(event)
-    jumpUp()
-    timer.performWithDelay(150, jumpDown)
+    roboBlock:applyLinearImpulse(0, -0.2, roboBlock.x, roboBlock.y)
 end
 
 local function moveLevel()
@@ -86,6 +80,7 @@ local function buildLevel()
     floor.anchorX = 0
     floor.anchorY = 0
     level:insert(floor)
+    physics.addBody(floor, "static")
 
     addTriangleObject(500, floorHeight - objectWidth - objectStrokeWidth)
     addTriangleObject(1000, floorHeight - objectWidth - objectStrokeWidth)
@@ -105,6 +100,9 @@ end
 function scene:create( event ) 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
+
+    physics.start()
+    physics.setGravity(0, 9.8 * 5)
 
     local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
     background.x = display.contentCenterX 
@@ -161,11 +159,11 @@ function scene:show( event )
         roboBlock.strokeWidth = objectStrokeWidth
         roboBlock:setStrokeColor(unpack(whiteColorTable))
         roboBlock:setFillColor(unpack(semiTransparentColorTable))
-        roboBlock.anchorX = 0
-        roboBlock.anchorY = 0
+        --roboBlock.anchorX = 0
+        --roboBlock.anchorY = 0
 
         sceneGroup:insert(roboBlock)
-
+        physics.addBody(roboBlock, "dynamic", { bounce = 0 })
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen 
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
@@ -186,6 +184,7 @@ function scene:hide( event )
         -- Code here runs when the scene is on screen (but is about to go off screen) 
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen 
+        physics.pause()
 
         -- Stop the music!
         audio.stop(1)
@@ -196,7 +195,8 @@ end
 -- destroy()
 function scene:destroy( event ) 
     local sceneGroup = self.view
-    -- Code here runs prior to the removal of scene's view 
+    -- Code here runs prior to the removal of scene's view    
+    physics.stop()
 end 
  
 -- -----------------------------------------------------------------------------------
