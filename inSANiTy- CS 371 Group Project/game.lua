@@ -18,7 +18,7 @@ local whiteColorTable = {1, 1, 1}
 local redColorTable = {1, 0, 0}
 local semiTransparentColorTable = {0, 0, 0, 0.75}
 
-local roboBlockVerticalPosition
+local collisionFilters = {}
  
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -42,6 +42,10 @@ local function handleButtonEvent(event)
     end
 end 
 
+local function onCollision(event)
+    print(event.target.myName..": collision began with "..event.other.myName)
+end
+
 local function screenTouched(event)
     roboBlock:applyLinearImpulse(0, -0.2, roboBlock.x, roboBlock.y)
 end
@@ -49,7 +53,7 @@ end
 local function moveLevel()
     transition.to(level, 
     {
-        time=150, 
+        time = 150, 
         x = level.x - levelMovementSpeed,
         onComplete = 
             function() 
@@ -65,8 +69,12 @@ local function addTriangleObject(x, y)
     item.strokeWidth = objectStrokeWidth
     item:setStrokeColor(unpack(whiteColorTable))
     item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "Triangle"
     item.anchorX = 0
     item.anchorY = 0
+    item:addEventListener("collision", onCollision)  
+    physics.addBody(item, "kinematic", { filter = collisionFilters.obstacle, shape = vertices })   
+
     level:insert(item)
 end
 
@@ -77,15 +85,17 @@ local function buildLevel()
     floor.strokeWidth = objectStrokeWidth
     floor:setStrokeColor(unpack(redColorTable))
     floor:setFillColor(unpack(semiTransparentColorTable))
+    floor.myName = "Floor"
     floor.anchorX = 0
     floor.anchorY = 0
+    physics.addBody(floor, "static", { filter = collisionFilters.world })
+
     level:insert(floor)
-    physics.addBody(floor, "static")
 
     addTriangleObject(500, floorHeight - objectWidth - objectStrokeWidth)
     addTriangleObject(1000, floorHeight - objectWidth - objectStrokeWidth)
-    addTriangleObject(1150, floorHeight - objectWidth - objectStrokeWidth)
     addTriangleObject(1200, floorHeight - objectWidth - objectStrokeWidth)
+    addTriangleObject(1150, floorHeight - objectWidth - objectStrokeWidth)
     addTriangleObject(1600, floorHeight - objectWidth - objectStrokeWidth)
     addTriangleObject(2000, floorHeight - objectWidth - objectStrokeWidth)
     addTriangleObject(2350, floorHeight - objectWidth - objectStrokeWidth)
@@ -103,6 +113,7 @@ function scene:create( event )
 
     physics.start()
     physics.setGravity(0, 9.8 * 5)
+    physics.setDrawMode("debug")
 
     local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
     background.x = display.contentCenterX 
@@ -128,6 +139,11 @@ function scene:create( event )
         strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
         strokeWidth = 5
     })
+
+    collisionFilters.player = { categoryBits = 1, maskBits = 6}
+    collisionFilters.obstacle = { categoryBits = 2, maskBits = 1 }
+    collisionFilters.world = { categoryBits = 4, maskBits = 1 }
+
 
     -- -----------------
     -- Center the button
@@ -159,11 +175,11 @@ function scene:show( event )
         roboBlock.strokeWidth = objectStrokeWidth
         roboBlock:setStrokeColor(unpack(whiteColorTable))
         roboBlock:setFillColor(unpack(semiTransparentColorTable))
-        --roboBlock.anchorX = 0
-        --roboBlock.anchorY = 0
-
+        roboBlock.myName = "RoboBlock"
+        roboBlock:addEventListener("collision", onCollision)  
+        physics.addBody(roboBlock, "dynamic", { filter = collisionFilters.player, bounce = 0 })
+   
         sceneGroup:insert(roboBlock)
-        physics.addBody(roboBlock, "dynamic", { bounce = 0 })
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen 
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
