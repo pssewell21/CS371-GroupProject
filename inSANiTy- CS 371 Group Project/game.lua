@@ -43,7 +43,7 @@ local function handleButtonEvent(event)
 end 
 
 local function onCollision(event)
-    print(event.target.myName..": collision began with "..event.other.myName)
+    print(event.target.myName..": collision with "..event.other.myName)
 end
 
 local function screenTouched(event)
@@ -73,7 +73,7 @@ local function addTriangleObject(x, y)
     item.anchorX = 0
     item.anchorY = 0
     item:addEventListener("collision", onCollision)  
-    physics.addBody(item, "kinematic", { filter = collisionFilters.obstacle, shape = vertices })   
+    physics.addBody(item, "static", { filter = collisionFilters.obstacle })   
 
     level:insert(item)
 end
@@ -113,7 +113,7 @@ function scene:create( event )
 
     physics.start()
     physics.setGravity(0, 9.8 * 5)
-    physics.setDrawMode("debug")
+    --physics.setDrawMode("debug")
 
     local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
     background.x = display.contentCenterX 
