@@ -4,8 +4,10 @@ local physics = require("physics")
 local scene = composer.newScene()
 
 local roboBlock
-local level
+local floor
 local backgroundMusic
+
+local level = {}
 
 local levelMovementSpeed = 80
 local levelWidth = 50000
@@ -44,22 +46,36 @@ end
 
 local function onCollision(event)
     print(event.target.myName..": collision with "..event.other.myName)
+    
+    if (event.other.myName ~= "Floor") then
+        display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
+    end
 end
 
 local function screenTouched(event)
-    roboBlock:applyLinearImpulse(0, -0.2, roboBlock.x, roboBlock.y)
+    roboBlock:applyLinearImpulse(0, -0.2, roboBlock.x, roboBlock.y)  
+end
+
+local function moveItem(item)
+    transition.moveBy(item, 
+    {
+        time = 150, 
+        x = levelMovementSpeed * -2,
+        onComplete = 
+            function()
+                moveItem(item)
+            end
+    })
 end
 
 local function moveLevel()
-    transition.to(level, 
-    {
-        time = 150, 
-        x = level.x - levelMovementSpeed,
-        onComplete = 
-            function() 
-                moveLevel()
-            end
-    })
+    print("In moveLevel")
+
+    for _, item in pairs(level) do
+        print("Moving "..item.myName)
+
+        moveItem(item)        
+    end
 end
 
 local function addTriangleObject(x, y)    
@@ -72,25 +88,21 @@ local function addTriangleObject(x, y)
     item.myName = "Triangle"
     item.anchorX = 0
     item.anchorY = 0
-    item:addEventListener("collision", onCollision)  
-    physics.addBody(item, "static", { filter = collisionFilters.obstacle })   
-
-    level:insert(item)
+    physics.addBody(item, "static") 
+    table.insert(level, item)  
 end
 
 local function buildLevel()
-    level = display.newGroup()
 
-    local floor = display.newRect(-50, floorHeight + objectStrokeWidth, levelWidth, 110)
+    floor = display.newRect(-50, floorHeight + objectStrokeWidth, levelWidth, 110)
     floor.strokeWidth = objectStrokeWidth
     floor:setStrokeColor(unpack(redColorTable))
     floor:setFillColor(unpack(semiTransparentColorTable))
     floor.myName = "Floor"
     floor.anchorX = 0
     floor.anchorY = 0
-    physics.addBody(floor, "static", { filter = collisionFilters.world })
-
-    level:insert(floor)
+    physics.addBody(floor, "static") 
+    table.insert(level, floor)
 
     addTriangleObject(500, floorHeight - objectWidth - objectStrokeWidth)
     addTriangleObject(1000, floorHeight - objectWidth - objectStrokeWidth)
@@ -112,8 +124,8 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
     physics.start()
-    physics.setGravity(0, 9.8 * 5)
     --physics.setDrawMode("debug")
+    physics.setGravity(0, 9.8 * 5)
 
     local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
     background.x = display.contentCenterX 
@@ -140,11 +152,6 @@ function scene:create( event )
         strokeWidth = 5
     })
 
-    collisionFilters.player = { categoryBits = 1, maskBits = 6}
-    collisionFilters.obstacle = { categoryBits = 2, maskBits = 1 }
-    collisionFilters.world = { categoryBits = 4, maskBits = 1 }
-
-
     -- -----------------
     -- Center the button
     -- -----------------
@@ -161,7 +168,8 @@ function scene:create( event )
 
     sceneGroup:insert(background)
     sceneGroup:insert(nextSceneButton)
-    sceneGroup:insert(level)
+
+    --Runtime:addEventListener("enterFrame", testCollisions)
 end 
  
 -- show()
@@ -171,14 +179,14 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
-        roboBlock = display.newRect(0, floorHeight - objectWidth, objectWidth, objectWidth)
+        roboBlock = display.newRect(0, floorHeight - objectWidth - 15, objectWidth, objectWidth)
         roboBlock.strokeWidth = objectStrokeWidth
         roboBlock:setStrokeColor(unpack(whiteColorTable))
         roboBlock:setFillColor(unpack(semiTransparentColorTable))
         roboBlock.myName = "RoboBlock"
         roboBlock:addEventListener("collision", onCollision)  
-        physics.addBody(roboBlock, "dynamic", { filter = collisionFilters.player, bounce = 0 })
-   
+        physics.addBody(roboBlock, "dynamic")
+        
         sceneGroup:insert(roboBlock)
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen 
@@ -202,6 +210,12 @@ function scene:hide( event )
         -- Code here runs immediately after the scene goes entirely off screen 
         physics.pause()
 
+        for _, item in pairs(level) do
+            print("Hiding "..item.myName)
+
+            item.isVisible = false     
+        end
+
         -- Stop the music!
         audio.stop(1)
         audio.dispose(backgroundMusic)
@@ -213,6 +227,12 @@ function scene:destroy( event )
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view    
     physics.stop()
+
+    for _, item in pairs(level) do
+        print("Destroying "..item.myName)
+
+        item:removeSelf()  
+    end
 end 
  
 -- -----------------------------------------------------------------------------------
