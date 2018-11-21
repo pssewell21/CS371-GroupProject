@@ -13,15 +13,24 @@ local levelMovementSpeed = 80
 local levelWidth = 50000
 local jumpHeight = 75
 local floorHeight = 210
-local objectWidth = 30
+local objectWidth = 50 
 local objectStrokeWidth = 3
 
 local whiteColorTable = {1, 1, 1}
-local redColorTable = {1, 0, 0}
+local pinkColorTable = {1 ,0, 0.9}
 local semiTransparentColorTable = {0, 0, 0, 0.75}
 
 local collisionFilters = {}
- 
+-- --------------------------------
+-- This is to paint roboBlock -- AA
+-- -------------------------------
+local paint = {0 ,1, 0.23}
+
+local roboBlockFace = {
+	type = "image",
+	filename = "roboBlockFace.png"
+} 
+
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -59,7 +68,7 @@ end
 local function moveItem(item)
     transition.moveBy(item, 
     {
-        time = 150, 
+        time = 275, 
         x = levelMovementSpeed * -2,
         onComplete = 
             function()
@@ -95,8 +104,8 @@ end
 local function buildLevel()
 
     floor = display.newRect(-50, floorHeight + objectStrokeWidth, levelWidth, 110)
-    floor.strokeWidth = objectStrokeWidth
-    floor:setStrokeColor(unpack(redColorTable))
+    floor.strokeWidth = 4 --objectStrokeWidth
+    floor:setStrokeColor(unpack(pinkColorTable))
     floor:setFillColor(unpack(semiTransparentColorTable))
     floor.myName = "Floor"
     floor.anchorX = 0
@@ -131,13 +140,13 @@ function scene:create( event )
     background.x = display.contentCenterX 
     background.y = display.contentCenterY
     
-    backgroundMusic = audio.loadStream("level1Music.mp3")
+    backgroundMusic = audio.loadStream("level1MusicUpdate.mp3")
 
    	-- -----------------
     -- Create the widget
     -- This is for testing purposes
     -- -----------------
-    local nextSceneButton = widget.newButton(
+   local nextSceneButton = widget.newButton(
     {
         label = "nextSceneButton",
         onEvent = handleButtonEvent,
@@ -164,6 +173,7 @@ function scene:create( event )
     nextSceneButton:setLabel( "NEXT" )
     nextSceneButton:addEventListener("tap", gotoNextScene)  
 
+
     buildLevel() 
 
     sceneGroup:insert(background)
@@ -181,13 +191,14 @@ function scene:show( event )
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
         roboBlock = display.newRect(0, floorHeight - objectWidth - 15, objectWidth, objectWidth)
         roboBlock.strokeWidth = objectStrokeWidth
-        roboBlock:setStrokeColor(unpack(whiteColorTable))
-        roboBlock:setFillColor(unpack(semiTransparentColorTable))
+        roboBlock:setStrokeColor(0,0,0) --unpack(whiteColorTable))
+        roboBlock.fill = roboBlockFace  -- Still trying to figure out the size -- AA
         roboBlock.myName = "RoboBlock"
         roboBlock:addEventListener("collision", onCollision)  
         physics.addBody(roboBlock, "dynamic")
         
         sceneGroup:insert(roboBlock)
+
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen 
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})

@@ -1,7 +1,7 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
 local scene = composer.newScene()
- 
+local backgroundMusic
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -69,6 +69,8 @@ function scene:create( event )
 
     sceneGroup:insert(background)
  	sceneGroup:insert(nextSceneButton)
+
+ 	backgroundMusic = audio.loadStream("level2MusicUpdate.mp3")
 end
   
 -- show()
@@ -80,6 +82,9 @@ function scene:show( event )
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen 
+
+        local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
+        audio.play(backgroundMusic, {channel = 1, loops = -1})
     end
 end 
  
@@ -92,6 +97,9 @@ function scene:hide( event )
         -- Code here runs when the scene is on screen (but is about to go off screen) 
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen 
+     -- Stop the music!
+        audio.stop(1)
+        audio.dispose(backgroundMusic)
     end
 end 
  
