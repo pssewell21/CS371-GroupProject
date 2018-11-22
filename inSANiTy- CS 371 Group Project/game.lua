@@ -9,7 +9,7 @@ local backgroundMusic
 
 local level = {}
 
-local levelMovementSpeed = 75
+local levelMovementSpeed = 35
 local levelMovementEnabled = true
 
 -- The width of objects in he level
@@ -67,7 +67,13 @@ local function onCollision(event)
     
     -- Collisions with the floor do not result in a loss, any other collision does
     if (event.other.myName ~= nli and event.other.myName ~= "Floor") then
-        display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
+        if (event.other.myName == "EndFlag") then
+            display.newText("YOU WIN!!!", display.contentCenterX, 50, native.systemFont, 36)
+        else
+            display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
+        end
+
+        
         levelMovementEnabled = false
     end
 end
@@ -82,7 +88,7 @@ local function moveItem(item)
     if (levelMovementEnabled == true) then
         transition.moveBy(item, 
         {
-            time = 275, 
+            time = 150, 
             x = levelMovementSpeed * -2,
             onComplete = 
                 function()
@@ -131,7 +137,6 @@ end
 
 -- Adds a square object to the level
 local function addSquareObstacle(x, y)    
-
     local item = display.newRect(x, y, objectWidth, objectWidth)
     item.strokeWidth = objectStrokeWidth
     item:setStrokeColor(unpack(whiteColorTable))
@@ -141,6 +146,33 @@ local function addSquareObstacle(x, y)
     item.anchorY = 0
     physics.addBody(item, "static") 
     table.insert(level, item)  
+end
+
+local function addEndFlag(x, y)
+    local item = display.newRect(x, y - (2 * tileWidth), objectStrokeWidth, 3 * tileWidth)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "EndFlag"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static") 
+    table.insert(level, item)  
+
+    item = display.newRect(x + 1.5 * objectStrokeWidth, y - (2 * tileWidth), 1.5 * tileWidth, tileWidth)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "EndFlag"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static") 
+    table.insert(level, item)  
+
+    item = display.newText("END", x + (0.45 * tileWidth), y - (1.75 * tileWidth), native.systemFont, 14)
+    item.anchorX = 0
+    item.anchorY = 0
+    table.insert(level, item) 
 end
 
 -- Adds an item to the level.  The caller specifies the type of item to add and the position
@@ -164,6 +196,8 @@ local function addLevelItem(type, xStartTile, xEndTile, yTile)
         addTriangleObstacle(xStart, y)
     elseif (type == "square") then
         addSquareObstacle(xStart, y)
+    elseif (type == "endFlag") then
+        addEndFlag(xStart, y)
     end
 end
 
@@ -201,6 +235,8 @@ local function buildLevel()
     addLevelItem("floor", 103, 110, floorY)
     addLevelItem("floor", 113, 120, floorY)
     addLevelItem("floor", 123, 140, floorY)
+
+    addLevelItem("endFlag", 128, nil, floorLevelObstacleHeight)
 end
 
 -- -----------------------------------------------------------------------------------
