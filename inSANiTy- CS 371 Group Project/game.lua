@@ -10,10 +10,11 @@ local backgroundMusic
 local level = {}
 
 local levelMovementSpeed = 75
+local levelMovementEnabled = true
 local objectWidth = 30 
 local objectStrokeWidth = 3
 local tileWidth = objectWidth + (2 * objectStrokeWidth)
-local floorY = 6 * tileWidth
+local floorY = 6
 
 local blackColorTable = {0, 0, 0}
 local whiteColorTable = {1, 1, 1}
@@ -56,32 +57,32 @@ end
 local function onCollision(event)
     print(event.target.myName..": collision with "..event.other.myName)
     
-    if (event.other.myName ~= "Floor") then
+    if (event.other.myName ~= nli and event.other.myName ~= "Floor") then
         display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
+        levelMovementEnabled = false
     end
 end
 
 local function screenTouched(event)
-    roboBlock:applyLinearImpulse(0, -0.2, roboBlock.x, roboBlock.y)  
+    roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)  
 end
 
 local function moveItem(item)
-    transition.moveBy(item, 
-    {
-        time = 275, 
-        x = levelMovementSpeed * -2,
-        onComplete = 
-            function()
-                moveItem(item)
-            end
-    })
+    if (levelMovementEnabled == true) then
+        transition.moveBy(item, 
+        {
+            time = 275, 
+            x = levelMovementSpeed * -2,
+            onComplete = 
+                function()
+                    moveItem(item)
+                end
+        })
+    end
 end
 
 local function moveLevel()
-    print("In moveLevel")
-
     for _, item in pairs(level) do
-        print("Moving "..item.myName)
 
         moveItem(item)        
     end
@@ -99,8 +100,9 @@ local function addFloor(xStart, xEnd, y)
     table.insert(level, item)  
 end
 
-local function addTriangleObstacle(x, y)    
-    local vertices = {0,0, objectWidth,0, (objectWidth / 2),-objectWidth}
+local function addTriangleObstacle(x, y)
+    local rightVertexX = objectWidth - (2 * objectStrokeWidth)
+    local vertices = {-objectStrokeWidth,-objectStrokeWidth, rightVertexX,-objectStrokeWidth, (rightVertexX / 2 - 1),-objectWidth,}
 
     local item = display.newPolygon(x, y, vertices)
     item.strokeWidth = objectStrokeWidth
@@ -115,7 +117,7 @@ end
 
 local function addSquareObstacle(x, y)    
 
-    local item = display.newRect(x, y + objectStrokeWidth, objectWidth, objectWidth)
+    local item = display.newRect(x, y, objectWidth, objectWidth)
     item.strokeWidth = objectStrokeWidth
     item:setStrokeColor(unpack(whiteColorTable))
     item:setFillColor(unpack(semiTransparentColorTable))
@@ -126,7 +128,15 @@ local function addSquareObstacle(x, y)
     table.insert(level, item)  
 end
 
-local function addLevelItem(type, xStart, xEnd, y)
+local function addLevelItem(type, xStartTile, xEndTile, yTile)
+    local xStart = xStartTile * tileWidth
+
+    if (xEndTile ~= nil) then
+        xEnd = xEndTile * tileWidth
+    end
+
+    local y = yTile * tileWidth
+
     if (type == "floor") then
         if (xEnd ~= nil) then
             addFloor(xStart, xEnd, y)
@@ -141,18 +151,38 @@ local function addLevelItem(type, xStart, xEnd, y)
     end
 end
 
-local function buildLevel()
-    local floorLevelObstacleHeight = floorY - tileWidth
+local function addBottom()
+    local item = display.newRect(0, display.contentHeight + tileWidth, 99999 * tileWidth, 0)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "Bottom"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static") 
+    table.insert(level, item) 
+end
 
-    addLevelItem("floor", 0, 50000, floorY)
-    addLevelItem("triangle", 17 * tileWidth, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 34 * tileWidth, nil, floorLevelObstacleHeight)
-    addLevelItem("square", 40 * tileWidth, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 39 * tileWidth, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 53 * tileWidth, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 66 * tileWidth, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 78 * tileWidth, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 79 * tileWidth, nil, floorLevelObstacleHeight)
+local function buildLevel()
+    local floorLevelObstacleHeight = floorY - 1
+
+    addBottom()
+    addLevelItem("floor", 0, 100, floorY)
+
+    addLevelItem("triangle", 13, nil, floorLevelObstacleHeight)
+    addLevelItem("square", 14, nil, floorLevelObstacleHeight)    
+    addLevelItem("square", 14, nil, floorLevelObstacleHeight - 1)
+    addLevelItem("triangle", 34, nil, floorLevelObstacleHeight)
+    addLevelItem("square", 40, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 39, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 53, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 66, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 78, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 79, nil, floorLevelObstacleHeight)
+
+    addLevelItem("floor", 103, 110, floorY)
+    addLevelItem("floor", 113, 120, floorY)
+    addLevelItem("floor", 123, 140, floorY)
 end
 
 -- -----------------------------------------------------------------------------------
@@ -218,7 +248,7 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
-        roboBlock = display.newRect(0, floorY - tileWidth, objectWidth, objectWidth)
+        roboBlock = display.newRect(0, (floorY - 1) * tileWidth, objectWidth, objectWidth)
         roboBlock.strokeWidth = objectStrokeWidth
         roboBlock:setStrokeColor(unpack(blackColorTable)) 
         roboBlock.fill = roboBlockFace  -- Still trying to figure out the size -- AA
