@@ -39,6 +39,8 @@ local roboBlockFace = {
 	filename = "roboBlockFace.png"
 } 
 
+local nextSceneButton
+
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -69,10 +71,10 @@ local function onCollision(event)
     if (event.other.myName ~= nli and event.other.myName ~= "Floor") then
         if (event.other.myName == "EndFlag") then
             display.newText("YOU WIN!!!", display.contentCenterX, 50, native.systemFont, 36)
+            nextSceneButton.isVisible = true
         else
             display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
         end
-
         
         levelMovementEnabled = false
     end
@@ -221,6 +223,9 @@ local function buildLevel()
     addBottom()
     addLevelItem("floor", 0, 100, floorY)
 
+
+    addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
+
     addLevelItem("triangle", 13, nil, floorLevelObstacleHeight)
     addLevelItem("square", 14, nil, floorLevelObstacleHeight)    
     addLevelItem("square", 14, nil, floorLevelObstacleHeight - 1)
@@ -259,9 +264,8 @@ function scene:create( event )
 
    	-- -----------------
     -- Create the widget
-    -- This is for testing purposes
     -- -----------------
-    local nextSceneButton = widget.newButton(
+    nextSceneButton = widget.newButton(
     {
         label = "nextSceneButton",
         onEvent = handleButtonEvent,
@@ -280,7 +284,8 @@ function scene:create( event )
     -- Center the button
     -- -----------------
     nextSceneButton.x = display.contentCenterX
-    nextSceneButton.y = display.contentCenterY + 120
+    nextSceneButton.y = display.contentCenterY - 70
+    nextSceneButton.isVisible = false
     
     -- ------------------------------
     -- Change the button's label text
