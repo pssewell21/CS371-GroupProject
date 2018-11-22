@@ -11,9 +11,17 @@ local level = {}
 
 local levelMovementSpeed = 75
 local levelMovementEnabled = true
+
+-- The width of objects in he level
 local objectWidth = 30 
+
+-- The width of the stoke used on objects in the lvel
 local objectStrokeWidth = 3
+
+-- The combined width of the an object and its stoke on both sides (i.e. the width of a tile)
 local tileWidth = objectWidth + (2 * objectStrokeWidth)
+
+-- The number of tiles down from the top of the screen the floor is located at
 local floorY = 6
 
 local blackColorTable = {0, 0, 0}
@@ -21,7 +29,6 @@ local whiteColorTable = {1, 1, 1}
 local pinkColorTable = {1 ,0, 0.9}
 local semiTransparentColorTable = {0, 0, 0, 0.75}
 
-local collisionFilters = {}
 -- --------------------------------
 -- This is to paint roboBlock -- AA
 -- -------------------------------
@@ -54,19 +61,23 @@ local function handleButtonEvent(event)
     end
 end 
 
+-- The collision handler, this method runs when a collision occurs with a physics body
 local function onCollision(event)
     print(event.target.myName..": collision with "..event.other.myName)
     
+    -- Collisions with the floor do not result in a loss, any other collision does
     if (event.other.myName ~= nli and event.other.myName ~= "Floor") then
         display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
         levelMovementEnabled = false
     end
 end
 
+-- Moves roboBlock on screen touch
 local function screenTouched(event)
     roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)  
 end
 
+-- This function is called recursively on each item in the level to move them on the screen
 local function moveItem(item)
     if (levelMovementEnabled == true) then
         transition.moveBy(item, 
@@ -81,6 +92,7 @@ local function moveItem(item)
     end
 end
 
+-- Iterates through each item in the level and call moveITem to move the level
 local function moveLevel()
     for _, item in pairs(level) do
 
@@ -88,6 +100,7 @@ local function moveLevel()
     end
 end
 
+-- Adds a floor object to the level
 local function addFloor(xStart, xEnd, y)
     local item = display.newRect(xStart, y, xEnd - xStart, display.contentHeight - y + objectStrokeWidth)
     item.strokeWidth = objectStrokeWidth
@@ -100,6 +113,7 @@ local function addFloor(xStart, xEnd, y)
     table.insert(level, item)  
 end
 
+-- Adds a triangle object to the level
 local function addTriangleObstacle(x, y)
     local rightVertexX = objectWidth - (2 * objectStrokeWidth)
     local vertices = {-objectStrokeWidth,-objectStrokeWidth, rightVertexX,-objectStrokeWidth, (rightVertexX / 2 - 1),-objectWidth,}
@@ -115,6 +129,7 @@ local function addTriangleObstacle(x, y)
     table.insert(level, item)  
 end
 
+-- Adds a square object to the level
 local function addSquareObstacle(x, y)    
 
     local item = display.newRect(x, y, objectWidth, objectWidth)
@@ -128,6 +143,7 @@ local function addSquareObstacle(x, y)
     table.insert(level, item)  
 end
 
+-- Adds an item to the level.  The caller specifies the type of item to add and the position
 local function addLevelItem(type, xStartTile, xEndTile, yTile)
     local xStart = xStartTile * tileWidth
 
@@ -151,6 +167,7 @@ local function addLevelItem(type, xStartTile, xEndTile, yTile)
     end
 end
 
+-- Adds a bottom object to the level.  This object is used to detect falling through pits.
 local function addBottom()
     local item = display.newRect(0, display.contentHeight + tileWidth, 99999 * tileWidth, 0)
     item.strokeWidth = objectStrokeWidth
@@ -163,6 +180,7 @@ local function addBottom()
     table.insert(level, item) 
 end
 
+-- This function is used to build the level
 local function buildLevel()
     local floorLevelObstacleHeight = floorY - 1
 
@@ -189,7 +207,6 @@ end
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
  
--- create()
 function scene:create( event ) 
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
@@ -241,7 +258,6 @@ function scene:create( event )
     sceneGroup:insert(nextSceneButton)
 end 
  
--- show()
 function scene:show( event ) 
     local sceneGroup = self.view
     local phase = event.phase
@@ -269,7 +285,6 @@ function scene:show( event )
     end
 end 
  
--- hide()
 function scene:hide( event ) 
     local sceneGroup = self.view
     local phase = event.phase
@@ -292,7 +307,6 @@ function scene:hide( event )
     end
 end 
  
--- destroy()
 function scene:destroy( event ) 
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view    
