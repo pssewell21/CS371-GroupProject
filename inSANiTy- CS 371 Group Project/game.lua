@@ -14,8 +14,9 @@ local levelWidth = 50000
 local jumpHeight = 75
 local floorHeight = 210
 local objectWidth = 50 
-local objectStrokeWidth = 3
+local objectStrokeWidth = 4
 
+local blackColorTable = {0, 0, 0}
 local whiteColorTable = {1, 1, 1}
 local pinkColorTable = {1 ,0, 0.9}
 local semiTransparentColorTable = {0, 0, 0, 0.75}
@@ -104,7 +105,7 @@ end
 local function buildLevel()
 
     floor = display.newRect(-50, floorHeight + objectStrokeWidth, levelWidth, 110)
-    floor.strokeWidth = 4 --objectStrokeWidth
+    floor.strokeWidth = objectStrokeWidth
     floor:setStrokeColor(unpack(pinkColorTable))
     floor:setFillColor(unpack(semiTransparentColorTable))
     floor.myName = "Floor"
@@ -146,7 +147,7 @@ function scene:create( event )
     -- Create the widget
     -- This is for testing purposes
     -- -----------------
-   local nextSceneButton = widget.newButton(
+    local nextSceneButton = widget.newButton(
     {
         label = "nextSceneButton",
         onEvent = handleButtonEvent,
@@ -191,7 +192,7 @@ function scene:show( event )
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
         roboBlock = display.newRect(0, floorHeight - objectWidth - 15, objectWidth, objectWidth)
         roboBlock.strokeWidth = objectStrokeWidth
-        roboBlock:setStrokeColor(0,0,0) --unpack(whiteColorTable))
+        roboBlock:setStrokeColor(unpack(blackColorTable)) 
         roboBlock.fill = roboBlockFace  -- Still trying to figure out the size -- AA
         roboBlock.myName = "RoboBlock"
         roboBlock:addEventListener("collision", onCollision)  
