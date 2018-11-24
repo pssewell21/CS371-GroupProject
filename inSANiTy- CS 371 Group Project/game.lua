@@ -9,7 +9,7 @@ local backgroundMusic
 
 local level = {}
 
-local levelMovementSpeed = 35
+local levelMovementSpeed = 30
 local levelMovementEnabled = true
 
 local firstJumpCollision = false
@@ -99,7 +99,7 @@ local function onCollision(event)
 
     -- Set linear velocity to 0 if the block is sliding
     if vx ~= 0 then
-        print("Setting linear velocity to 0")
+        --print("Setting linear velocity to 0")
         roboBlock:setLinearVelocity(0, vy)
     end
 end
@@ -177,7 +177,7 @@ local function addSquareObstacle(x, y)
     physics.addBody(item, "static") 
     table.insert(level, item)  
 
-    local item = display.newRect(x, y - 1, objectWidth, objectWidth)
+    local item = display.newRect(x - 2, y - 2, objectWidth + 2, 5)
     item.strokeWidth = objectStrokeWidth
     item:setStrokeColor(unpack(transparentColorTable))
     item:setFillColor(unpack(transparentColorTable))
@@ -263,7 +263,7 @@ local function buildLevel()
 
     --addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
 
-    addLevelItem("triangle", 12, nil, floorLevelObstacleHeight)
+    --addLevelItem("triangle", 12, nil, floorLevelObstacleHeight)
     addLevelItem("square", 13, nil, floorLevelObstacleHeight)    
     addLevelItem("square", 13, nil, floorLevelObstacleHeight - 1)
     addLevelItem("triangle", 34, nil, floorLevelObstacleHeight)
@@ -276,7 +276,7 @@ local function buildLevel()
 
     addLevelItem("floor", 103, 110, floorY)
     addLevelItem("floor", 113, 120, floorY)
-    addLevelItem("floor", 123, 140, floorY)
+    addLevelItem("floor", 123, 145, floorY)
 
     addLevelItem("endFlag", 128, nil, floorLevelObstacleHeight)
 end
@@ -296,7 +296,7 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         physics.start()
-        --physics.setDrawMode("hybrid")
+        physics.setDrawMode("hybrid")
         physics.setGravity(0, 9.8 * 5)
     
         local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
@@ -381,8 +381,6 @@ function scene:hide( event )
         physics.stop()        
 
         for _, item in pairs(level) do
-            print("Destroying "..item.myName)
-
             item:removeSelf()  
         end
 
