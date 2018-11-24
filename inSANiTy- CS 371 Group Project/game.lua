@@ -11,6 +11,7 @@ local level = {}
 
 local levelMovementSpeed = 35
 local levelMovementEnabled = true
+local jumpEnabled = true
 
 -- The width of objects in he level
 local objectWidth = 30 
@@ -28,6 +29,9 @@ local blackColorTable = {0, 0, 0}
 local whiteColorTable = {1, 1, 1}
 local pinkColorTable = {1 ,0, 0.9}
 local semiTransparentColorTable = {0, 0, 0, 0.75}
+
+local winText
+local loseText
 
 -- --------------------------------
 -- This is to paint roboBlock -- AA
@@ -70,19 +74,22 @@ local function onCollision(event)
     -- Collisions with the floor do not result in a loss, any other collision does
     if (event.other.myName ~= nli and event.other.myName ~= "Floor") then
         if (event.other.myName == "EndFlag") then
-            display.newText("YOU WIN!!!", display.contentCenterX, 50, native.systemFont, 36)
             nextSceneButton.isVisible = true
+            winText.isVisible = true
         else
-            display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
+            loseText.isVisible = true
         end
         
         levelMovementEnabled = false
+        jumpEnabled = false
     end
 end
 
 -- Moves roboBlock on screen touch
 local function screenTouched(event)
-    roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)  
+    if jumpEndbled == true then
+        roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)  
+    end
 end
 
 -- This function is called recursively on each item in the level to move them on the screen
@@ -103,7 +110,6 @@ end
 -- Iterates through each item in the level and call moveITem to move the level
 local function moveLevel()
     for _, item in pairs(level) do
-
         moveItem(item)        
     end
 end
@@ -293,10 +299,18 @@ function scene:create( event )
     nextSceneButton:setLabel( "NEXT" )
     nextSceneButton:addEventListener("tap", gotoNextScene) 
 
+    winText = display.newText("YOU WIN!!!", display.contentCenterX, 50, native.systemFont, 36)
+    winText.isVisible = false
+
+    loseText = display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
+    loseText.isVisible = false
+
     buildLevel() 
 
     sceneGroup:insert(background)
     sceneGroup:insert(nextSceneButton)
+    sceneGroup:insert(winText)
+    sceneGroup:insert(loseText)
 end 
  
 function scene:show( event ) 
@@ -337,9 +351,11 @@ function scene:hide( event )
         physics.pause()
 
         for _, item in pairs(level) do
-            print("Hiding "..item.myName)
+            if (item.myName ~= nil) then
+                print("Hiding "..item.myName)
+            end
 
-            item.isVisible = false     
+            item.isVisible = false
         end
 
         -- Stop the music!
