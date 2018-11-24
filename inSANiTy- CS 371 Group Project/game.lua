@@ -87,7 +87,7 @@ end
 
 -- Moves roboBlock on screen touch
 local function screenTouched(event)
-    if jumpEndbled == true then
+    if jumpEnabled == true then
         roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)  
     end
 end
@@ -230,7 +230,7 @@ local function buildLevel()
     addLevelItem("floor", 0, 100, floorY)
 
 
-    addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
+    --addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
 
     addLevelItem("triangle", 13, nil, floorLevelObstacleHeight)
     addLevelItem("square", 14, nil, floorLevelObstacleHeight)    
