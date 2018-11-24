@@ -197,6 +197,7 @@ local function addEndFlag(x, y)
     item.anchorX = 0
     item.anchorY = 0
     physics.addBody(item, "static") 
+    item.isSensor = true
     table.insert(level, item)  
 
     item = display.newRect(x + 1.5 * objectStrokeWidth, y - (2 * tileWidth), 1.5 * tileWidth, tileWidth)
@@ -207,6 +208,7 @@ local function addEndFlag(x, y)
     item.anchorX = 0
     item.anchorY = 0
     physics.addBody(item, "static") 
+    item.isSensor = true
     table.insert(level, item)  
 
     item = display.newText("END", x + (0.45 * tileWidth), y - (1.75 * tileWidth), native.systemFont, 14)
@@ -261,9 +263,9 @@ local function buildLevel()
     addBottom()
     addLevelItem("floor", -2, 100, floorY)
 
-    --addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
+    addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
 
-    --addLevelItem("triangle", 12, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 12, nil, floorLevelObstacleHeight)
     addLevelItem("square", 13, nil, floorLevelObstacleHeight)    
     addLevelItem("square", 13, nil, floorLevelObstacleHeight - 1)
     addLevelItem("triangle", 34, nil, floorLevelObstacleHeight)
