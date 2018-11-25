@@ -41,13 +41,13 @@ local menuSceneButton
 -- --------------------------------
 -- This is to paint roboBlock -- AA
 -- -------------------------------
-local paint = {0, 1, 0.23}
-
 local roboBlockFace = {
 	type = "image",
 	filename = "roboBlockFace.png"
 } 
 
+local hitObjectSound = audio.loadSound("hitObject.wav")
+local jumpSound = audio.loadSound("jump.wav")
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -94,6 +94,8 @@ local function onCollision(event)
             jumpEnabled = true
         else
             firstJumpCollision = true
+            audio.play(jumpSound)
+            --audio.play(hitObjectSound)
         end
     else
         if event.other.myName == "EndFlag" then
@@ -101,7 +103,8 @@ local function onCollision(event)
             menuSceneButton.isVisible = true
             winText.isVisible = true
         else
-            loseText.isVisible = true
+           -- loseText.isVisible = true
+           	audio.play(hitObjectSound)
             menuSceneButton.isVisible = true
         end
         
@@ -368,9 +371,11 @@ function scene:show( event )
     
         winText = display.newText("YOU WIN!!!", display.contentCenterX, 50, native.systemFont, 36)
         winText.isVisible = false
+
     
-        loseText = display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
-        loseText.isVisible = false
+        --loseText = display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
+        audio.play(hitObjectSound)
+        --loseText.isVisible = false
     
         buildLevel() 
 
@@ -388,7 +393,7 @@ function scene:show( event )
         sceneGroup:insert(nextSceneButton)
         sceneGroup:insert(menuSceneButton)
         sceneGroup:insert(winText)
-        sceneGroup:insert(loseText)
+       -- sceneGroup:insert(loseText)
         sceneGroup:insert(roboBlock)
     elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen 
