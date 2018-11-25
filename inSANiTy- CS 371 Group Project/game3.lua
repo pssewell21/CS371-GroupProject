@@ -13,6 +13,7 @@ local function gotoNextScene()
         time = 500,
     }
 
+    composer.removeScene("game3")
     composer.gotoScene("game4", sceneTransitionsOpitions)
 end
 

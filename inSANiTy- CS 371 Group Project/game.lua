@@ -47,6 +47,7 @@ local roboBlockFace = {
 } 
 
 local nextSceneButton
+local menuSceneButton
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -60,7 +61,19 @@ local function gotoNextScene()
         time = 500,
     }
 
+    composer.removeScene("game")
     composer.gotoScene("game2", sceneTransitionsOptions)
+end
+
+local function gotoMenuScene()
+    local sceneTransitionsOptions = 
+    {
+        effects = "fade",
+        time = 500,
+    }
+
+    composer.removeScene("game")
+    composer.gotoScene("titleScene", sceneTransitionsOptions)
 end
 
 -- Function to handle button events
@@ -86,6 +99,7 @@ local function onCollision(event)
     else
         if (event.other.myName == "EndFlag") then
             nextSceneButton.isVisible = true
+            menuSceneButton.isVisible = true
             winText.isVisible = true
         else
             loseText.isVisible = true
@@ -324,19 +338,33 @@ function scene:show( event )
             strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
             strokeWidth = 5
         })
-    
-        -- -----------------
-        -- Center the button
-        -- -----------------
-        nextSceneButton.x = display.contentCenterX
+
+        nextSceneButton.x = display.contentCenterX + 50
         nextSceneButton.y = display.contentCenterY - 70
-        nextSceneButton.isVisible = false
-        
-        -- ------------------------------
-        -- Change the button's label text
-        -- ------------------------------
-        nextSceneButton:setLabel( "NEXT" )
+        nextSceneButton:setLabel("NEXT")
         nextSceneButton:addEventListener("tap", gotoNextScene) 
+        nextSceneButton.isVisible = false
+
+        menuSceneButton = widget.newButton(
+        {
+            label = "menuSceneButton",
+            onEvent = handleButtonEvent,
+            emboss = false,
+            -- Properties for a rounded rectangle button
+            shape = "roundedRect",
+            width = 60,
+            height = 40,
+            cornerRadius = 2,
+            fillColor = { default = {0 ,1, 0.23}, over={0.8,1,0.8} }, 
+            strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
+            strokeWidth = 5
+        })
+
+        menuSceneButton.x = display.contentCenterX - 50
+        menuSceneButton.y = display.contentCenterY - 70
+        menuSceneButton:setLabel("MENU")
+        menuSceneButton:addEventListener("tap", gotoMenuScene) 
+        menuSceneButton.isVisible = false
     
         winText = display.newText("YOU WIN!!!", display.contentCenterX, 50, native.systemFont, 36)
         winText.isVisible = false
@@ -358,6 +386,7 @@ function scene:show( event )
     
         sceneGroup:insert(background)
         sceneGroup:insert(nextSceneButton)
+        sceneGroup:insert(menuSceneButton)
         sceneGroup:insert(winText)
         sceneGroup:insert(loseText)
         sceneGroup:insert(roboBlock)
@@ -380,21 +409,22 @@ function scene:hide( event )
         -- Code here runs when the scene is on screen (but is about to go off screen) 
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen 
-        physics.stop()        
-
-        for _, item in pairs(level) do
-            item:removeSelf()  
-        end
-
-        -- Stop the music!
-        audio.stop(1)
-        audio.dispose(backgroundMusic)
     end
 end 
  
 function scene:destroy( event ) 
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view    
+
+    physics.stop()        
+
+    for _, item in pairs(level) do
+        item:removeSelf()  
+    end
+
+    -- Stop the music!
+    audio.stop(1)
+    audio.dispose(backgroundMusic)
 end 
  
 -- -----------------------------------------------------------------------------------
