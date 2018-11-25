@@ -45,9 +45,21 @@ local roboBlockFace = {
 	type = "image",
 	filename = "roboBlockFace.png"
 } 
-
+local roboBlockScared = {
+	type = "image",
+	filename = "roboBlockScared.png"
+}
+-- --------------------------------
+-- Sound Effects -- AA
+-- --------------------------------
 local hitObjectSound = audio.loadSound("hitObject.wav")
 local jumpSound = audio.loadSound("jump.wav")
+local loseSound = audio.loadSound("evilLaugh.wav")
+
+-- --------------------------------
+-- This is for the monster - AA
+-- --------------------------------
+local monsterGroup = display.newGroup()
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -101,17 +113,30 @@ local function onCollision(event)
         if event.other.myName == "EndFlag" then
             nextSceneButton.isVisible = true
             menuSceneButton.isVisible = true
-            winText.isVisible = true
+            toBeContinued.isVisible = true
+           
         else
             -- if collising with the bottom, make the bloack a sensor so it falls through and doesn't collide forever            
             if event.other.myName ~= nil and event.other.myName == "Bottom" then
                 roboBlock.isSensor = true
             end
+            
+            roboBlockFace.isVisible = false
+            roboBlock.fill = roboBlockScared
 
           	audio.play(hitObjectSound)
+          	audio.play(loseSound)
+
+          	lostMessage.isVisible = true
+          	monster1.isVisible = true
+          	monster2.isVisible = true
+          	monster3.isVisible = true
+          	monster4.isVisible = true
+
             menuSceneButton.isVisible = true
+
         end
-        
+       	
         levelMovementEnabled = false 
         jumpEnabled = false 
     end
@@ -359,26 +384,59 @@ function scene:show( event )
             emboss = false,
             -- Properties for a rounded rectangle button
             shape = "roundedRect",
-            width = 60,
-            height = 40,
+            width = 70,
+            height = 25,
             cornerRadius = 2,
             fillColor = { default = {0 ,1, 0.23}, over={0.8,1,0.8} }, 
             strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
             strokeWidth = 5
         })
 
-        menuSceneButton.x = display.contentCenterX - 50
-        menuSceneButton.y = display.contentCenterY - 70
+        menuSceneButton.x = display.contentCenterX + 230 
+        menuSceneButton.y = display.contentCenterY - 130
         menuSceneButton:setLabel("MENU")
         menuSceneButton:addEventListener("tap", gotoMenuScene) 
         menuSceneButton.isVisible = false
     
-        winText = display.newText("YOU WIN!!!", display.contentCenterX, 50, native.systemFont, 36)
-        winText.isVisible = false
 
-    
-        --loseText = display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
-        --loseText.isVisible = false
+        toBeContinued = display.newImageRect(sceneGroup, "contd.png", 550,100)
+        toBeContinued.x = display.contentCenterX 
+    	toBeContinued.y = display.contentCenterY - 70
+    	toBeContinued.isVisible = false 
+
+        lostMessage = display.newImageRect(sceneGroup, "lost.png", 550,100)
+        lostMessage.x = display.contentCenterX 
+    	lostMessage.y = display.contentCenterY - 70
+    	lostMessage.isVisible = false 
+
+
+    	monster1 = display.newImageRect(sceneGroup, "monster.png", 50, 50)
+    	monster1.x = display.contentCenterX - 200
+    	monster1.y = display.contentCenterY - 50
+    	monster1.isVisible = false
+    	monsterGroup:insert(monster1)
+
+    	monster2 = display.newImageRect(sceneGroup, "monster.png", 65, 65)
+    	monster2.x = display.contentCenterX + 150
+    	monster2.y = display.contentCenterY - 40
+    	monster2.xScale = -1
+    	monster2.isVisible = false 
+    	monsterGroup:insert(monster2)
+
+    	monster3 = display.newImageRect(sceneGroup, "monster.png", 80, 80)
+    	monster3.x = display.contentCenterX - 100
+    	monster3.y = display.contentCenterY - 20
+    	monster3.isVisible = false 
+    	monsterGroup:insert(monster3)
+
+    	monster4 = display.newImageRect(sceneGroup, "monster.png", 150, 150)
+    	monster4.x = display.contentCenterX + 75
+    	monster4.y = display.contentCenterY 
+    	monster4.xScale = -1
+    	monster4.isVisible = false 
+    	monsterGroup:insert(monster4)
+
+
     
         buildLevel() 
 
@@ -386,7 +444,14 @@ function scene:show( event )
         roboBlock = display.newRect(0, (floorY - 1) * tileWidth, objectWidth, objectWidth)
         roboBlock.strokeWidth = objectStrokeWidth
         roboBlock:setStrokeColor(unpack(blackColorTable)) 
-        roboBlock.fill = roboBlockFace  -- Still trying to figure out the size -- AA
+       
+        -- -----------------------
+        -- roboBlock's face -- AA
+        -- -----------------------
+        roboBlock.fill = roboBlockScared 
+ 		roboBlockScared.isVisible = false
+ 		roboBlock.fill = roboBlockFace  
+
         roboBlock.myName = "RoboBlock"
         roboBlock:addEventListener("collision", onCollision)   
         physics.addBody(roboBlock, "dynamic", {bounce = 0, friction = 0})
@@ -396,9 +461,11 @@ function scene:show( event )
         sceneGroup:insert(background)
         sceneGroup:insert(nextSceneButton)
         sceneGroup:insert(menuSceneButton)
-        sceneGroup:insert(winText)
-       -- sceneGroup:insert(loseText)
+        sceneGroup:insert(toBeContinued)
+        sceneGroup:insert(lostMessage)
+       	sceneGroup:insert(monsterGroup)
         sceneGroup:insert(roboBlock)
+
     elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen 
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 2, loops = -1, fadein = 5000})
