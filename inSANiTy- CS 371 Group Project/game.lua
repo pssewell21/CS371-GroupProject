@@ -103,6 +103,7 @@ local function onCollision(event)
             winText.isVisible = true
         else
             loseText.isVisible = true
+            menuSceneButton.isVisible = true
         end
         
         levelMovementEnabled = false 
@@ -414,7 +415,9 @@ end
  
 function scene:destroy( event ) 
     local sceneGroup = self.view
-    -- Code here runs prior to the removal of scene's view    
+    -- Code here runs prior to the removal of scene's view   
+
+    Runtime:removeEventListener("tap", screenTouched) 
 
     physics.stop()        
 
