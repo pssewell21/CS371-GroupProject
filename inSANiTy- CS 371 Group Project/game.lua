@@ -89,6 +89,7 @@ local function onCollision(event)
     -- Collisions with the floor or transparent square do not result in a loss, any other collision does
     -- Collisions with the floor or transparent square enable jumping
     if event.other.myName ~= nil and (event.other.myName == "Floor" or event.other.myName == "TransparentSquare") then
+        -- putting in a dumb boolean to keep the collision while the block is rising from marking jumpEnabled as true
         if firstJumpCollision == true then
             jumpEnabled = true
         else
@@ -96,7 +97,6 @@ local function onCollision(event)
             audio.play(jumpSound)
            
         end
-
     else
         if event.other.myName == "EndFlag" then
             nextSceneButton.isVisible = true
