@@ -119,8 +119,7 @@ local function onCollisionOccurred(event)
         if firstJumpCollision == true then
             jumpEnabled = true
         else
-            firstJumpCollision = true
-            audio.play(jumpSound)           
+            firstJumpCollision = true      
         end
     else
         if event.other.myName == "EndFlag" then
@@ -153,6 +152,7 @@ local function onCollisionOccurred(event)
         end
         
         levelMovementEnabled = false 
+        firstJumpCollision = false
         jumpEnabled = false 
     end
 
@@ -174,6 +174,7 @@ end
 local function screenTouched(event)
     if jumpEnabled == true then
         roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)
+        audio.play(jumpSound)     
         firstJumpCollision = false
         jumpEnabled = false
     end
@@ -302,6 +303,8 @@ function scene:show( event )
         
         backgroundMusic = audio.loadSound("level2MusicUpdate.mp3")
     
+        buildLevel() 
+    
         -- -----------------
         -- Create the widget
         -- -----------------
@@ -403,8 +406,6 @@ function scene:show( event )
         monster4.xScale = -1
         monster4.isVisible = false 
         monsterGroup:insert(monster4)
-    
-        buildLevel() 
 
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
         roboBlock = display.newRect(0, (floorY - 1) * tileWidth, objectWidth, objectWidth)
@@ -472,6 +473,8 @@ function scene:destroy( event )
     -- Stop the music!
     audio.stop(2)
     audio.dispose(loseSound)
+    audio.dispose(hitObjectSound)
+    audio.dispose(jumpSound)
     audio.dispose(backgroundMusic)
 end 
  

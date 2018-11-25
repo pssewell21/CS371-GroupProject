@@ -11,7 +11,7 @@ local backgroundMusic
 
 local level = {}
 
-local levelMovementSpeed = 30
+local levelMovementSpeed = 400
 local levelMovementEnabled = true
 
 local firstJumpCollision = false
@@ -107,8 +107,7 @@ local function onCollisionOccurred(event)
         if firstJumpCollision == true then
             jumpEnabled = true
         else
-            firstJumpCollision = true
-            audio.play(jumpSound)           
+            firstJumpCollision = true      
         end
     else
         if event.other.myName == "EndFlag" then
@@ -140,6 +139,7 @@ local function onCollisionOccurred(event)
         end
         
         levelMovementEnabled = false 
+        firstJumpCollision = false
         jumpEnabled = false 
     end
 
@@ -161,6 +161,7 @@ end
 local function screenTouched(event)
     if jumpEnabled == true then
         roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)
+        audio.play(jumpSound)     
         firstJumpCollision = false
         jumpEnabled = false
     end
@@ -171,8 +172,8 @@ local function moveItem(item)
     if levelMovementEnabled == true then
         transition.moveBy(item, 
         {
-            time = 150, 
-            x = levelMovementSpeed * -2,
+            time = 1000, 
+            x = levelMovementSpeed * -1,
             onComplete = 
                 function()
                     moveItem(item)
@@ -229,6 +230,8 @@ function scene:show( event )
         background.y = display.contentCenterY
         
         backgroundMusic = audio.loadSound("level3Music.mp3")
+    
+        buildLevel() 
 
         retryButton = widget.newButton(
         {
@@ -307,8 +310,6 @@ function scene:show( event )
         monster4.xScale = -1
         monster4.isVisible = false 
         monsterGroup:insert(monster4)
-    
-        buildLevel() 
 
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
         roboBlock = display.newRect(0, (floorY - 1) * tileWidth, objectWidth, objectWidth)
@@ -375,6 +376,8 @@ function scene:destroy( event )
     -- Stop the music!
     audio.stop(2)
     audio.dispose(loseSound)
+    audio.dispose(hitObjectSound)
+    audio.dispose(jumpSound)
     audio.dispose(backgroundMusic)
 end 
  
