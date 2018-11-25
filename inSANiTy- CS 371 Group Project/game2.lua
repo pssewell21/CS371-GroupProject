@@ -217,6 +217,65 @@ local function buildLevel()
     local floorLevelObstacleHeight = floorY - 1
 
     level = Obst:addBottom(level)
+
+    level = Obst:spawn(level, "floor", -2, 100, floorY)
+    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight - 4)
+    level = Obst:spawn(level, "square", 14, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 15, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 16, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 17, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 18, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 19, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 20, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "triangle", 14, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 15, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 16, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 17, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 18, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 19, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 20, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 21, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 22, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 23, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 24, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 25, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 26, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 27, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 28, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 29, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 30, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "square", 26, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 27, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 28, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 29, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 30, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "triangle", 31, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 32, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 33, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 34, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 35, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 36, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 37, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 38, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 39, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "square", 36, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 37, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 43, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 44, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 46, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 47, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 53, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 54, nil, floorLevelObstacleHeight - 3)
+
+
+
+
+
+
+
+    level = Obst:spawn(level, "endFlag", 100, nil, floorLevelObstacleHeight)
 end
 
 -- -----------------------------------------------------------------------------------
