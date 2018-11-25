@@ -85,6 +85,7 @@ end
 -- The collision handler, this method runs when a collision occurs with a physics body
 local function onCollision(event)
     print(event.target.myName..": Collision with "..event.other.myName)
+    print(event.target.x.." "..event.target.y)
     
     -- Collisions with the floor or transparent square do not result in a loss, any other collision does
     -- Collisions with the floor or transparent square enable jumping
@@ -103,7 +104,11 @@ local function onCollision(event)
             menuSceneButton.isVisible = true
             winText.isVisible = true
         else
-           -- loseText.isVisible = true
+            -- if collising with the bottom, make the bloack a sensor so it falls through and doesn't collide forever            
+            if event.other.myName ~= nil and event.other.myName == "Bottom" then
+                roboBlock.isSensor = true
+            end
+
            	audio.play(hitObjectSound)
             menuSceneButton.isVisible = true
         end
@@ -282,16 +287,16 @@ local function buildLevel()
 
     --addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
 
-    addLevelItem("triangle", 12, nil, floorLevelObstacleHeight)
-    addLevelItem("square", 13, nil, floorLevelObstacleHeight)    
-    addLevelItem("square", 13, nil, floorLevelObstacleHeight - 1)
-    addLevelItem("triangle", 34, nil, floorLevelObstacleHeight)
-    addLevelItem("square", 40, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 39, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 53, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 66, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 78, nil, floorLevelObstacleHeight)
-    addLevelItem("triangle", 79, nil, floorLevelObstacleHeight)
+    --addLevelItem("triangle", 12, nil, floorLevelObstacleHeight)
+    --addLevelItem("square", 13, nil, floorLevelObstacleHeight)    
+    --addLevelItem("square", 13, nil, floorLevelObstacleHeight - 1)
+    --addLevelItem("triangle", 34, nil, floorLevelObstacleHeight)
+    --addLevelItem("square", 40, nil, floorLevelObstacleHeight)
+    --addLevelItem("triangle", 39, nil, floorLevelObstacleHeight)
+    --addLevelItem("triangle", 53, nil, floorLevelObstacleHeight)
+    --addLevelItem("triangle", 66, nil, floorLevelObstacleHeight)
+    --addLevelItem("triangle", 78, nil, floorLevelObstacleHeight)
+    --addLevelItem("triangle", 79, nil, floorLevelObstacleHeight)
 
     addLevelItem("floor", 103, 110, floorY)
     addLevelItem("floor", 113, 120, floorY)
@@ -315,7 +320,7 @@ function scene:show( event )
  
     if phase == "will" then
         physics.start()
-        --physics.setDrawMode("hybrid")
+        physics.setDrawMode("hybrid")
         physics.setGravity(0, 9.8 * 5)
     
         local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
@@ -388,6 +393,7 @@ function scene:show( event )
         roboBlock:addEventListener("collision", onCollision)   
         physics.addBody(roboBlock, "dynamic", {bounce = 0, friction = 0})
         roboBlock.angularDamping = 100
+        roboBlock.isSleepingAllowed = false
     
         sceneGroup:insert(background)
         sceneGroup:insert(nextSceneButton)
