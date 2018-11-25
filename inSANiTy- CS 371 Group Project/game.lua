@@ -57,7 +57,7 @@ local jumpSound = audio.loadSound("jump.wav")
 local function gotoNextScene()
     local sceneTransitionsOptions = 
     {
-        effects = "fade",
+        effect = "crossFade",
         time = 500,
     }
 
@@ -68,7 +68,7 @@ end
 local function retryScene()
     local sceneTransitionsOptions = 
     {
-        effects = "fade",
+        effect = "crossFade",
         time = 500,
     }
 
@@ -79,7 +79,7 @@ end
 local function gotoMenuScene()
     local sceneTransitionsOptions = 
     {
-        effects = "fade",
+        effect = "crossFade",
         time = 500,
     }
 
