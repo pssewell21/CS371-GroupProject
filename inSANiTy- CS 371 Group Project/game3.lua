@@ -84,8 +84,8 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen 
 
-        local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
-        audio.play(backgroundMusic, {channel = 1, loops = -1})
+        local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 2, loops = -1, fadein = 5000})
+        audio.play(backgroundMusic, {channel = 2, loops = -1})
     end
 end 
  
