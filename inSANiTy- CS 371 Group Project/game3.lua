@@ -11,7 +11,7 @@ local backgroundMusic
 
 local level = {}
 
-local levelMovementSpeed = 30
+local levelMovementSpeed = 400
 local levelMovementEnabled = true
 
 local firstJumpCollision = false
@@ -172,8 +172,8 @@ local function moveItem(item)
     if levelMovementEnabled == true then
         transition.moveBy(item, 
         {
-            time = 150, 
-            x = levelMovementSpeed * -2,
+            time = 1000, 
+            x = levelMovementSpeed * -1,
             onComplete = 
                 function()
                     moveItem(item)
