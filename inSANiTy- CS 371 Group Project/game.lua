@@ -120,7 +120,9 @@ local function onCollision(event)
             if event.other.myName ~= nil and event.other.myName == "Bottom" then
                 roboBlock.isSensor = true
             end
-            
+            -- ---------------------------------------------
+            -- This is to show roboBlock's scared Face -- AA
+            -- ---------------------------------------------
             roboBlockFace.isVisible = false
             roboBlock.fill = roboBlockScared
 
@@ -502,6 +504,7 @@ function scene:destroy( event )
 
     -- Stop the music!
     audio.stop(2)
+    audio.dispose(loseSound)
     audio.dispose(backgroundMusic)
 end 
  
