@@ -319,7 +319,7 @@ function scene:show( event )
  
     if phase == "will" then
         physics.start()
-        physics.setDrawMode("hybrid")
+        --physics.setDrawMode("hybrid")
         physics.setGravity(0, 9.8 * 5)
     
         local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
