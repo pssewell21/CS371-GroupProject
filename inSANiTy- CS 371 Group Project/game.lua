@@ -15,7 +15,7 @@ local levelMovementEnabled = true
 local firstJumpCollision = false
 local jumpEnabled = true
 
--- The width of objects in he level
+-- The width of objects in the level
 local objectWidth = 30 
 
 -- The width of the stoke used on objects in the lvel
@@ -29,12 +29,14 @@ local floorY = 6
 
 local blackColorTable = {0, 0, 0}
 local whiteColorTable = {1, 1, 1}
-local pinkColorTable = {1 ,0, 0.9}
 local transparentColorTable = {0, 0, 0, 0}
 local semiTransparentColorTable = {0, 0, 0, 0.75}
 
 local winText
 local loseText
+
+local nextSceneButton
+local menuSceneButton
 
 -- --------------------------------
 -- This is to paint roboBlock -- AA
@@ -45,9 +47,6 @@ local roboBlockFace = {
 	type = "image",
 	filename = "roboBlockFace.png"
 } 
-
-local nextSceneButton
-local menuSceneButton
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -89,7 +88,7 @@ local function onCollision(event)
     
     -- Collisions with the floor or transparent square do not result in a loss, any other collision does
     -- Collisions with the floor or transparent square enable jumping
-    if (event.other.myName ~= nil and (event.other.myName == "Floor" or event.other.myName == "TransparentSquare")) then
+    if event.other.myName ~= nil and (event.other.myName == "Floor" or event.other.myName == "TransparentSquare") then
         if firstJumpCollision == true then
             jumpEnabled = true
         else
@@ -97,7 +96,7 @@ local function onCollision(event)
         end
 
     else
-        if (event.other.myName == "EndFlag") then
+        if event.other.myName == "EndFlag" then
             nextSceneButton.isVisible = true
             menuSceneButton.isVisible = true
             winText.isVisible = true
@@ -130,7 +129,7 @@ end
 
 -- This function is called recursively on each item in the level to move them on the screen
 local function moveItem(item)
-    if (levelMovementEnabled == true) then
+    if levelMovementEnabled == true then
         transition.moveBy(item, 
         {
             time = 150, 
@@ -232,28 +231,28 @@ local function addEndFlag(x, y)
     table.insert(level, item) 
 end
 
--- Adds an item to the level.  The caller specifies the type of item to add and the position
-local function addLevelItem(type, xStartTile, xEndTile, yTile)
+-- Adds an item to the level.  The caller specifies the itemType of item to add and the position
+local function addLevelItem(itemType, xStartTile, xEndTile, yTile)
     local xStart = xStartTile * tileWidth
 
-    if (xEndTile ~= nil) then
+    if xEndTile ~= nil then
         xEnd = xEndTile * tileWidth
     end
 
     local y = yTile * tileWidth
 
-    if (type == "floor") then
+    if itemType == "floor" then
         if (xEnd ~= nil) then
             addFloor(xStart, xEnd, y)
         else
             print("no xEnd value provided for the floor with xStart = "..xStart.." and y = "..y)
         end
         
-    elseif (type == "triangle") then
+    elseif itemType == "triangle" then
         addTriangleObstacle(xStart, y)
-    elseif (type == "square") then
+    elseif itemType == "square" then
         addSquareObstacle(xStart, y)
-    elseif (type == "endFlag") then
+    elseif itemType == "endFlag" then
         addEndFlag(xStart, y)
     end
 end
@@ -311,7 +310,7 @@ function scene:show( event )
     local sceneGroup = self.view
     local phase = event.phase
  
-    if ( phase == "will" ) then
+    if phase == "will" then
         physics.start()
         --physics.setDrawMode("hybrid")
         physics.setGravity(0, 9.8 * 5)
@@ -391,7 +390,7 @@ function scene:show( event )
         sceneGroup:insert(winText)
         sceneGroup:insert(loseText)
         sceneGroup:insert(roboBlock)
-    elseif ( phase == "did" ) then
+    elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen 
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
         audio.play(backgroundMusic, {channel = 1, loops = -1})
@@ -406,9 +405,9 @@ function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
  
-    if ( phase == "will" ) then
+    if phase == "will" then
         -- Code here runs when the scene is on screen (but is about to go off screen) 
-    elseif ( phase == "did" ) then
+    elseif phase == "did" then
         -- Code here runs immediately after the scene goes entirely off screen 
     end
 end 
