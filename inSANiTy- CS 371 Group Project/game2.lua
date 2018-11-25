@@ -62,7 +62,7 @@ local loseSound = audio.loadSound("evilLaugh.wav")
 -- --------------------------------
 -- This is for the monster - AA
 -- --------------------------------
-local monsterGroup = display.newGroup()
+local monsterGroup
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -380,6 +380,8 @@ function scene:show( event )
         lostMessage.x = display.contentCenterX 
         lostMessage.y = display.contentCenterY - 70
         lostMessage.isVisible = false 
+
+        monsterGroup = display.newGroup()
 
         monster1 = display.newImageRect(sceneGroup, "monster.png", 50, 50)
         monster1.x = display.contentCenterX - 200

@@ -25,7 +25,7 @@ function Obstacle:addFloor(level, xStart, xEnd, y)
     self.shape.myName = "Floor"
     self.shape.anchorX = 0
     self.shape.anchorY = 0
-    physics.addBody(self.shape, "static", {friction = 0}) 
+    physics.addBody(self.shape, "static", {friction = 0, density = 1000}) 
     table.insert(level, self.shape)  
 
     return level
@@ -44,7 +44,7 @@ function Obstacle:addTriangleObstacle(level, x, y)
     self.shape.myName = "Triangle"
     self.shape.anchorX = 0
     self.shape.anchorY = 0
-    physics.addBody(self.shape, "static", {shape = physicsVertices}) 
+    physics.addBody(self.shape, "static", {shape = physicsVertices, density = 1000}) 
     table.insert(level, self.shape)  
 
     return level
@@ -59,7 +59,7 @@ function Obstacle:addSquareObstacle(level, x, y)
     self.shape.myName = "Square"
     self.shape.anchorX = 0
     self.shape.anchorY = 0
-    physics.addBody(self.shape, "static") 
+    physics.addBody(self.shape, "static", {density = 1000}) 
     table.insert(level, self.shape)  
 
     self.shape = display.newRect(x - 2, y - 2, self.objectWidth + 2, 5)
@@ -69,7 +69,7 @@ function Obstacle:addSquareObstacle(level, x, y)
     self.shape.myName = "TransparentSquare"
     self.shape.anchorX = 0
     self.shape.anchorY = 0
-    physics.addBody(self.shape, "static", {friction = 0}) 
+    physics.addBody(self.shape, "static", {friction = 0, density = 1000}) 
     table.insert(level, self.shape) 
 
     return level
@@ -83,7 +83,7 @@ function Obstacle:addEndFlag(level, x, y)
     self.shape.myName = "EndFlag"
     self.shape.anchorX = 0
     self.shape.anchorY = 0
-    physics.addBody(self.shape, "static") 
+    physics.addBody(self.shape, "static", {density = 1000}) 
     self.shape.isSensor = true
     table.insert(level, self.shape)  
 
@@ -94,7 +94,7 @@ function Obstacle:addEndFlag(level, x, y)
     self.shape.myName = "EndFlag"
     self.shape.anchorX = 0
     self.shape.anchorY = 0
-    physics.addBody(self.shape, "static") 
+    physics.addBody(self.shape, "static", {density = 1000}) 
     self.shape.isSensor = true
     table.insert(level, self.shape)  
 
@@ -115,7 +115,7 @@ function Obstacle:addBottom(level)
     self.shape.myName = "Bottom"
     self.shape.anchorX = 0
     self.shape.anchorY = 0
-    physics.addBody(self.shape, "static") 
+    physics.addBody(self.shape, "static", {density = 1000}) 
     table.insert(level, self.shape) 
 
     return level
