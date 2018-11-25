@@ -329,11 +329,11 @@ local function buildLevel()
     level = Obst:spawn(level, "square", 273, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 275, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 276, nil, floorLevelObstacleHeight - 3)
-    level = Obst:spawn(level, "square", 280, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 281, nil, floorLevelObstacleHeight - 3)
-    level = Obst:spawn(level, "square", 285, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 282, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 286, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 287, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 288, nil, floorLevelObstacleHeight - 3)
 
 
     --level = Obst:spawn(level, "square", 135, nil, floorLevelObstacleHeight - 2)
