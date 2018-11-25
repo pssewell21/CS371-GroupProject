@@ -17,6 +17,7 @@ local function gotoGame()
         time = 500,
     }
 
+    composer.removeScene("titleScene")
     composer.gotoScene("game", sceneTransitionsOpitions)
 end
 
@@ -108,10 +109,6 @@ function scene:hide( event )
         -- Code here runs when the scene is on screen (but is about to go off screen) 
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
-    
-        -- Stop the music!
-        audio.stop(1)
-        audio.dispose(backgroundMusic)
     end
 end 
  
@@ -119,6 +116,10 @@ end
 function scene:destroy( event ) 
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view 
+
+    -- Stop the music!
+    audio.stop(1)
+    audio.dispose(backgroundMusic)
 end 
  
 -- -----------------------------------------------------------------------------------
