@@ -1,10 +1,10 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
 local physics = require("physics")
-local Obstacle = require("Obstacle")
 local scene = composer.newScene()
 
 local roboBlock
+local floor
 local backgroundMusic
 
 local level = {}
@@ -36,7 +36,6 @@ local winText
 local loseText
 
 local nextSceneButton
-local retryButton
 local menuSceneButton
 
 -- --------------------------------
@@ -69,7 +68,7 @@ local monsterGroup = display.newGroup()
 local function gotoNextScene()
     local sceneTransitionsOptions = 
     {
-        effect = "crossFade",
+        effects = "fade",
         time = 500,
     }
 
@@ -77,21 +76,10 @@ local function gotoNextScene()
     composer.gotoScene("game2", sceneTransitionsOptions)
 end
 
-local function retryScene()
-    local sceneTransitionsOptions = 
-    {
-        effect = "crossFade",
-        time = 500,
-    }
-
-    composer.removeScene("game")
-    composer.gotoScene("game", sceneTransitionsOptions)
-end
-
 local function gotoMenuScene()
     local sceneTransitionsOptions = 
     {
-        effect = "crossFade",
+        effects = "fade",
         time = 500,
     }
 
@@ -137,7 +125,6 @@ local function onCollision(event)
             roboBlock.fill = roboBlockScared
 
           	audio.play(hitObjectSound)
-<<<<<<< HEAD
           	audio.play(loseSound)
 
           	lostMessage.isVisible = true
@@ -146,9 +133,6 @@ local function onCollision(event)
           	monster3.isVisible = true
           	monster4.isVisible = true
 
-=======
-            retryButton.isVisible = true
->>>>>>> aa85aa1cc19976ed6ade47105f77219b976e3f00
             menuSceneButton.isVisible = true
 
         end
@@ -197,40 +181,152 @@ local function moveLevel()
     end
 end
 
+-- Adds a floor object to the level
+local function addFloor(xStart, xEnd, y)
+    local item = display.newRect(xStart, y, xEnd - xStart, display.contentHeight - y + objectStrokeWidth)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "Floor"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static", {friction = 0}) 
+    table.insert(level, item)  
+end
+
+-- Adds a triangle object to the level
+local function addTriangleObstacle(x, y)
+    local rightVertexX = objectWidth - (2 * objectStrokeWidth)
+    local vertices = {-objectStrokeWidth,-objectStrokeWidth, rightVertexX,-objectStrokeWidth, (rightVertexX / 2 - 1),-objectWidth,}
+    local physicsVertices = {-objectWidth/2,objectWidth/2, objectWidth/2,objectWidth/2, 0,-objectWidth/2,}
+
+    local item = display.newPolygon(x, y, vertices)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "Triangle"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static", {shape = physicsVertices}) 
+    table.insert(level, item)  
+end
+
+-- Adds a square object to the level
+local function addSquareObstacle(x, y)    
+    local item = display.newRect(x, y, objectWidth, objectWidth)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "Square"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static") 
+    table.insert(level, item)  
+
+    local item = display.newRect(x - 2, y - 2, objectWidth + 2, 5)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(transparentColorTable))
+    item:setFillColor(unpack(transparentColorTable))
+    item.myName = "TransparentSquare"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static", {friction = 0}) 
+    table.insert(level, item) 
+end
+
+local function addEndFlag(x, y)
+    local item = display.newRect(x, y - (2 * tileWidth), objectStrokeWidth, 3 * tileWidth)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "EndFlag"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static") 
+    item.isSensor = true
+    table.insert(level, item)  
+
+    item = display.newRect(x + 1.5 * objectStrokeWidth, y - (2 * tileWidth), 1.5 * tileWidth, tileWidth)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "EndFlag"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static") 
+    item.isSensor = true
+    table.insert(level, item)  
+
+    item = display.newText("END", x + (0.45 * tileWidth), y - (1.75 * tileWidth), native.systemFont, 14)
+    item.anchorX = 0
+    item.anchorY = 0
+    table.insert(level, item) 
+end
+
+-- Adds an item to the level.  The caller specifies the itemType of item to add and the position
+local function addLevelItem(itemType, xStartTile, xEndTile, yTile)
+    local xStart = xStartTile * tileWidth
+
+    if xEndTile ~= nil then
+        xEnd = xEndTile * tileWidth
+    end
+
+    local y = yTile * tileWidth
+
+    if itemType == "floor" then
+        if (xEnd ~= nil) then
+            addFloor(xStart, xEnd, y)
+        else
+            print("no xEnd value provided for the floor with xStart = "..xStart.." and y = "..y)
+        end
+        
+    elseif itemType == "triangle" then
+        addTriangleObstacle(xStart, y)
+    elseif itemType == "square" then
+        addSquareObstacle(xStart, y)
+    elseif itemType == "endFlag" then
+        addEndFlag(xStart, y)
+    end
+end
+
+-- Adds a bottom object to the level.  This object is used to detect falling through pits.
+local function addBottom()
+    local item = display.newRect(0, display.contentHeight + tileWidth, 99999 * tileWidth, 0)
+    item.strokeWidth = objectStrokeWidth
+    item:setStrokeColor(unpack(whiteColorTable))
+    item:setFillColor(unpack(semiTransparentColorTable))
+    item.myName = "Bottom"
+    item.anchorX = 0
+    item.anchorY = 0
+    physics.addBody(item, "static") 
+    table.insert(level, item) 
+end
+
 -- This function is used to build the level
 local function buildLevel()
-    local Obst = Obstacle:new(
-    {
-        blackColorTable = blackColorTable,
-        whiteColorTable = whiteColorTable,
-        transparentColorTable = transparentColorTable,
-        semiTransparentColorTable = semiTransparentColorTable,
-        objectWidth = objectWidth,
-        objectStrokeWidth = objectStrokeWidth,
-        tileWidth = tileWidth
-    })
-
     local floorLevelObstacleHeight = floorY - 1
 
-    level = Obst:addBottom(level)
-    level = Obst:spawn(level, "floor", -2, 100, floorY)
+    addBottom()
+    addLevelItem("floor", -2, 100, floorY)
 
-    --level = Obst:spawn(level, "endFlag", 5, nil, floorLevelObstacleHeight)
+    --addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
 
-    level = Obst:spawn(level, "triangle", 12, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight)    
-    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight - 1)
-    level = Obst:spawn(level, "triangle", 34, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "square", 40, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "triangle", 39, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "triangle", 53, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "triangle", 66, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "triangle", 78, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "triangle", 79, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "floor", 103, 110, floorY)
-    level = Obst:spawn(level, "floor", 113, 120, floorY)
-    level = Obst:spawn(level, "floor", 123, 145, floorY)
-    level = Obst:spawn(level, "endFlag", 128, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 12, nil, floorLevelObstacleHeight)
+    addLevelItem("square", 13, nil, floorLevelObstacleHeight)    
+    addLevelItem("square", 13, nil, floorLevelObstacleHeight - 1)
+    addLevelItem("triangle", 34, nil, floorLevelObstacleHeight)
+    addLevelItem("square", 40, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 39, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 53, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 66, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 78, nil, floorLevelObstacleHeight)
+    addLevelItem("triangle", 79, nil, floorLevelObstacleHeight)
+
+    addLevelItem("floor", 103, 110, floorY)
+    addLevelItem("floor", 113, 120, floorY)
+    addLevelItem("floor", 123, 145, floorY)
+
+    addLevelItem("endFlag", 128, nil, floorLevelObstacleHeight)
 end
 
 -- -----------------------------------------------------------------------------------
@@ -280,30 +376,6 @@ function scene:show( event )
         nextSceneButton:setLabel("NEXT")
         nextSceneButton:addEventListener("tap", gotoNextScene) 
         nextSceneButton.isVisible = false
-    
-        -- -----------------
-        -- Create the widget
-        -- -----------------
-        retryButton = widget.newButton(
-        {
-            label = "retryButton",
-            onEvent = handleButtonEvent,
-            emboss = false,
-            -- Properties for a rounded rectangle button
-            shape = "roundedRect",
-            width = 60,
-            height = 40,
-            cornerRadius = 2,
-            fillColor = { default = {0 ,1, 0.23}, over={0.8,1,0.8} }, 
-            strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
-            strokeWidth = 5
-        })
-
-        retryButton.x = display.contentCenterX + 50
-        retryButton.y = display.contentCenterY - 70
-        retryButton:setLabel("RETRY")
-        retryButton:addEventListener("tap", retryScene) 
-        retryButton.isVisible = false
 
         menuSceneButton = widget.newButton(
         {
@@ -326,7 +398,6 @@ function scene:show( event )
         menuSceneButton:addEventListener("tap", gotoMenuScene) 
         menuSceneButton.isVisible = false
     
-<<<<<<< HEAD
 
         toBeContinued = display.newImageRect(sceneGroup, "contd.png", 550,100)
         toBeContinued.x = display.contentCenterX 
@@ -366,13 +437,6 @@ function scene:show( event )
     	monsterGroup:insert(monster4)
 
 
-=======
-        winText = display.newText("YOU WIN!!!", display.contentCenterX, 50, native.systemFont, 36)
-        winText.isVisible = false
-    
-        --loseText = display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
-        --loseText.isVisible = false
->>>>>>> aa85aa1cc19976ed6ade47105f77219b976e3f00
     
         buildLevel() 
 
@@ -396,7 +460,6 @@ function scene:show( event )
     
         sceneGroup:insert(background)
         sceneGroup:insert(nextSceneButton)
-        sceneGroup:insert(retryButton)
         sceneGroup:insert(menuSceneButton)
         sceneGroup:insert(toBeContinued)
         sceneGroup:insert(lostMessage)
@@ -405,8 +468,8 @@ function scene:show( event )
 
     elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen 
-        audio.setVolume(1, {channel = 2})
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 2, loops = -1, fadein = 5000})
+        audio.play(backgroundMusic, {channel = 2, loops = -1})
 
         Runtime:addEventListener("tap", screenTouched)
 

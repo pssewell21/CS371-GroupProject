@@ -13,7 +13,7 @@ local backgroundMusic
 local function gotoGame()
     local sceneTransitionsOpitions = 
     {
-        effect = "crossFade",
+        effects = "fade",
         time = 500,
     }
 
@@ -95,9 +95,8 @@ function scene:show( event )
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
     elseif ( phase == "did" ) then        
         -- Code here runs when the scene is entirely on screen 
-
-        audio.setVolume(1, {channel = 1})
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
+        audio.play(backgroundMusic, {channel = 1, loops = -1})
     end
 end 
  

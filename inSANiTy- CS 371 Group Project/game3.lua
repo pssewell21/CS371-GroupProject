@@ -9,7 +9,7 @@ local backgroundMusic
 local function gotoNextScene()
     local sceneTransitionsOpitions = 
     {
-        effect = "crossFade",
+        effects = "fade",
         time = 500,
     }
 
