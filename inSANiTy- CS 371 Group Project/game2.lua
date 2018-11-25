@@ -1,4 +1,4 @@
-local composer = require( "composer" )
+local composer = require("composer")
 local widget = require( "widget" )
 local physics = require("physics")
 local Obstacle = require("obstacle")
