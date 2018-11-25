@@ -109,7 +109,7 @@ local function handleButtonEvent(event)
 end 
 
 -- The collision handler, this method runs when a collision occurs with a physics body
-local function onCollision(event)
+local function onCollisionOccurred(event)
     print(event.target.myName..": Collision with "..event.other.myName)
     
     -- Collisions with the floor or transparent square do not result in a loss, any other collision does
@@ -156,6 +156,7 @@ local function onCollision(event)
         jumpEnabled = false 
     end
 
+    print("Roboblock name: "..roboBlock.myName)
     local vx, vy = roboBlock:getLinearVelocity()
 
     -- Set linear velocity to 0 if the block is sliding
@@ -163,6 +164,10 @@ local function onCollision(event)
         --print("Setting linear velocity to 0")
         roboBlock:setLinearVelocity(0, vy)
     end
+end
+
+local function onCollision(event)
+	Runtime:dispatchEvent({name="onCollisionOccurred", target = event.target, other = event.other})
 end
 
 -- Moves roboBlock on screen touch
@@ -395,6 +400,7 @@ function scene:show( event )
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 2, loops = -1, fadein = 5000})
 
         Runtime:addEventListener("tap", screenTouched)
+ 		Runtime:addEventListener("onCollisionOccurred", onCollisionOccurred)
 
         moveLevel()
     end
@@ -416,6 +422,7 @@ function scene:destroy( event )
     -- Code here runs prior to the removal of scene's view   
 
     Runtime:removeEventListener("tap", screenTouched) 
+ 	Runtime:removeEventListener("onCollisionOccurred", onCollisionOccurred)
 
     physics.stop()        
 
