@@ -9,7 +9,7 @@ local backgroundMusic
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
-
+--[[
 local function gotoGame()
     local sceneTransitionsOpitions = 
     {
@@ -19,6 +19,17 @@ local function gotoGame()
 
     composer.removeScene("titleScene")
     composer.gotoScene("game", sceneTransitionsOpitions)
+end
+--]]
+local function gotoStory()
+    local sceneTransitionsOpitions = 
+    {
+        effects = "fade",
+        time = 500,
+    }
+
+    composer.removeScene("titleScene")
+    composer.gotoScene("story", sceneTransitionsOpitions)
 end
 
  -- Function to handle button events
@@ -76,7 +87,7 @@ function scene:create( event )
     -- Change the button's label text
     -- ------------------------------
     startButton:setLabel( "START" )
-    startButton:addEventListener("tap", gotoGame)
+    startButton:addEventListener("tap", gotoStory)
     
     -- --------------------------------------------------------------------
     --This is just putting all of the objects that is the scene in a group
@@ -95,8 +106,8 @@ function scene:show( event )
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
     elseif ( phase == "did" ) then        
         -- Code here runs when the scene is entirely on screen 
-        audio.setVolume(1, {channel = 1})
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
+        audio.play(backgroundMusic, {channel = 1, loops = -1})
     end
 end 
  
