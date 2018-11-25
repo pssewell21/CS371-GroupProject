@@ -219,7 +219,7 @@ local function buildLevel()
     level = Obst:addBottom(level)
     level = Obst:spawn(level, "floor", -2, 100, floorY)
 
-    --level = Obst:spawn(level, "endFlag", 5, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "endFlag", 5, nil, floorLevelObstacleHeight)
 
     level = Obst:spawn(level, "triangle", 12, nil, floorLevelObstacleHeight)
     level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight)
@@ -325,8 +325,7 @@ function scene:show( event )
         menuSceneButton.y = display.contentCenterY - 130
         menuSceneButton:setLabel("MENU")
         menuSceneButton:addEventListener("tap", gotoMenuScene) 
-        menuSceneButton.isVisible = false
-    
+        menuSceneButton.isVisible = false    
 
         toBeContinued = display.newImageRect(sceneGroup, "contd.png", 550,100)
         toBeContinued.x = display.contentCenterX 
@@ -337,7 +336,6 @@ function scene:show( event )
         lostMessage.x = display.contentCenterX 
     	lostMessage.y = display.contentCenterY - 70
     	lostMessage.isVisible = false 
-
 
     	monster1 = display.newImageRect(sceneGroup, "monster.png", 50, 50)
     	monster1.x = display.contentCenterX - 200
@@ -439,10 +437,10 @@ end
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
 -- -----------------------------------------------------------------------------------
-scene:addEventListener( "create", scene )
-scene:addEventListener( "show", scene )
-scene:addEventListener( "hide", scene )
-scene:addEventListener( "destroy", scene )
+scene:addEventListener("create", scene)
+scene:addEventListener("show", scene)
+scene:addEventListener("hide", scene)
+scene:addEventListener("destroy", scene)
 -- -----------------------------------------------------------------------------------
  
 return scene
