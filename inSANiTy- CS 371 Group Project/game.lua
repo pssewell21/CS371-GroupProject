@@ -277,7 +277,7 @@ local function buildLevel()
     addBottom()
     addLevelItem("floor", -2, 100, floorY)
 
-    addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
+    --addLevelItem("endFlag", 5, nil, floorLevelObstacleHeight)
 
     addLevelItem("triangle", 12, nil, floorLevelObstacleHeight)
     addLevelItem("square", 13, nil, floorLevelObstacleHeight)    
@@ -312,7 +312,7 @@ function scene:show( event )
  
     if ( phase == "will" ) then
         physics.start()
-        physics.setDrawMode("hybrid")
+        --physics.setDrawMode("hybrid")
         physics.setGravity(0, 9.8 * 5)
     
         local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
