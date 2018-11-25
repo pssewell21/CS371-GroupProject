@@ -96,7 +96,7 @@ local function onCollision(event)
         else
             firstJumpCollision = true
             audio.play(jumpSound)
-            --audio.play(hitObjectSound)
+           
         end
     else
         if event.other.myName == "EndFlag" then
@@ -108,8 +108,8 @@ local function onCollision(event)
             if event.other.myName ~= nil and event.other.myName == "Bottom" then
                 roboBlock.isSensor = true
             end
-
-           	audio.play(hitObjectSound)
+            
+          	audio.play(hitObjectSound)
             menuSceneButton.isVisible = true
         end
         
@@ -327,7 +327,7 @@ function scene:show( event )
         background.x = display.contentCenterX 
         background.y = display.contentCenterY
         
-        backgroundMusic = audio.loadStream("level1MusicUpdate.mp3")
+        backgroundMusic = audio.loadSound("level1MusicUpdate3.mp3")
     
         -- -----------------
         -- Create the widget
@@ -379,7 +379,6 @@ function scene:show( event )
 
     
         --loseText = display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
-        audio.play(hitObjectSound)
         --loseText.isVisible = false
     
         buildLevel() 
@@ -403,8 +402,8 @@ function scene:show( event )
         sceneGroup:insert(roboBlock)
     elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen 
-        local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
-        audio.play(backgroundMusic, {channel = 1, loops = -1})
+        local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 2, loops = -1, fadein = 5000})
+        audio.play(backgroundMusic, {channel = 2, loops = -1})
 
         Runtime:addEventListener("tap", screenTouched)
 
@@ -436,7 +435,7 @@ function scene:destroy( event )
     end
 
     -- Stop the music!
-    audio.stop(1)
+    audio.stop(2)
     audio.dispose(backgroundMusic)
 end 
  
