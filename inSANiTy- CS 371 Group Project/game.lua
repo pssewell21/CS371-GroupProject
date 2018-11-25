@@ -1,7 +1,7 @@
-local composer = require( "composer" )
+local composer = require("composer")
 local widget = require( "widget" )
 local physics = require("physics")
-local Obstacle = require("Obstacle")
+local Obstacle = require("obstacle")
 
 local scene = composer.newScene()
 
@@ -109,7 +109,7 @@ local function handleButtonEvent(event)
 end 
 
 -- The collision handler, this method runs when a collision occurs with a physics body
-local function onCollision(event)
+local function onCollisionOccurred(event)
     print(event.target.myName..": Collision with "..event.other.myName)
     
     -- Collisions with the floor or transparent square do not result in a loss, any other collision does
@@ -133,7 +133,9 @@ local function onCollision(event)
             if event.other.myName ~= nil and event.other.myName == "Bottom" then
                 roboBlock.isSensor = true
             end
-            
+            -- ---------------------------------------------
+            -- This is to show roboBlock's scared Face -- AA
+            -- ---------------------------------------------
             roboBlockFace.isVisible = false
             roboBlock.fill = roboBlockScared
 
@@ -154,6 +156,7 @@ local function onCollision(event)
         jumpEnabled = false 
     end
 
+    print("Roboblock name: "..roboBlock.myName)
     local vx, vy = roboBlock:getLinearVelocity()
 
     -- Set linear velocity to 0 if the block is sliding
@@ -161,6 +164,10 @@ local function onCollision(event)
         --print("Setting linear velocity to 0")
         roboBlock:setLinearVelocity(0, vy)
     end
+end
+
+local function onCollision(event)
+	Runtime:dispatchEvent({name="onCollisionOccurred", target = event.target, other = event.other})
 end
 
 -- Moves roboBlock on screen touch
@@ -194,8 +201,6 @@ local function moveLevel()
     end
 end
 
-
-
 -- This function is used to build the level
 local function buildLevel()
 	local Obst = Obstacle:new(
@@ -214,10 +219,10 @@ local function buildLevel()
     level = Obst:addBottom(level)
     level = Obst:spawn(level, "floor", -2, 100, floorY)
 
-    --level = Obst:spawn(level, "endFlag", 5, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "endFlag", 5, nil, floorLevelObstacleHeight)
 
     level = Obst:spawn(level, "triangle", 12, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight)    
+    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight)
     level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight - 1)
     level = Obst:spawn(level, "triangle", 34, nil, floorLevelObstacleHeight)
     level = Obst:spawn(level, "square", 40, nil, floorLevelObstacleHeight)
@@ -370,16 +375,16 @@ function scene:show( event )
             emboss = false,
             -- Properties for a rounded rectangle button
             shape = "roundedRect",
-            width = 60,
-            height = 40,
+            width = 70,
+            height = 25,
             cornerRadius = 2,
             fillColor = { default = {0 ,1, 0.23}, over={0.8,1,0.8} }, 
             strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
             strokeWidth = 5
         })
 
-        nextSceneButton.x = display.contentCenterX + 50
-        nextSceneButton.y = display.contentCenterY - 70
+        nextSceneButton.x = display.contentCenterX + 150
+        nextSceneButton.y = display.contentCenterY - 130
         nextSceneButton:setLabel("NEXT")
         nextSceneButton:addEventListener("tap", gotoNextScene) 
         nextSceneButton.isVisible = false
@@ -391,16 +396,16 @@ function scene:show( event )
             emboss = false,
             -- Properties for a rounded rectangle button
             shape = "roundedRect",
-            width = 60,
-            height = 40,
+            width = 70,
+            height = 25,
             cornerRadius = 2,
             fillColor = { default = {0 ,1, 0.23}, over={0.8,1,0.8} }, 
             strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
             strokeWidth = 5
         })
 
-        retryButton.x = display.contentCenterX + 50
-        retryButton.y = display.contentCenterY - 70
+        retryButton.x = display.contentCenterX + 150
+        retryButton.y = display.contentCenterY - 130
         retryButton:setLabel("RETRY")
         retryButton:addEventListener("tap", retryScene) 
         retryButton.isVisible = false
@@ -424,8 +429,7 @@ function scene:show( event )
         menuSceneButton.y = display.contentCenterY - 130
         menuSceneButton:setLabel("MENU")
         menuSceneButton:addEventListener("tap", gotoMenuScene) 
-        menuSceneButton.isVisible = false
-    
+        menuSceneButton.isVisible = false    
 
         toBeContinued = display.newImageRect(sceneGroup, "contd.png", 550,100)
         toBeContinued.x = display.contentCenterX 
@@ -436,7 +440,6 @@ function scene:show( event )
         lostMessage.x = display.contentCenterX 
     	lostMessage.y = display.contentCenterY - 70
     	lostMessage.isVisible = false 
-
 
     	monster1 = display.newImageRect(sceneGroup, "monster.png", 50, 50)
     	monster1.x = display.contentCenterX - 200
@@ -499,6 +502,7 @@ function scene:show( event )
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 2, loops = -1, fadein = 5000})
 
         Runtime:addEventListener("tap", screenTouched)
+ 		Runtime:addEventListener("onCollisionOccurred", onCollisionOccurred)
 
         moveLevel()
     end
@@ -520,6 +524,7 @@ function scene:destroy( event )
     -- Code here runs prior to the removal of scene's view   
 
     Runtime:removeEventListener("tap", screenTouched) 
+ 	Runtime:removeEventListener("onCollisionOccurred", onCollisionOccurred)
 
     physics.stop()        
 
@@ -529,16 +534,17 @@ function scene:destroy( event )
 
     -- Stop the music!
     audio.stop(2)
+    audio.dispose(loseSound)
     audio.dispose(backgroundMusic)
 end 
  
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
 -- -----------------------------------------------------------------------------------
-scene:addEventListener( "create", scene )
-scene:addEventListener( "show", scene )
-scene:addEventListener( "hide", scene )
-scene:addEventListener( "destroy", scene )
+scene:addEventListener("create", scene)
+scene:addEventListener("show", scene)
+scene:addEventListener("hide", scene)
+scene:addEventListener("destroy", scene)
 -- -----------------------------------------------------------------------------------
  
 return scene
