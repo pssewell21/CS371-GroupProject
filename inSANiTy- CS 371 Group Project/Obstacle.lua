@@ -106,6 +106,21 @@ function Obstacle:addEndFlag(level, x, y)
     return level
 end
 
+-- Adds a bottom object to the level.  This object is used to detect falling through pits.
+local function Obstacle:addBottom(level)
+    self.shape = display.newRect(0, display.contentHeight + self.tileWidth, 99999 * self.tileWidth, 0)
+    self.shape.strokeWidth = self.objectStrokeWidth
+    self.shape:setStrokeColor(unpack(self.whiteColorTable))
+    self.shape:setFillColor(unpack(self.semiTransparentColorTable))
+    self.shape.myName = "Bottom"
+    self.shape.anchorX = 0
+    self.shape.anchorY = 0
+    physics.addBody(self.shape, "static") 
+    table.insert(level, self.shape) 
+
+    return level
+end
+
 function Obstacle:spawn(level, itemType, xStartTile, xEndTile, yTile)
 	local xStart = xStartTile * self.tileWidth
 

@@ -5,7 +5,6 @@ local Obstacle = require("Obstacle")
 local scene = composer.newScene()
 
 local roboBlock
-local floor
 local backgroundMusic
 
 local level = {}
@@ -170,49 +169,6 @@ local function moveLevel()
     end
 end
 
-
-
--- Adds an item to the level.  The caller specifies the itemType of item to add and the position
---local function addLevelItem(itemType, xStartTile, xEndTile, yTile)
---    local xStart = xStartTile * tileWidth
---
---    if xEndTile ~= nil then
---        xEnd = xEndTile * tileWidth
---    end
---
---    local y = yTile * tileWidth
---
---
---
---    if itemType == "floor" then
---        if (xEnd ~= nil) then
---            addFloor(xStart, xEnd, y)
---        else
---            print("no xEnd value provided for the floor with xStart = "..xStart.." and y = "..y)
---        end
---        
---    elseif itemType == "triangle" then
---        addTriangleObstacle(xStart, y)
---    elseif itemType == "square" then
---        addSquareObstacle(xStart, y)
---    elseif itemType == "endFlag" then
---        addEndFlag(xStart, y)
---    end
---end
-
--- Adds a bottom object to the level.  This object is used to detect falling through pits.
-local function addBottom()
-    local item = display.newRect(0, display.contentHeight + tileWidth, 99999 * tileWidth, 0)
-    item.strokeWidth = objectStrokeWidth
-    item:setStrokeColor(unpack(whiteColorTable))
-    item:setFillColor(unpack(semiTransparentColorTable))
-    item.myName = "Bottom"
-    item.anchorX = 0
-    item.anchorY = 0
-    physics.addBody(item, "static") 
-    table.insert(level, item) 
-end
-
 -- This function is used to build the level
 local function buildLevel()
     local Obst = Obstacle:new(
@@ -228,7 +184,7 @@ local function buildLevel()
 
     local floorLevelObstacleHeight = floorY - 1
 
-    addBottom()
+    level = Obst:addBottom(level)
     level = Obst:spawn(level, "floor", -2, 100, floorY)
 
     --level = Obst:spawn(level, "endFlag", 5, nil, floorLevelObstacleHeight)
@@ -344,7 +300,6 @@ function scene:show( event )
     
         winText = display.newText("YOU WIN!!!", display.contentCenterX, 50, native.systemFont, 36)
         winText.isVisible = false
-
     
         --loseText = display.newText("BOOM!!!", display.contentCenterX, 50, native.systemFont, 36)
         --loseText.isVisible = false
