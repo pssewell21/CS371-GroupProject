@@ -1,7 +1,7 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
 local physics = require("physics")
-local Obstacle = require("Obstacle")
+local Obstacle = require("obstacle")
 
 local scene = composer.newScene()
 
@@ -194,8 +194,6 @@ local function moveLevel()
     end
 end
 
-
-
 -- This function is used to build the level
 local function buildLevel()
 	local Obst = Obstacle:new(
@@ -217,7 +215,7 @@ local function buildLevel()
     --level = Obst:spawn(level, "endFlag", 5, nil, floorLevelObstacleHeight)
 
     level = Obst:spawn(level, "triangle", 12, nil, floorLevelObstacleHeight)
-    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight)    
+    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight)
     level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight - 1)
     level = Obst:spawn(level, "triangle", 34, nil, floorLevelObstacleHeight)
     level = Obst:spawn(level, "square", 40, nil, floorLevelObstacleHeight)
@@ -266,16 +264,16 @@ function scene:show( event )
             emboss = false,
             -- Properties for a rounded rectangle button
             shape = "roundedRect",
-            width = 60,
-            height = 40,
+            width = 70,
+            height = 25,
             cornerRadius = 2,
             fillColor = { default = {0 ,1, 0.23}, over={0.8,1,0.8} }, 
             strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
             strokeWidth = 5
         })
 
-        nextSceneButton.x = display.contentCenterX + 50
-        nextSceneButton.y = display.contentCenterY - 70
+        nextSceneButton.x = display.contentCenterX + 150
+        nextSceneButton.y = display.contentCenterY - 130
         nextSceneButton:setLabel("NEXT")
         nextSceneButton:addEventListener("tap", gotoNextScene) 
         nextSceneButton.isVisible = false
@@ -287,16 +285,16 @@ function scene:show( event )
             emboss = false,
             -- Properties for a rounded rectangle button
             shape = "roundedRect",
-            width = 60,
-            height = 40,
+            width = 70,
+            height = 25,
             cornerRadius = 2,
             fillColor = { default = {0 ,1, 0.23}, over={0.8,1,0.8} }, 
             strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
             strokeWidth = 5
         })
 
-        retryButton.x = display.contentCenterX + 50
-        retryButton.y = display.contentCenterY - 70
+        retryButton.x = display.contentCenterX + 150
+        retryButton.y = display.contentCenterY - 130
         retryButton:setLabel("RETRY")
         retryButton:addEventListener("tap", retryScene) 
         retryButton.isVisible = false
