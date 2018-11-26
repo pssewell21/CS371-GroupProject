@@ -36,6 +36,7 @@ local semiTransparentColorTable = {0, 0, 0, 0.75}
 
 local winText
 local loseText
+local level3
 
 local retryButton
 local menuSceneButton
@@ -62,6 +63,7 @@ local loseSound = audio.loadSound("evilLaugh.wav")
 -- This is for the monster - AA
 -- --------------------------------
 local monsterGroup
+local roboBlocksGroup
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -112,7 +114,12 @@ local function onCollisionOccurred(event)
     else
         if event.other.myName == "EndFlag" then
             menuSceneButton.isVisible = true
-            toBeContinued.isVisible = true
+
+            win.isVisible = true
+            elder.isVisible = true
+            crazy.isVisible = true
+            woman.isVisible = true
+
            
         else
             -- if collising with the bottom, make the bloack a sensor so it falls through and doesn't collide forever            
@@ -238,7 +245,7 @@ function scene:show( event )
         backgroundMusic = audio.loadSound("level3Music.mp3")
     
         buildLevel() 
-
+    
         retryButton = widget.newButton(
         {
             label = "retryButton",
@@ -281,10 +288,10 @@ function scene:show( event )
         menuSceneButton:addEventListener("tap", gotoMenuScene) 
         menuSceneButton.isVisible = false
     
-        toBeContinued = display.newImageRect(sceneGroup, "contd.png", 550,100)
-        toBeContinued.x = display.contentCenterX 
-        toBeContinued.y = display.contentCenterY - 70
-        toBeContinued.isVisible = false 
+        win = display.newImageRect(sceneGroup, "won.png", 550,100)
+        win.x = display.contentCenterX 
+        win.y = display.contentCenterY - 70
+        win.isVisible = false 
 
         lostMessage = display.newImageRect(sceneGroup, "lost.png", 550,100)
         lostMessage.x = display.contentCenterX 
@@ -319,6 +326,33 @@ function scene:show( event )
         monster4.isVisible = false 
         monsterGroup:insert(monster4)
 
+        level3 = display.newImageRect(sceneGroup, "level3.png", 100, 100)
+        level3.x = display.contentCenterX - 230 
+        level3.y = display.contentCenterY - 130
+        level3.isVisible = true
+
+        roboBlocksGroup = display.newGroup()
+
+        woman = display.newImageRect(sceneGroup, "womanBlock.png", 50, 50)
+        woman.x = display.contentCenterX - 200
+        woman.y = display.contentCenterY - 50
+        woman.isVisible = false
+        roboBlocksGroup:insert(woman)
+
+        crazy = display.newImageRect(sceneGroup, "crazyBlock.png", 65, 65)
+        crazy.x = display.contentCenterX + 150
+        crazy.y = display.contentCenterY - 40
+        crazy.isVisible = false 
+        roboBlocksGroup:insert(crazy)
+
+
+        elder = display.newImageRect(sceneGroup, "elder.png", 80, 80)
+        elder.x = display.contentCenterX - 100
+        elder.y = display.contentCenterY - 20 
+        elder.isVisible = false
+        roboBlocksGroup:insert(elder)
+
+
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
         roboBlock = display.newRect(0, (floorY - 1) * tileWidth, objectWidth, objectWidth)
         roboBlock.strokeWidth = objectStrokeWidth
@@ -340,10 +374,12 @@ function scene:show( event )
         sceneGroup:insert(background)
         sceneGroup:insert(retryButton)
         sceneGroup:insert(menuSceneButton)
-        sceneGroup:insert(toBeContinued)
+        sceneGroup:insert(win)
         sceneGroup:insert(lostMessage)
         sceneGroup:insert(monsterGroup)
         sceneGroup:insert(roboBlock)
+        sceneGroup:insert(roboBlocksGroup)
+        sceneGroup:insert(level3)
 
     elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen 

@@ -36,6 +36,7 @@ local semiTransparentColorTable = {0, 0, 0, 0.75}
 
 local winText
 local loseText
+local level2
 
 local nextSceneButton
 local retryButton
@@ -554,6 +555,12 @@ function scene:show( event )
         monster4.isVisible = false 
         monsterGroup:insert(monster4)
 
+        level2 = display.newImageRect(sceneGroup, "level2.png", 100, 100)
+        level2.x = display.contentCenterX - 230 
+        level2.y = display.contentCenterY - 130
+        level2.isVisible = true
+
+
 
         roboBlocksGroup = display.newGroup()
 
@@ -604,6 +611,7 @@ function scene:show( event )
         sceneGroup:insert(monsterGroup)
         sceneGroup:insert(roboBlock)
         sceneGroup:insert(roboBlocksGroup)
+        sceneGroup:insert(level2)
 
     elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen 
