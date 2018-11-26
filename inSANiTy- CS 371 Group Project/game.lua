@@ -36,6 +36,7 @@ local semiTransparentColorTable = {0, 0, 0, 0.75}
 
 local winText
 local loseText
+local level1
 
 local nextSceneButton
 local retryButton
@@ -472,6 +473,12 @@ function scene:show( event )
     	monster4.isVisible = false 
     	monsterGroup:insert(monster4)
 
+        level1 = display.newImageRect(sceneGroup, "level1.png", 80, 100)
+        level1.x = display.contentCenterX - 230 
+        level1.y = display.contentCenterY - 130
+        level1.isVisible = true
+
+
     	print("Creating roboBlock")
 
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
@@ -491,6 +498,8 @@ function scene:show( event )
         physics.addBody(roboBlock, "dynamic", {bounce = 0, friction = 0})
         roboBlock.angularDamping = 100
         roboBlock.isSleepingAllowed = false
+
+
     
         sceneGroup:insert(background)
         sceneGroup:insert(nextSceneButton)
@@ -500,6 +509,9 @@ function scene:show( event )
         sceneGroup:insert(lostMessage)
        	sceneGroup:insert(monsterGroup)
         sceneGroup:insert(roboBlock)
+        sceneGroup:insert(level1)
+
+
     elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen 
         audio.setVolume(1, {channel = 2})
