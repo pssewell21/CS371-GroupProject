@@ -238,7 +238,7 @@ function scene:show( event )
         --physics.setDrawMode("hybrid")
         physics.setGravity(0, 9.8 * 5)
     
-        local background = display.newImageRect(sceneGroup, "scene3.png", 575, 350 )
+        local background = display.newImageRect(sceneGroup, "scene4.png", 575, 350 )
         background.x = display.contentCenterX 
         background.y = display.contentCenterY
         
@@ -328,7 +328,7 @@ function scene:show( event )
 
         level3 = display.newImageRect(sceneGroup, "level3.png", 100, 100)
         level3.x = display.contentCenterX - 230 
-        level3.y = display.contentCenterY - 130
+        level3.y = display.contentCenterY + 130
         level3.isVisible = true
 
         roboBlocksGroup = display.newGroup()
