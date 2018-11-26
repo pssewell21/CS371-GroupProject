@@ -156,7 +156,6 @@ local function onCollisionOccurred(event)
         jumpEnabled = false 
     end
 
-    print("Roboblock name: "..roboBlock.myName)
     local vx, vy = roboBlock:getLinearVelocity()
 
     -- Set linear velocity to 0 if the block is sliding
@@ -471,8 +470,6 @@ function scene:show( event )
     	monster4.xScale = -1
     	monster4.isVisible = false 
     	monsterGroup:insert(monster4)
-
-    	print("Creating roboBlock")
 
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
         roboBlock = display.newRect(0, (floorY - 1) * tileWidth, objectWidth, objectWidth)
