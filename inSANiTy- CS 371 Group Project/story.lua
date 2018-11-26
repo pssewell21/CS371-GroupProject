@@ -9,7 +9,10 @@ local sceneTime = 60
 local cityName
 local year
 local roboBlockFace
-
+-- --------------------------------
+-- This is for the monster - AA
+-- --------------------------------
+local monsterGroup
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -87,15 +90,27 @@ function scene:create( event )
         elder.y = display.contentCenterY - 20 
         elder.isVisible = true 
 
+        monsterGroup = display.newGroup()
 
+        monster1 = display.newImageRect(sceneGroup, "monster.png", 50, 50)
+        monster1.x = display.contentCenterX - 200
+        monster1.y = display.contentCenterY - 50
+        monster1.isVisible = true
+        monsterGroup:insert(monster1)
 
+        monster2 = display.newImageRect(sceneGroup, "monster.png", 65, 65)
+        monster2.x = display.contentCenterX + 150
+        monster2.y = display.contentCenterY - 40
+        monster2.xScale = -1
+        monster2.isVisible = false 
+        monsterGroup:insert(monster2)
 
 
 
     sceneGroup:insert(background)
     sceneGroup:insert(nextSceneButton)
+    sceneGroup:insert(monsterGroup)
     sceneGroup:insert(cityName)
-    sceneGroup:insert(year)
     sceneGroup:insert(elder)
 
 end 
