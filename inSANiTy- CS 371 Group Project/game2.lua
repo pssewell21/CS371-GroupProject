@@ -162,7 +162,6 @@ local function onCollisionOccurred(event)
         jumpEnabled = false 
     end
 
-    print("Roboblock name: "..roboBlock.myName)
     local vx, vy = roboBlock:getLinearVelocity()
 
     -- Set linear velocity to 0 if the block is sliding
