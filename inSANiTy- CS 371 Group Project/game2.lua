@@ -128,10 +128,10 @@ local function onCollisionOccurred(event)
             nextSceneButton.isVisible = true
             menuSceneButton.isVisible = true
 
-            win.isVisible = true
+            toBeContinued.isVisible = true
             elder.isVisible = true
-            crazy.isVisible = true
-            woman.isVisible = true
+            --crazy.isVisible = true
+            --woman.isVisible = true
 
            
         else
@@ -517,10 +517,11 @@ function scene:show( event )
         menuSceneButton:addEventListener("tap", gotoMenuScene) 
         menuSceneButton.isVisible = false
     
-        win = display.newImageRect(sceneGroup, "won.png", 550,100)
-        win.x = display.contentCenterX 
-        win.y = display.contentCenterY - 70
-        win.isVisible = false 
+        toBeContinued = display.newImageRect(sceneGroup, "contd.png", 550,100)
+        toBeContinued.x = display.contentCenterX 
+        toBeContinued.y = display.contentCenterY - 70
+        toBeContinued.isVisible = false 
+
 
         lostMessage = display.newImageRect(sceneGroup, "lost.png", 550,100)
         lostMessage.x = display.contentCenterX 
@@ -557,7 +558,7 @@ function scene:show( event )
 
         level2 = display.newImageRect(sceneGroup, "level2.png", 100, 100)
         level2.x = display.contentCenterX - 230 
-        level2.y = display.contentCenterY - 130
+        level2.y = display.contentCenterY + 130
         level2.isVisible = true
 
 
