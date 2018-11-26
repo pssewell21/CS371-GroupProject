@@ -328,7 +328,7 @@ function scene:show( event )
 
         level3 = display.newImageRect(sceneGroup, "level3.png", 100, 100)
         level3.x = display.contentCenterX - 230 
-        level3.y = display.contentCenterY - 130
+        level3.y = display.contentCenterY + 130
         level3.isVisible = true
 
         roboBlocksGroup = display.newGroup()
