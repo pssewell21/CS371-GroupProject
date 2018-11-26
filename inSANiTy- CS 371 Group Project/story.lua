@@ -53,30 +53,6 @@ function scene:create( event )
 
     backgroundMusic = audio.loadStream("CS371Story.wav")
 
-    -- -----------------
-    -- Create the widget
-    -- -----------------
-    nextSceneButton = widget.newButton(
-    {
-        label = "nextSceneButton",
-        onEvent = handleButtonEvent,
-        emboss = false,
-        -- Properties for a rounded rectangle button
-        shape = "roundedRect",
-        width = 70,
-        height = 25,
-        cornerRadius = 2,
-        fillColor = { default = {0 ,1, 0.23}, over={0.8,1,0.8} }, 
-        strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
-        strokeWidth = 5
-    })
-
-    nextSceneButton.x = display.contentCenterX + 230
-    nextSceneButton.y = display.contentCenterY - 130
-    nextSceneButton:setLabel("NEXT")
-    nextSceneButton:addEventListener("tap", gotoNextScene) 
-    nextSceneButton.isVisible = true
-
     cityName = display.newImageRect(sceneGroup, "cityName.png", 500, 75)
     cityName.x = display.contentCenterX 
     cityName.y = display.contentCenterY + 138

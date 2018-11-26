@@ -222,7 +222,7 @@ local function buildLevel()
 
     --level = Obst:spawn(level, "endFlag", 5, nil, floorLevelObstacleHeight)
 
-    --[[ level = Obst:spawn(level, "triangle", 12, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 12, nil, floorLevelObstacleHeight)
     level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight)
     level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight - 1)
     level = Obst:spawn(level, "triangle", 34, nil, floorLevelObstacleHeight)
@@ -339,7 +339,7 @@ local function buildLevel()
 
     --level = Obst:spawn(level, "square", 135, nil, floorLevelObstacleHeight - 2)
     level = Obst:spawn(level, "floor", 290, 350, floorY)
-    level = Obst:spawn(level, "endFlag", 300, nil, floorLevelObstacleHeight) ]]
+    level = Obst:spawn(level, "endFlag", 300, nil, floorLevelObstacleHeight)
 end
 
 -- -----------------------------------------------------------------------------------
@@ -357,7 +357,7 @@ function scene:show( event )
  
     if phase == "will" then
         physics.start()
-        physics.setDrawMode("hybrid")
+        --physics.setDrawMode("hybrid")
         physics.setGravity(0, 9.8 * 5)
     
         local background = display.newImageRect(sceneGroup, "scene1.png", 575, 350 )
