@@ -415,7 +415,7 @@ local function buildLevel()
 
 
 
-    level = Obst:spawn(level, "endFlag", 50, nil, floorLevelObstacleHeight)
+    --level = Obst:spawn(level, "endFlag", 50, nil, floorLevelObstacleHeight)
 end
 
 -- -----------------------------------------------------------------------------------
