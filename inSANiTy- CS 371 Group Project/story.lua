@@ -1,8 +1,15 @@
 local composer = require( "composer" )
 local widget = require("widget")
 local scene = composer.newScene()
+
 local backgroundMusic
 local nextSceneButton
+local sceneTime = 60
+
+local cityName
+local year
+local roboBlockFace
+
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -65,20 +72,21 @@ function scene:create( event )
         nextSceneButton:addEventListener("tap", gotoNextScene) 
         nextSceneButton.isVisible = true
 
-        cityName = display.newImageRect(sceneGroup, "cityName.png", 550,100)
+        cityName = display.newImageRect(sceneGroup, "cityName.png", 500, 75)
         cityName.x = display.contentCenterX 
-        cityName.y = display.contentCenterY - 70
-        cityName.isVisible = false 
+        cityName.y = display.contentCenterY + 138
+        cityName.isVisible = true 
 
-        year = display.newImageRect(sceneGroup, "yearOfGame.png", 550,100)
+      --[[  year = display.newImageRect(sceneGroup, "yearOfGame.png", 200,50)
         year.x = display.contentCenterX 
         year.y = display.contentCenterY - 20
-        year.isVisible = false 
+        year.isVisible = true
+--]]
+        elder = display.newImageRect(sceneGroup, "elder.png", 300, 290)
+        elder.x = display.contentCenterX 
+        elder.y = display.contentCenterY - 20 
+        elder.isVisible = true 
 
-        roboBlockFace = display.newImageRect(sceneGroup, "yearOfGame.png", 700,700)
-        roboBlockFace.x = display.contentCenterX 
-        roboBlockFace.y = display.contentCenterY 
-        roboBlockFace.isVisible = true 
 
 
 
@@ -88,7 +96,8 @@ function scene:create( event )
     sceneGroup:insert(nextSceneButton)
     sceneGroup:insert(cityName)
     sceneGroup:insert(year)
-    sceneGroup:insert(roboBlockFace)
+    sceneGroup:insert(elder)
+
 end 
  
 -- show()
