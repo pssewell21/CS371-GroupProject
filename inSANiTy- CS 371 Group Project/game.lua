@@ -503,7 +503,7 @@ function scene:show( event )
         audio.setVolume(1, {channel = 2})
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 2, loops = -1, fadein = 5000})
 
-        Runtime:addEventListener("tap", screenTouched)
+        Runtime:addEventListener("touch", screenTouched)
  		Runtime:addEventListener("onCollisionOccurred", onCollisionOccurred)
 
         moveLevel()
@@ -525,7 +525,7 @@ function scene:destroy( event )
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view   
 
-    Runtime:removeEventListener("tap", screenTouched) 
+    Runtime:removeEventListener("touch", screenTouched) 
  	Runtime:removeEventListener("onCollisionOccurred", onCollisionOccurred)
 
     physics.stop()        
