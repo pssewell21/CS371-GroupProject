@@ -9,27 +9,16 @@ local backgroundMusic
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
---[[
-local function gotoGame()
-    local sceneTransitionsOpitions = 
-    {
-        effects = "fade",
-        time = 500,
-    }
 
-    composer.removeScene("titleScene")
-    composer.gotoScene("game", sceneTransitionsOpitions)
-end
---]]
 local function gotoStory()
-    local sceneTransitionsOpitions = 
+    local sceneTransitionsOptions = 
     {
-        effect = "crossfade",
+        effect = "crossFade",
         time = 500,
     }
 
     composer.removeScene("titleScene")
-    composer.gotoScene("story", sceneTransitionsOpitions)
+    composer.gotoScene("story", sceneTransitionsOptions)
 end
 
  -- Function to handle button events

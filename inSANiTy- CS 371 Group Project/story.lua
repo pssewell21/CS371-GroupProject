@@ -17,7 +17,7 @@ local roboBlockFace
 local function gotoNextScene()
     local sceneTransitionsOptions = 
     {
-        effect = "crossfade",
+        effect = "crossFade",
         time = 500,
     }
 
