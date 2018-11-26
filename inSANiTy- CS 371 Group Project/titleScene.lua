@@ -11,14 +11,18 @@ local backgroundMusic
 -- -----------------------------------------------------------------------------------
 
 local function gotoStory()
-    local sceneTransitionsOpitions = 
+    local sceneTransitionsOptions = 
     {
+
         effects = "fade",
+
+        effect = "crossFade",
+
         time = 500,
     }
 
     composer.removeScene("titleScene")
-    composer.gotoScene("story", sceneTransitionsOpitions)
+    composer.gotoScene("story", sceneTransitionsOptions)
 end
 
  -- Function to handle button events
@@ -95,8 +99,8 @@ function scene:show( event )
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
     elseif ( phase == "did" ) then        
         -- Code here runs when the scene is entirely on screen 
+        audio.setVolume(1, {channel = 1})
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 1, loops = -1, fadein = 5000})
-        audio.play(backgroundMusic, {channel = 1, loops = -1})
     end
 end 
  

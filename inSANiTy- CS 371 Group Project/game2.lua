@@ -72,7 +72,7 @@ local roboBlocksGroup
 local function gotoNextScene()
     local sceneTransitionsOptions = 
     {
-        effects = "crossfade",
+        effect = "crossFade",
         time = 500,
     }
 
@@ -94,7 +94,7 @@ end
 local function gotoMenuScene()
     local sceneTransitionsOptions = 
     {
-        effect = "crossfade",
+        effect = "crossFade",
         time = 500,
     }
 
