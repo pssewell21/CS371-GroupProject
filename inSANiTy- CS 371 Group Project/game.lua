@@ -367,7 +367,7 @@ function scene:show( event )
 
         level1 = display.newImageRect(sceneGroup, "level1.png", 80, 100)
         level1.x = display.contentCenterX - 230 
-        level1.y = display.contentCenterY - 130
+        level1.y = display.contentCenterY + 130
         level1.isVisible = true
         level1:toFront()
 

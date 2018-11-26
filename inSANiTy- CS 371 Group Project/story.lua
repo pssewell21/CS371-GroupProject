@@ -22,7 +22,7 @@ local roboBlocksGroup
 local function gotoNextScene()
     local sceneTransitionsOptions = 
     {
-        effect = "crossfade",
+        effect = "crossFade",
         time = 500,
     }
 
@@ -52,75 +52,42 @@ function scene:create( event )
 
     backgroundMusic = audio.loadStream("CS371Story.wav")
 
+    cityName = display.newImageRect(sceneGroup, "cityName.png", 500, 75)
+    cityName.x = display.contentCenterX 
+    cityName.y = display.contentCenterY + 138
+    cityName.isVisible = true 
 
-        -- -----------------
-        -- Create the widget
-        -- -----------------
-        nextSceneButton = widget.newButton(
-        {
-            label = "nextSceneButton",
-            onEvent = handleButtonEvent,
-            emboss = false,
-            -- Properties for a rounded rectangle button
-            shape = "roundedRect",
-            width = 70,
-            height = 25,
-            cornerRadius = 2,
-            fillColor = { default = {0 ,1, 0.23}, over={0.8,1,0.8} }, 
-            strokeColor = { default= {1,0.2,0.6}, over={0,0,0} },
-            strokeWidth = 5
-        })
+    elder = display.newImageRect(sceneGroup, "elder.png", 300, 250)
+    elder.x = display.contentCenterX 
+    elder.y = display.contentCenterY - 20 
+    elder.isVisible = true 
 
-        nextSceneButton.x = display.contentCenterX + 230
-        nextSceneButton.y = display.contentCenterY - 130
-        nextSceneButton:setLabel("NEXT")
-        nextSceneButton:addEventListener("tap", gotoNextScene) 
-        nextSceneButton.isVisible = true
+    monsterGroup = display.newGroup()
+    monster1 = display.newImageRect(sceneGroup, "monster.png", 50, 50)
+    monster1.x = display.contentCenterX - 230
+    monster1.y = display.contentCenterY + 50
+    monster1.isVisible = true
+    monsterGroup:insert(monster1)
 
-        cityName = display.newImageRect(sceneGroup, "cityName.png", 500, 75)
-        cityName.x = display.contentCenterX 
-        cityName.y = display.contentCenterY + 138
-        cityName.isVisible = true 
+    monster2 = display.newImageRect(sceneGroup, "monster.png", 85, 85)
+    monster2.x = display.contentCenterX + 235
+    monster2.y = display.contentCenterY + 75
+    monster2.xScale = -1
+    monster2.isVisible = true
+    monsterGroup:insert(monster2)
 
-      --[[  year = display.newImageRect(sceneGroup, "yearOfGame.png", 200,50)
-        year.x = display.contentCenterX 
-        year.y = display.contentCenterY - 20
-        year.isVisible = true
---]]
-        elder = display.newImageRect(sceneGroup, "elder.png", 300, 250)
-        elder.x = display.contentCenterX 
-        elder.y = display.contentCenterY - 20 
-        elder.isVisible = true 
+    roboBlocksGroup = display.newGroup()
+    woman = display.newImageRect(sceneGroup, "womanBlock.png", 60, 60)
+    woman.x = display.contentCenterX - 170
+    woman.y = display.contentCenterY + 75
+    woman.isVisible = true 
+    roboBlocksGroup:insert(woman)
 
-        monsterGroup = display.newGroup()
-
-        monster1 = display.newImageRect(sceneGroup, "monster.png", 50, 50)
-        monster1.x = display.contentCenterX - 230
-        monster1.y = display.contentCenterY + 50
-        monster1.isVisible = true
-        monsterGroup:insert(monster1)
-
-        monster2 = display.newImageRect(sceneGroup, "monster.png", 85, 85)
-        monster2.x = display.contentCenterX + 235
-        monster2.y = display.contentCenterY + 75
-        monster2.xScale = -1
-        monster2.isVisible = true
-        monsterGroup:insert(monster2)
-
-        roboBlocksGroup = display.newGroup()
-
-        woman = display.newImageRect(sceneGroup, "womanBlock.png", 60, 60)
-        woman.x = display.contentCenterX - 170
-        woman.y = display.contentCenterY + 75
-        woman.isVisible = true 
-        roboBlocksGroup:insert(woman)
-
-        crazy = display.newImageRect(sceneGroup, "crazyBlock.png", 35, 35)
-        crazy.x = display.contentCenterX + 155
-        crazy.y = display.contentCenterY + 55
-        crazy.isVisible = true 
-        roboBlocksGroup:insert(crazy)
-
+    crazy = display.newImageRect(sceneGroup, "crazyBlock.png", 35, 35)
+    crazy.x = display.contentCenterX + 155
+    crazy.y = display.contentCenterY + 55
+    crazy.isVisible = true 
+    roboBlocksGroup:insert(crazy)
 
     -- -----------------
     -- Create the widget
