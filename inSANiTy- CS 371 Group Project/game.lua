@@ -172,7 +172,7 @@ end
 
 -- Moves roboBlock on screen touch
 local function screenTouched(event)
-    if jumpEnabled == true then
+    if event.phase == "began" and jumpEnabled == true then
         roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)
         audio.play(jumpSound)     
         firstJumpCollision = false
