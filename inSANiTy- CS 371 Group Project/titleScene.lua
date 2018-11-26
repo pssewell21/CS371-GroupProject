@@ -24,7 +24,7 @@ end
 local function gotoStory()
     local sceneTransitionsOpitions = 
     {
-        effects = "crossfade",
+        effect = "crossfade",
         time = 500,
     }
 
