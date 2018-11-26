@@ -71,7 +71,7 @@ local monsterGroup
 local function gotoNextScene()
     local sceneTransitionsOptions = 
     {
-        effects = "crossfade",
+        effect = "crossFade",
         time = 500,
     }
 
@@ -93,7 +93,7 @@ end
 local function gotoMenuScene()
     local sceneTransitionsOptions = 
     {
-        effects = "crossfade",
+        effect = "crossFade",
         time = 500,
     }
 
@@ -172,7 +172,7 @@ end
 
 -- Moves roboBlock on screen touch
 local function screenTouched(event)
-    if jumpEnabled == true then
+    if event.phase == "began" and jumpEnabled == true then
         roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)
         audio.play(jumpSound)     
         firstJumpCollision = false
@@ -472,6 +472,8 @@ function scene:show( event )
     	monster4.isVisible = false 
     	monsterGroup:insert(monster4)
 
+    	print("Creating roboBlock")
+
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
         roboBlock = display.newRect(0, (floorY - 1) * tileWidth, objectWidth, objectWidth)
         roboBlock.strokeWidth = objectStrokeWidth
@@ -480,7 +482,7 @@ function scene:show( event )
         -- -----------------------
         -- roboBlock's face -- AA
         -- -----------------------
-        roboBlock.fill = roboBlockScared 
+        --roboBlock.fill = roboBlockScared 
  		roboBlockScared.isVisible = false
  		roboBlock.fill = roboBlockFace  
 
