@@ -23,6 +23,64 @@ local function handleButtonEvent( event )
     if ( "ended" == event.phase ) then
         print( "Button was pressed and released" )
     end
+
+end 
+
+-- The collision handler, this method runs when a collision occurs with a physics body
+local function onCollisionOccurred(event)
+    print(event.target.myName..": Collision with "..event.other.myName)
+    
+    -- Collisions with the floor or transparent square do not result in a loss, any other collision does
+    -- Collisions with the floor or transparent square enable jumping
+    if event.other.myName ~= nil and (event.other.myName == "Floor" or event.other.myName == "TransparentSquare") then
+        -- putting in a dumb boolean to keep the collision while the block is rising from marking jumpEnabled as true
+        if firstJumpCollision == true then
+            jumpEnabled = true
+        else
+            firstJumpCollision = true      
+        end
+    else
+        if event.other.myName == "EndFlag" then
+            menuSceneButton.isVisible = true
+            toBeContinued.isVisible = true
+           
+        else
+            -- if collising with the bottom, make the bloack a sensor so it falls through and doesn't collide forever            
+            if event.other.myName ~= nil and event.other.myName == "Bottom" then
+                roboBlock.isSensor = true
+            end
+            -- ---------------------------------------------
+            -- This is to show roboBlock's scared Face -- AA
+            -- ---------------------------------------------
+            roboBlockFace.isVisible = false
+            roboBlock.fill = roboBlockScared
+
+            audio.play(hitObjectSound)
+            audio.play(loseSound)
+
+            lostMessage.isVisible = true
+            monster1.isVisible = true
+            monster2.isVisible = true
+            monster3.isVisible = true
+            monster4.isVisible = true
+
+            retryButton.isVisible = true
+            menuSceneButton.isVisible = true
+        end
+        
+        levelMovementEnabled = false 
+        firstJumpCollision = false
+        jumpEnabled = false 
+    end
+
+    local vx, vy = roboBlock:getLinearVelocity()
+
+    -- Set linear velocity to 0 if the block is sliding
+    if vx ~= 0 then
+        --print("Setting linear velocity to 0")
+        roboBlock:setLinearVelocity(0, vy)
+    end
+
 end
  
 -- -----------------------------------------------------------------------------------

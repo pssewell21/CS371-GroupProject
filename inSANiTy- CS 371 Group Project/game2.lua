@@ -417,7 +417,7 @@ function scene:show( event )
         monsterGroup:insert(monster4)
 
         level2 = display.newImageRect(sceneGroup, "level2.png", 100, 100)
-        level2.x = display.contentCenterX + 230 
+        level2.x = display.contentCenterX - 230 
         level2.y = display.contentCenterY - 130
         level2.isVisible = true
 
