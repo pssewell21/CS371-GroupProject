@@ -71,7 +71,7 @@ local monsterGroup
 local function gotoNextScene()
     local sceneTransitionsOptions = 
     {
-        effects = "crossfade",
+        effect = "crossfade",
         time = 500,
     }
 
@@ -93,7 +93,7 @@ end
 local function gotoMenuScene()
     local sceneTransitionsOptions = 
     {
-        effects = "crossfade",
+        effect = "crossfade",
         time = 500,
     }
 

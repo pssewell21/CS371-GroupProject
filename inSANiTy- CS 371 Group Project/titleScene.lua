@@ -29,7 +29,7 @@ local function gotoStory()
     }
 
     composer.removeScene("titleScene")
-    composer.gotoScene("game", sceneTransitionsOpitions)
+    composer.gotoScene("story", sceneTransitionsOpitions)
 end
 
  -- Function to handle button events
