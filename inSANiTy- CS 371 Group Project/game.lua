@@ -11,7 +11,7 @@ local backgroundMusic
 
 local level = {}
 
-local levelMovementSpeed = 30
+local levelMovementSpeed = 400
 local levelMovementEnabled = true
 
 local firstJumpCollision = false
@@ -62,7 +62,7 @@ local loseSound = audio.loadSound("evilLaugh.wav")
 -- --------------------------------
 -- This is for the monster - AA
 -- --------------------------------
-local monsterGroup = display.newGroup()
+local monsterGroup
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -71,7 +71,7 @@ local monsterGroup = display.newGroup()
 local function gotoNextScene()
     local sceneTransitionsOptions = 
     {
-        effects = "fade",
+        effects = "crossfade",
         time = 500,
     }
 
@@ -93,7 +93,7 @@ end
 local function gotoMenuScene()
     local sceneTransitionsOptions = 
     {
-        effects = "fade",
+        effects = "crossfade",
         time = 500,
     }
 
@@ -119,8 +119,7 @@ local function onCollisionOccurred(event)
         if firstJumpCollision == true then
             jumpEnabled = true
         else
-            firstJumpCollision = true
-            audio.play(jumpSound)           
+            firstJumpCollision = true      
         end
     else
         if event.other.myName == "EndFlag" then
@@ -153,6 +152,7 @@ local function onCollisionOccurred(event)
         end
        	
         levelMovementEnabled = false 
+        firstJumpCollision = false
         jumpEnabled = false 
     end
 
@@ -172,8 +172,9 @@ end
 
 -- Moves roboBlock on screen touch
 local function screenTouched(event)
-    if jumpEnabled == true then
+    if event.phase == "began" and jumpEnabled == true then
         roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)
+        audio.play(jumpSound)     
         firstJumpCollision = false
         jumpEnabled = false
     end
@@ -184,8 +185,8 @@ local function moveItem(item)
     if levelMovementEnabled == true then
         transition.moveBy(item, 
         {
-            time = 150, 
-            x = levelMovementSpeed * -2,
+            time = 1000, 
+            x = levelMovementSpeed * -1,
             onComplete = 
                 function()
                     moveItem(item)
@@ -329,11 +330,11 @@ local function buildLevel()
     level = Obst:spawn(level, "square", 273, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 275, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 276, nil, floorLevelObstacleHeight - 3)
-    level = Obst:spawn(level, "square", 280, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 281, nil, floorLevelObstacleHeight - 3)
-    level = Obst:spawn(level, "square", 285, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 282, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 286, nil, floorLevelObstacleHeight - 3)
     level = Obst:spawn(level, "square", 287, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 288, nil, floorLevelObstacleHeight - 3)
 
 
     --level = Obst:spawn(level, "square", 135, nil, floorLevelObstacleHeight - 2)
@@ -364,6 +365,8 @@ function scene:show( event )
         background.y = display.contentCenterY
         
         backgroundMusic = audio.loadSound("level1MusicUpdate3.mp3")
+    
+        buildLevel() 
     
         -- -----------------
         -- Create the widget
@@ -441,6 +444,8 @@ function scene:show( event )
     	lostMessage.y = display.contentCenterY - 70
     	lostMessage.isVisible = false 
 
+        monsterGroup = display.newGroup()
+
     	monster1 = display.newImageRect(sceneGroup, "monster.png", 50, 50)
     	monster1.x = display.contentCenterX - 200
     	monster1.y = display.contentCenterY - 50
@@ -466,8 +471,6 @@ function scene:show( event )
     	monster4.xScale = -1
     	monster4.isVisible = false 
     	monsterGroup:insert(monster4)
-    
-        buildLevel() 
 
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
         roboBlock = display.newRect(0, (floorY - 1) * tileWidth, objectWidth, objectWidth)
@@ -495,13 +498,12 @@ function scene:show( event )
         sceneGroup:insert(lostMessage)
        	sceneGroup:insert(monsterGroup)
         sceneGroup:insert(roboBlock)
-
     elseif phase == "did" then
         -- Code here runs when the scene is entirely on screen 
         audio.setVolume(1, {channel = 2})
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 2, loops = -1, fadein = 5000})
 
-        Runtime:addEventListener("tap", screenTouched)
+        Runtime:addEventListener("touch", screenTouched)
  		Runtime:addEventListener("onCollisionOccurred", onCollisionOccurred)
 
         moveLevel()
@@ -523,7 +525,7 @@ function scene:destroy( event )
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view   
 
-    Runtime:removeEventListener("tap", screenTouched) 
+    Runtime:removeEventListener("touch", screenTouched) 
  	Runtime:removeEventListener("onCollisionOccurred", onCollisionOccurred)
 
     physics.stop()        
@@ -535,6 +537,8 @@ function scene:destroy( event )
     -- Stop the music!
     audio.stop(2)
     audio.dispose(loseSound)
+    audio.dispose(hitObjectSound)
+    audio.dispose(jumpSound)
     audio.dispose(backgroundMusic)
 end 
  

@@ -24,12 +24,12 @@ end
 local function gotoStory()
     local sceneTransitionsOpitions = 
     {
-        effects = "fade",
+        effects = "crossfade",
         time = 500,
     }
 
     composer.removeScene("titleScene")
-    composer.gotoScene("story", sceneTransitionsOpitions)
+    composer.gotoScene("game", sceneTransitionsOpitions)
 end
 
  -- Function to handle button events

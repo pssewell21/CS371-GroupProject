@@ -11,7 +11,7 @@ local backgroundMusic
 
 local level = {}
 
-local levelMovementSpeed = 30
+local levelMovementSpeed = 400
 local levelMovementEnabled = true
 
 local firstJumpCollision = false
@@ -62,7 +62,7 @@ local loseSound = audio.loadSound("evilLaugh.wav")
 -- --------------------------------
 -- This is for the monster - AA
 -- --------------------------------
-local monsterGroup = display.newGroup()
+local monsterGroup
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
@@ -119,8 +119,7 @@ local function onCollisionOccurred(event)
         if firstJumpCollision == true then
             jumpEnabled = true
         else
-            firstJumpCollision = true
-            audio.play(jumpSound)           
+            firstJumpCollision = true      
         end
     else
         if event.other.myName == "EndFlag" then
@@ -153,6 +152,7 @@ local function onCollisionOccurred(event)
         end
         
         levelMovementEnabled = false 
+        firstJumpCollision = false
         jumpEnabled = false 
     end
 
@@ -172,8 +172,9 @@ end
 
 -- Moves roboBlock on screen touch
 local function screenTouched(event)
-    if jumpEnabled == true then
+    if event.phase == "began" and jumpEnabled == true then
         roboBlock:applyLinearImpulse(0, -0.22, roboBlock.x, roboBlock.y)
+        audio.play(jumpSound)     
         firstJumpCollision = false
         jumpEnabled = false
     end
@@ -184,8 +185,8 @@ local function moveItem(item)
     if levelMovementEnabled == true then
         transition.moveBy(item, 
         {
-            time = 150, 
-            x = levelMovementSpeed * -2,
+            time = 1000, 
+            x = levelMovementSpeed * -1,
             onComplete = 
                 function()
                     moveItem(item)
@@ -217,6 +218,65 @@ local function buildLevel()
     local floorLevelObstacleHeight = floorY - 1
 
     level = Obst:addBottom(level)
+
+    level = Obst:spawn(level, "floor", -2, 100, floorY)
+    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 13, nil, floorLevelObstacleHeight - 4)
+    level = Obst:spawn(level, "square", 14, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 15, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 16, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 17, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 18, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 19, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "square", 20, nil, floorLevelObstacleHeight - 1)
+    level = Obst:spawn(level, "triangle", 14, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 15, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 16, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 17, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 18, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 19, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 20, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 21, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 22, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 23, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 24, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 25, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 26, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 27, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 28, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 29, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 30, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "square", 26, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 27, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 28, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 29, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 30, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "triangle", 31, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 32, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 33, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 34, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 35, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 36, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 37, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 38, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "triangle", 39, nil, floorLevelObstacleHeight)
+    level = Obst:spawn(level, "square", 36, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 37, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 43, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 44, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 46, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 47, nil, floorLevelObstacleHeight - 2)
+    level = Obst:spawn(level, "square", 53, nil, floorLevelObstacleHeight - 3)
+    level = Obst:spawn(level, "square", 54, nil, floorLevelObstacleHeight - 3)
+
+
+
+
+
+
+
+    level = Obst:spawn(level, "endFlag", 100, nil, floorLevelObstacleHeight)
 end
 
 -- -----------------------------------------------------------------------------------
@@ -242,6 +302,8 @@ function scene:show( event )
         background.y = display.contentCenterY
         
         backgroundMusic = audio.loadSound("level2MusicUpdate.mp3")
+    
+        buildLevel() 
     
         -- -----------------
         -- Create the widget
@@ -319,6 +381,8 @@ function scene:show( event )
         lostMessage.y = display.contentCenterY - 70
         lostMessage.isVisible = false 
 
+        monsterGroup = display.newGroup()
+
         monster1 = display.newImageRect(sceneGroup, "monster.png", 50, 50)
         monster1.x = display.contentCenterX - 200
         monster1.y = display.contentCenterY - 50
@@ -344,8 +408,6 @@ function scene:show( event )
         monster4.xScale = -1
         monster4.isVisible = false 
         monsterGroup:insert(monster4)
-    
-        buildLevel() 
 
         -- Code here runs when the scene is still off screen (but is about to come on screen) 
         roboBlock = display.newRect(0, (floorY - 1) * tileWidth, objectWidth, objectWidth)
@@ -379,7 +441,7 @@ function scene:show( event )
         audio.setVolume(1, {channel = 2})
         local backgroundMusicChannel = audio.play(backgroundMusic, {channel = 2, loops = -1, fadein = 5000})
 
-        Runtime:addEventListener("tap", screenTouched)
+        Runtime:addEventListener("touch", screenTouched)
         Runtime:addEventListener("onCollisionOccurred", onCollisionOccurred)
 
         moveLevel()
@@ -401,7 +463,7 @@ function scene:destroy( event )
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view   
 
-    Runtime:removeEventListener("tap", screenTouched) 
+    Runtime:removeEventListener("touch", screenTouched) 
     Runtime:removeEventListener("onCollisionOccurred", onCollisionOccurred)
 
     physics.stop()        
@@ -413,6 +475,8 @@ function scene:destroy( event )
     -- Stop the music!
     audio.stop(2)
     audio.dispose(loseSound)
+    audio.dispose(hitObjectSound)
+    audio.dispose(jumpSound)
     audio.dispose(backgroundMusic)
 end 
  
